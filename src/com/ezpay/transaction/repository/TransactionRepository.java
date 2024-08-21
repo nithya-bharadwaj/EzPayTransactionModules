@@ -10,7 +10,13 @@
  * Author: Nithya Bharadwaj
  * Date  : 19-Aug-2024
  * Migrated to an actual Oracle SQL Database and updated the methods accordingly.
+ * 
+ * Modifications for TransactionStatusModule:
+ * Author: Preethi R
+ * Date  : 21-Aug-2024
+ * Created data access methods for the transaction status module that work with an actual Oracle SQL Database.
  */
+ 
 package com.ezpay.transaction.repository;
 
 import java.util.ArrayList;
@@ -29,84 +35,6 @@ public class TransactionRepository {
     List<Transaction> transactionHistory = new ArrayList<>();
     Connection connection = DBConnection.getConnection();
   
-
-    /**
-     * Retrieves all transactions from the database.
-     * 
-     * This method executes a SQL query to fetch all transactions from the `TRANSACTIONS` table. 
-     * It processes the results and adds each transaction to the `transactionHistory` list.
-     * 
-     * @return a list of all transactions if successful, or null if there is a database error or if no transactions are found
-     */
-    public List<Transaction> getTransactionHistory() {
-    	Transaction transaction;
-    	if(connection == null) {
-    		return null;
-    	}
-    	else {
-    		try {
-    		String displayAllQuery = "SELECT * FROM TRANSACTIONS";
-    		PreparedStatement statement = connection.prepareStatement(displayAllQuery);
-    		ResultSet resultList = statement.executeQuery();
-    		while(resultList.next()) {
-    			int id = resultList.getInt("id");
-    			String type = resultList.getString("type");
-    			Double amount = resultList.getDouble("amount");
-    			LocalDate date = resultList.getDate("transaction_date").toLocalDate();
-    			String status = resultList.getString("status");
-    			String sender = resultList.getString("sender_id");
-    			String receiver = resultList.getString("receiver_id");
-    			if(type.equals("BankTransfer")) {
-    				String bankTransferId = resultList.getString("banktransfer_id");
-    				transaction = new BankTransferTransaction(id,type,amount,date,status,bankTransferId,sender,receiver);	
-    			}
-    			else {
-    				transaction = new UPITransaction(id,type,amount,date,status,sender,receiver);
-    			}
-    			
-    			transactionHistory.add(transaction);
-    		}
-    		return transactionHistory;
-    		}
-    		catch(Exception e) {
-    			System.out.println("DB ERROR"+e);
-    			return null;
-    			
-    		}
-    	}
-    }
-
-    /**
-     * Finds a transaction by its ID.
-     * 
-     * @param transactionId the ID of the transaction to find
-     * @return the transaction details if found, otherwise null
-     */
-    public Transaction getTransactionById(int transactionId) {
-        for (Transaction transaction : transactionHistory) {
-            if (transaction.getTransactionId() == transactionId) {
-                return transaction;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Retrieves the status of a transaction by its ID.
-     * 
-     * @param transactionId the ID of the transaction whose status is to be fetched
-     * @return the status of the transaction if found, otherwise a not found message
-     */
-    public String getTransactionStatus(int transactionId) {
-        String status = "Transaction not found against this Transaction Id";
-        for (Transaction transaction : transactionHistory) {
-            if (transaction.getTransactionId() == transactionId) {
-                status = transaction.getStatus();
-                return status;
-            }
-        }
-        return status;
-    }
 
     /**
      * Filters transactions by a specified date range using JDBC.
@@ -404,5 +332,133 @@ public class TransactionRepository {
     	catch(Exception e) {
     		System.out.println(e);
     	}
+    }
+
+ // Data Access methods for TransactionStatusModule
+
+    /**
+     * Retrieves a transaction by its ID from the Oracle SQL Database.
+     * 
+     * This method queries the `TRANSACTIONS` table to fetch all details for a transaction identified by its ID.
+     * Based on the transaction type, it creates an instance of either `BankTransferTransaction` or `UPITransaction`.
+     * 
+     * @param transactionId the ID of the transaction to retrieve
+     * @return a `Transaction` object containing the transaction details if found, otherwise `null`
+     */
+    public Transaction getTransactionById(int transactionId) {
+        Transaction transaction = null; // Initialize the transaction object to null
+        String query = "SELECT * FROM TRANSACTIONS WHERE ID = ?"; // SQL query to fetch transaction by ID
+        
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, transactionId); // Set the transaction ID parameter in the query
+            
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) { // Check if a result is returned
+                    // Extract transaction details from the ResultSet
+                    int id = resultSet.getInt("ID");
+                    String type = resultSet.getString("TYPE");
+                    double amount = resultSet.getDouble("AMOUNT");
+                    LocalDate date = resultSet.getDate("TRANSACTION_DATE").toLocalDate();
+                    String status = resultSet.getString("STATUS");
+                    String sender = resultSet.getString("SENDER_ID");
+                    String receiver = resultSet.getString("RECEIVER_ID");
+                    
+                    // Create an instance of the appropriate Transaction subclass
+                    if (type.equalsIgnoreCase("BankTransfer")) {
+                        String bankTransferId = resultSet.getString("BANKTRANSFER_ID");
+                        transaction = new BankTransferTransaction(id, type, amount, date, status, bankTransferId, sender, receiver);
+                    } else {
+                        transaction = new UPITransaction(id, type, amount, date, status, sender, receiver);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            // Handle any SQL errors that occur during the query execution
+            System.out.println("DB ERROR: " + e.getMessage());
+        }
+        
+        return transaction; // Return the transaction object, or null if not found
+    }
+
+    /**
+     * Retrieves the complete transaction history from the Oracle SQL Database.
+     * 
+     * This method queries the `TRANSACTIONS` table to fetch all transactions. 
+     * It creates a list of `Transaction` objects based on the retrieved data, distinguishing between 
+     * `BankTransferTransaction` and `UPITransaction` based on the transaction type.
+     * 
+     * @return a list of `Transaction` objects representing all transactions in the database, 
+     *         or an empty list if no transactions are found or if there is a database error
+     */
+    public List<Transaction> getTransactionHistory() {
+        List<Transaction> transactionHistory = new ArrayList<>(); // Initialize the list to store transactions
+        
+        if (connection == null) {
+            System.out.println("Database connection is not established.");
+            return transactionHistory; // Return empty list if the connection is not established
+        }
+
+        String displayAllQuery = "SELECT * FROM TRANSACTIONS"; // SQL query to fetch all transactions
+        
+        try (PreparedStatement statement = connection.prepareStatement(displayAllQuery);
+             ResultSet resultList = statement.executeQuery()) {
+
+            while (resultList.next()) { // Iterate through the result set
+                // Extract transaction details from the ResultSet
+                int id = resultList.getInt("ID");
+                String type = resultList.getString("TYPE");
+                double amount = resultList.getDouble("AMOUNT");
+                LocalDate date = resultList.getDate("TRANSACTION_DATE").toLocalDate();
+                String status = resultList.getString("STATUS");
+                String sender = resultList.getString("SENDER_ID");
+                String receiver = resultList.getString("RECEIVER_ID");
+
+                Transaction transaction; 
+
+                // Create an instance of the appropriate Transaction subclass
+                if ("BankTransfer".equalsIgnoreCase(type)) {
+                    String bankTransferId = resultList.getString("BANKTRANSFER_ID");
+                    transaction = new BankTransferTransaction(id, type, amount, date, status, bankTransferId, sender, receiver);
+                } else {
+                    transaction = new UPITransaction(id, type, amount, date, status, sender, receiver);
+                }
+
+                transactionHistory.add(transaction); // Add the transaction to the history list
+            }
+        } catch (SQLException e) {
+            // Handle any SQL errors that occur during the query execution
+            System.out.println("DB ERROR: " + e.getMessage());
+        }
+
+        return transactionHistory; // Return the list of transactions
+    }
+
+    /**
+     * Retrieves the status of a transaction by its ID.
+     * 
+     * This method fetches the status from the database for a transaction identified by its ID.
+     * 
+     * @param transactionId the ID of the transaction
+     * @return the status of the transaction, or `null` if there is a database error or if the transaction is not found
+     */
+    public String getTransactionStatus(int transactionId) {
+        String status = null; // Initialize the status variable to null
+        String query = "SELECT STATUS FROM TRANSACTIONS WHERE ID = ?"; // SQL query to fetch transaction status by ID
+        
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, transactionId); // Set the transaction ID parameter in the query
+            
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) { // Check if a result is returned
+                    status = resultSet.getString("STATUS"); // Retrieve the status from the result set
+                }
+            }
+        } catch (SQLException e) {
+            // Handle any SQL errors that occur during the query execution
+            System.out.println("DB ERROR: " + e.getMessage());
+            return null; // Return null in case of an error
+        }
+        
+        return status; // Return the transaction status, or null if not found
     }
 }
