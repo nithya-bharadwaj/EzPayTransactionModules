@@ -1,0 +1,46 @@
+SQL Commands:
+
+For auto increment purpose,
+
+Create a sequence
+
+CREATE SEQUENCE transaction_seq
+START WITH 1
+INCREMENT BY 1
+NOCACHE;
+------------------------------------------
+2. Create Table
+
+create table Transactions(
+  2  id number primary key,
+  3  type varchar2(50) not null,
+  4  amount number not null,
+  5  transaction_date date not null,
+  6  status varchar2(50) not null,
+  7  sender_id varchar2(100) not null,
+  8  receiver_id varchar2(100) not null,
+  9  banktransfer_id varchar2(100) null
+ 10  );
+
+----------------------------------------------
+
+3. Create a trigger to increment id before inserting
+
+CREATE OR REPLACE TRIGGER transaction_before_insert
+BEFORE INSERT ON Transactions
+FOR EACH ROW
+BEGIN
+    IF :NEW.id IS NULL THEN
+        SELECT transaction_seq.NEXTVAL
+        INTO :NEW.id
+        FROM dual;
+    END IF;
+END;
+/
+
+----------------------------------------------
+4. Insert Queries:
+
+
+-------------------------------------------------
+
