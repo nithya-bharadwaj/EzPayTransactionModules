@@ -44,22 +44,22 @@ public class TransactionHistoryController {
         TransactionHistoryService transactionHistoryService = new TransactionHistoryService(transactionRepository);
 
         // Add some sample transactions
-        UPITransaction sampleUpi_trans1 = new UPITransaction( "UPI", 100.0,
+        UPITransaction sampleUpi_trans1 = new UPITransaction( 1,"UPI", 100.0,
                 LocalDate.now().minusYears(2), "Success", "UPI1", "user1");
-        UPITransaction sampleUpi_trans2 = new UPITransaction( "UPI", 10.0,
+        UPITransaction sampleUpi_trans2 = new UPITransaction(2, "UPI", 10.0,
                 LocalDate.now().minusMonths(4), "Success", "UPI2", "user1");
-        UPITransaction sampleUpi_trans3 = new UPITransaction( "UPI", 1000.0,
+        UPITransaction sampleUpi_trans3 = new UPITransaction(3, "UPI", 1000.0,
                 LocalDate.now().minusYears(1), "Failure", "UPI3", "user1");
-        UPITransaction sampleUpi_trans4 = new UPITransaction( "UPI", 100000.0,
+        UPITransaction sampleUpi_trans4 = new UPITransaction( 4,"UPI", 100000.0,
                 LocalDate.now().minusWeeks(4), "Processing", "UPI4", "user1");
 
-        BankTransferTransaction sampleBankTransfer1 = new BankTransferTransaction( "Bank Transfer", 2000.0,
+        BankTransferTransaction sampleBankTransfer1 = new BankTransferTransaction( 5,"Bank Transfer", 2000.0,
                 LocalDate.now().minusYears(5), "Success", "Bank Transfer1", "user1", "user2");
 
-        BankTransferTransaction sampleBankTransfer2 = new BankTransferTransaction( "Bank Transfer", 15000.0,
+        BankTransferTransaction sampleBankTransfer2 = new BankTransferTransaction(6, "Bank Transfer", 15000.0,
                 LocalDate.now().minusYears(6), "Failure", "Bank Transfer2", "user1", "user2");
 
-        BankTransferTransaction sampleBankTransfer3 = new BankTransferTransaction( "Bank Transfer", 20230.0,
+        BankTransferTransaction sampleBankTransfer3 = new BankTransferTransaction(7, "Bank Transfer", 20230.0,
                 LocalDate.now().minusYears(1), "Processing", "Bank Transfer3", "user1", "user2");
 
         // Review and add sample transactions
@@ -194,6 +194,7 @@ public class TransactionHistoryController {
                     case 1:
                         // UPI Transaction
                         String upi_id = "UPI" + Integer.toString(++upi_count);
+                        
                         System.out.println("Enter amount");
                         amount = sc.nextDouble();
                         sc.nextLine(); // Consume newline character
@@ -230,10 +231,12 @@ public class TransactionHistoryController {
                 System.out.println("You have entered wrong input, press 1 to continue, 2 to stop");
                 int stopper = sc.nextInt();
                 if (stopper == 2) {
+                	transactionRepository.resetDatabase();
                     flag = false;
                 }
             }
         }
+        
         transactionRepository.closeConnection();
     }
 }

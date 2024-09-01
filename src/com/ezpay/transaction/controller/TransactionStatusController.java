@@ -73,6 +73,7 @@ public static void main(String[] args) {
 		}while(exitchoice==1);
 		// Close the scanner object to prevent resource leaks
 		sc.close();
+		
 	}
 
 

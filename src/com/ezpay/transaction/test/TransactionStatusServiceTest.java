@@ -1,12 +1,16 @@
 /**
- * Author: Preethi
- * Date: 10th Aug 2024
+ * Author: Navin 
+ * Date: 22nd Aug 2024
  * Unit tests for the TransactionStatusService class.
  */
 package com.ezpay.transaction.test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.junit.After;
@@ -15,7 +19,9 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.ezpay.transaction.model.BankTransferTransaction;
 import com.ezpay.transaction.model.Transaction;
+import com.ezpay.transaction.model.UPITransaction;
 import com.ezpay.transaction.repository.TransactionRepository;
 import com.ezpay.transaction.service.TransactionStatusService;
 
@@ -24,6 +30,15 @@ public class TransactionStatusServiceTest {
     static TransactionRepository transactionRepositoryObj;
     static TransactionStatusService transactionStatusServiceObj;
     static List<Transaction> transactions;
+ // Create transaction objects for types of transactions being held
+	static Transaction transactionObj1 = new UPITransaction(1, "UPI", 800.00, LocalDate.now(), "Success","user22","receiever");
+    
+	static Transaction transactionObj2 = new BankTransferTransaction(2, "Bank Transfer", 100.0, LocalDate.now(), "Failed", "Account1", "Account2", "Transfer_ID_789");
+    
+	static Transaction transactionObj3 = new UPITransaction(3, "UPI", 1600.00, LocalDate.now(), "Failed","user32","sender");
+    
+	static Transaction transactionObj4 = new BankTransferTransaction(4, "Bank Transfer", 200.0, LocalDate.now(), "Success", "Account2", "Account1", "Transfer_ID_799");
+    
 
     /**
      * Setup method to initialize resources before running the test cases.
@@ -34,7 +49,13 @@ public class TransactionStatusServiceTest {
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
         transactionRepositoryObj = new TransactionRepository();
+        
         transactionStatusServiceObj = new TransactionStatusService(transactionRepositoryObj);
+        transactionRepositoryObj.reviewTransaction(transactionObj1);
+        transactionRepositoryObj.reviewTransaction(transactionObj2);
+        transactionRepositoryObj.reviewTransaction(transactionObj3);
+        transactionRepositoryObj.reviewTransaction(transactionObj4);
+
     }
 
     /**
@@ -45,6 +66,7 @@ public class TransactionStatusServiceTest {
      */
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
+    	transactionRepositoryObj.resetDatabase();
         transactionRepositoryObj = null;
     }
 
@@ -56,6 +78,7 @@ public class TransactionStatusServiceTest {
      */
     @Before
     public void setUp() throws Exception {
+    	
     }
 
     /**
@@ -84,20 +107,22 @@ public class TransactionStatusServiceTest {
      */
     @Test
     public void testgetByTransactionIdService_ValidId() {
+    	
+        
         // Fetch transaction details for a valid transaction ID
-        Transaction transaction = transactionStatusServiceObj.getByTransactionIdService(2);
+    	Transaction transaction = transactionStatusServiceObj.getByTransactionIdService(1);
 
         // Ensure the transaction details are not null
-        assertNotNull("Transaction not found for ID 2", transaction);
+        assertNotNull("Transaction not found for ID 1", transaction);
 
         // Validate that the transaction ID matches the expected value
-        assertEquals("Transaction ID does not match", 2, transaction.getTransactionId());
+        assertEquals("Transaction ID does not match", 1, transaction.getTransactionId());
 
         // Validate that the amount matches the expected value
-        assertEquals("Amount does not match", 1500L, transaction.getAmount(), 0.0);
+        assertEquals("Amount does not match", 800.0, transaction.getAmount(), 0.0);
 
         // Validate that the status matches the expected value
-        assertEquals("Status does not match", "Failed", transaction.getStatus());
+        assertEquals("Status does not match", "Success", transaction.getStatus());
     }
 
     /**
@@ -119,9 +144,11 @@ public class TransactionStatusServiceTest {
      */
     @Test
     public void testDisplayAllTransactionsService() {
-        // Fetch all transactions
+        
+        
+     // Fetch all transactions
         List<Transaction> allTransactions = transactionStatusServiceObj.getTransactionHistoryService();
-
+        
         // Ensure the list of transactions is not null
         assertNotNull("Transaction list is null", allTransactions);
 
@@ -134,8 +161,13 @@ public class TransactionStatusServiceTest {
         // Validate the details of the first transaction
         Transaction firstTransaction = allTransactions.get(0);
         assertEquals("First transaction ID does not match", 1, firstTransaction.getTransactionId());
-        assertEquals("First transaction amount does not match", 1500L, firstTransaction.getAmount(), 0.0);
+        assertEquals("First transaction amount does not match", 800, firstTransaction.getAmount(), 0.0);
         assertEquals("First transaction status does not match", "Success", firstTransaction.getStatus());
+     // Validate the details of the second transaction
+        Transaction secondTransaction = allTransactions.get(1);
+        assertEquals("First transaction ID does not match", 2, secondTransaction.getTransactionId());
+        assertEquals("First transaction amount does not match", 100, secondTransaction.getAmount(), 0.0);
+        assertEquals("First transaction status does not match", "Failed", secondTransaction.getStatus());
     }
 
     /**
@@ -144,6 +176,7 @@ public class TransactionStatusServiceTest {
      */
     @Test
     public void testDisplayStatusService_ValidId() {
+        
         // Fetch the status of a valid transaction ID
         String status = transactionStatusServiceObj.getTransactionStatusService(1);
 

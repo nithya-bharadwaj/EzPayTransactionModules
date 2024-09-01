@@ -34,6 +34,8 @@ public class TransactionRepository {
     // List to hold transaction details
     List<Transaction> transactionHistory = new ArrayList<>();
     Connection connection = DBConnection.getConnection();
+    
+    
   
 
     /**
@@ -231,7 +233,7 @@ public class TransactionRepository {
         if (connection == null) {
             return "Database not connected";
         }
-
+        int id = transaction.getTransactionId();
         String type = transaction.getType();
         String status = transaction.getStatus();
         double amount = transaction.getAmount();
@@ -243,16 +245,17 @@ public class TransactionRepository {
                 UPITransaction upi = (UPITransaction) transaction;
                 String sender = upi.getUpi_Id();
                 String receiver = upi.getUserId();
-                insertQuery = "INSERT INTO TRANSACTIONS(TYPE, AMOUNT, TRANSACTION_DATE, STATUS, SENDER_ID, RECEIVER_ID) VALUES (?, ?, ?, ?, ?, ?)";
+                insertQuery = "INSERT INTO TRANSACTIONS(ID,TYPE, AMOUNT, TRANSACTION_DATE, STATUS, SENDER_ID, RECEIVER_ID) VALUES (?,?, ?, ?, ?, ?, ?)";
 
                 // Create and execute the PreparedStatement
                 try (PreparedStatement statement = connection.prepareStatement(insertQuery)) {
-                    statement.setString(1, type);
-                    statement.setDouble(2, amount);
-                    statement.setDate(3, date);
-                    statement.setString(4, status);
-                    statement.setString(5, sender);
-                    statement.setString(6, receiver);
+                	statement.setInt(1, id);                    
+                	statement.setString(2, type);
+                    statement.setDouble(3, amount);
+                    statement.setDate(4, date);
+                    statement.setString(5, status);
+                    statement.setString(6, sender);
+                    statement.setString(7, receiver);
 
                     int rowsInserted = statement.executeUpdate();
                     if (rowsInserted > 0) {
@@ -264,17 +267,18 @@ public class TransactionRepository {
                 String sender = bank.getSenderAccount();
                 String receiver = bank.getReceiverAccount();
                 String transferId = bank.getTransferId();
-                insertQuery = "INSERT INTO TRANSACTIONS(TYPE, AMOUNT, TRANSACTION_DATE, STATUS, SENDER_ID, RECEIVER_ID, BANKTRANSFER_ID) VALUES (?, ?, ?, ?, ?, ?, ?)";
+                insertQuery = "INSERT INTO TRANSACTIONS(ID,TYPE, AMOUNT, TRANSACTION_DATE, STATUS, SENDER_ID, RECEIVER_ID, BANKTRANSFER_ID) VALUES (?,?, ?, ?, ?, ?, ?, ?)";
 
                 // Create and execute the PreparedStatement
                 try (PreparedStatement statement = connection.prepareStatement(insertQuery)) {
-                    statement.setString(1, type);
-                    statement.setDouble(2, amount);
-                    statement.setDate(3, date);
-                    statement.setString(4, status);
-                    statement.setString(5, sender);
-                    statement.setString(6, receiver);
-                    statement.setString(7, transferId);
+                	statement.setInt(1, id);
+                   statement.setString(2, type);
+                    statement.setDouble(3, amount);
+                    statement.setDate(4, date);
+                    statement.setString(5, status);
+                    statement.setString(6, sender);
+                    statement.setString(7, receiver);
+                    statement.setString(8, transferId);
 
                     int rowsInserted = statement.executeUpdate();
                     if (rowsInserted > 0) {
@@ -326,7 +330,7 @@ public class TransactionRepository {
      */
     
     public void closeConnection() {
-    	try {
+    	try { 
     	connection.close();
     	}
     	catch(Exception e) {
@@ -442,7 +446,7 @@ public class TransactionRepository {
      * @return the status of the transaction, or `null` if there is a database error or if the transaction is not found
      */
     public String getTransactionStatus(int transactionId) {
-        String status = null; // Initialize the status variable to null
+        String status = "Transaction not found against this Transaction Id"; // Initialize the status variable to null
         String query = "SELECT STATUS FROM TRANSACTIONS WHERE ID = ?"; // SQL query to fetch transaction status by ID
         
         try (PreparedStatement statement = connection.prepareStatement(query)) {
@@ -461,4 +465,19 @@ public class TransactionRepository {
         
         return status; // Return the transaction status, or null if not found
     }
+    public void resetDatabase() {
+        try {
+            // Delete all existing entries in the Transactions table
+            String deleteQuery = "DELETE FROM Transactions where id > 0";
+            try (PreparedStatement deleteStmt = connection.prepareStatement(deleteQuery)) {
+                deleteStmt.executeUpdate();
+            }
+
+          
+
+        } catch (SQLException e) {
+            System.out.println("DB ERROR: " + e.getMessage());
+        }
+    }
+  
 }
