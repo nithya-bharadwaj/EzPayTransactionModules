@@ -1,3 +1,7 @@
+/**
+ * Author: Shivaji Reddy Suram
+ * Date: 30/08/2024
+ */
 package com.ezpay.exception;
 
 
