@@ -2,12 +2,13 @@
  * Author: Shivaji Reddy Suram
  * Date: 30/08/2024
  */
-package com.ezpay.controller;
+package com.example.demo.controller;
 
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,22 +16,22 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ezpay.exception.TransactionNotFoundException;
-import com.ezpay.model.Transaction;
-import com.ezpay.service.TransactionStatusService;
+import com.example.demo.exception.TransactionNotFoundException;
+import com.example.demo.model.Transaction;
+import com.example.demo.service.TransactionService;
 
 /**
  * Controller class for handling transaction-related requests.
  * Provides endpoints to add transactions, fetch transaction history,
  * retrieve transaction by ID, and track transaction status.
  */
-
+@CrossOrigin
 @RestController
 @RequestMapping("api/TransactionStatus")
 public class TransactionStatusController {
 	
 	@Autowired
-	TransactionStatusService transactionService;
+	TransactionService transactionService;
 
 	/**
 	 * Adds a new transaction.
@@ -67,8 +68,11 @@ public class TransactionStatusController {
 	 * @return A ResponseEntity containing the transaction if found, or NOT_FOUND if not.
 	 */
 	@GetMapping("/{transactionId}")
-    public Optional<Transaction> getTransactionById(@PathVariable int transactionId) throws Exception{
-        	Optional<Transaction> transaction= transactionService.getTransactionById(transactionId);
+    public Optional<Transaction> getTransactionById(@PathVariable String transactionId) throws Exception{
+			if (!isValidInteger(transactionId)) {
+            throw new TransactionNotFoundException("Invalid transaction ID format: " + transactionId);
+			}
+        	Optional<Transaction> transaction= transactionService.getTransactionById(Integer.parseInt(transactionId));
         	if (transaction.isEmpty()) {
                 throw new TransactionNotFoundException("Transaction with ID " + transactionId + " not found.");
             }
@@ -83,15 +87,29 @@ public class TransactionStatusController {
 	 * @throws Exception 
 	 */
 	@GetMapping("/status/{transactionId}")
-    public String getTransactionStatus(@PathVariable int transactionId) throws Exception {
-	
-		String status = transactionService.trackTransactionStatus(transactionId);
+    public String getTransactionStatus(@PathVariable String transactionId) throws Exception {
+		if (!isValidInteger(transactionId)) {
+            throw new TransactionNotFoundException("Invalid transaction ID format: " + transactionId);
+			}
+		String status = transactionService.trackTransactionStatus(Integer.parseInt(transactionId));
         if (status == null) {
             throw new TransactionNotFoundException("Transaction with ID " + transactionId + " not found.");
         }
         return status;
     }
 	
+	
+	/**
+	 * checks the validity of the transaction ID.
+	 */
+	private boolean isValidInteger(String transactionId) {
+        try {
+            Integer.parseInt(transactionId);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
 	
 //	@GetMapping("/history1")
 //    public Page<Transaction> getTransactionHistoryUsingPaging(@RequestParam(defaultValue="0") Integer pageNo, @RequestParam(defaultValue="1") Integer pageSize, @RequestParam(defaultValue="transactionId") String sortBy){
@@ -103,3 +121,4 @@ public class TransactionStatusController {
 //	    return transactionrepository.findAll(pageable);
 //	}
 }
+
