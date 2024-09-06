@@ -1,4 +1,7 @@
-package com.ezpay.model;
+/**
+ * Author:  Harshdeep Chhabra
+ * Date: 02/09/2024**/
+package com.ezpay.entity;
 
 /**
  * Represents the response containing transaction details.

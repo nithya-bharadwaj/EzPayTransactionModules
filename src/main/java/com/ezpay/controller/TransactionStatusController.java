@@ -2,7 +2,7 @@
  * Author: Shivaji Reddy Suram
  * Date: 30/08/2024
  */
-package com.example.demo.controller;
+package com.ezpay.controller;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,22 +16,22 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.exception.TransactionNotFoundException;
-import com.example.demo.model.Transaction;
-import com.example.demo.service.TransactionService;
+import com.ezpay.entity.Transaction;
+import com.ezpay.exception.TransactionNotFoundException;
+import com.ezpay.service.TransactionStatusService;
 
 /**
  * Controller class for handling transaction-related requests.
  * Provides endpoints to add transactions, fetch transaction history,
  * retrieve transaction by ID, and track transaction status.
  */
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("api/TransactionStatus")
 public class TransactionStatusController {
 	
 	@Autowired
-	TransactionService transactionService;
+	TransactionStatusService transactionService;
 
 	/**
 	 * Adds a new transaction.

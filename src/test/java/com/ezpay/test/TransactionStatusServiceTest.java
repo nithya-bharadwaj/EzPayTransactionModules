@@ -7,9 +7,9 @@ package com.ezpay.test;
  * This class uses Mockito to mock dependencies and verify interactions with the TransactionRepository.
  */
 
-import com.ezpay.model.UPITransaction; // Import UPITransaction model class
-import com.ezpay.model.BankTransferTransaction; // Import BankTransferTransaction model class
-import com.ezpay.model.Transaction; // Import Transaction base class
+import com.ezpay.entity.BankTransferTransaction;
+import com.ezpay.entity.Transaction;
+import com.ezpay.entity.UPITransaction;
 import com.ezpay.repository.TransactionStatusRepository; // Import TransactionRepository interface
 import com.ezpay.service.TransactionStatusService; // Import TransactionService class
 

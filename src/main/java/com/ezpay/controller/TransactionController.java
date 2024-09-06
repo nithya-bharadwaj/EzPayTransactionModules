@@ -1,3 +1,7 @@
+/**
+ * Author:  Harshdeep Chhabra
+ * Date: 02/09/2024
+ * **/
 package com.ezpay.controller;
 
 import java.time.LocalDate;
@@ -6,6 +10,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,15 +19,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ezpay.model.BankTransferTransaction;
-import com.ezpay.model.Transaction;
-import com.ezpay.model.TransactionDetailsResponse;
-import com.ezpay.model.UPITransaction;
+import com.ezpay.entity.BankTransferTransaction;
+import com.ezpay.entity.Transaction;
+import com.ezpay.entity.TransactionDetailsResponse;
+import com.ezpay.entity.UPITransaction;
 import com.ezpay.service.TransactionService;
 
 /**
  * Controller for managing transactions.
  */
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/transactions")
 public class TransactionController {
@@ -97,10 +103,10 @@ public class TransactionController {
         
         if (transaction instanceof UPITransaction) {
         	System.out.println("Running UPI type");
-            transaction.setType("UPI");
+            transaction.setTransactionType("UPI");
         } else if (transaction instanceof BankTransferTransaction) {
         	System.out.println("Running Bank Transfer type");
-            transaction.setType("Bank Transfer");
+            transaction.setTransactionType("Bank Transfer");
         }
         String statusMessage = transactionService.reviewTransaction(transaction);
         return new ResponseEntity<>(statusMessage, HttpStatus.OK);

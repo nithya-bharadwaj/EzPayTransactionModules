@@ -3,9 +3,9 @@
  * Date: 09/08/2024
  * 
  * Represents a transaction in the system. This class contains details about a transaction,
- * including its ID, type, amount, date, status, sender, and receiver.
+ * including its ID, transactionType, amount, date, status, sender, and receiver.
  */
-package com.ezpay.model;
+package com.ezpay.entity;
 
 import java.time.LocalDate;
 
@@ -24,13 +24,13 @@ import jakarta.persistence.Table;
 /**
  * Transaction model class.
  * 
- * This class includes information about a transaction, such as its ID, type, amount,
+ * This class includes information about a transaction, such as its ID, transactionType, amount,
  * date, status, sender, and receiver. It provides getters and setters for each of these fields.
  */
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "transaction")
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "transactionType")
 @JsonSubTypes({
     @JsonSubTypes.Type(value = UPITransaction.class, name = "UPI"),
     @JsonSubTypes.Type(value = BankTransferTransaction.class, name = "Bank Transfer")
@@ -42,8 +42,8 @@ public class Transaction {
     @Column(name = "transaction_id")
     private int transactionId;  // Unique identifier for the transaction
 
-    @Column(name = "type")
-    private String type;        // Type of transaction (e.g., "UPI", "Bank Transfer")
+    @Column(name = "transactionType")
+    private String transactionType;        // Type of transaction (e.g., "UPI", "Bank Transfer")
 
     @Column(name = "amount")
     private double amount;      // Amount of money involved in the transaction
@@ -69,14 +69,14 @@ public class Transaction {
      * Parameterized constructor to initialize a Transaction object.
      * 
      * @param transactionId The unique identifier for the transaction
-     * @param type The type of transaction
+     * @param transactionType The transactionType of transaction
      * @param amount The amount of money involved
      * @param date The date of the transaction
      * @param status The status of the transaction
      */
     public Transaction(int transactionId, String type, double amount, LocalDate date, String status) {
         this.transactionId = transactionId;
-        this.type = type;
+        this.transactionType = type;
         this.amount = amount;
         this.date = date;
         this.status = status;
@@ -85,13 +85,13 @@ public class Transaction {
     /**
      * Parameterized constructor without transactionId.
      * 
-     * @param type The type of transaction
+     * @param transactionType The transactionType of transaction
      * @param amount The amount of money involved
      * @param date The date of the transaction
      * @param status The status of the transaction
      */
     public Transaction(String type, double amount, LocalDate date, String status) {
-        this.type = type;
+        this.transactionType = type;
         this.amount = amount;
         this.date = date;
         this.status = status;
@@ -116,19 +116,19 @@ public class Transaction {
     }
 
     /**
-     * Gets the type of the transaction.
-     * @return The type of transaction
+     * Gets the transactionType of the transaction.
+     * @return The transactionType of transaction
      */
-    public String getType() {
-        return type;
+    public String getTransactionType() {
+        return transactionType;
     }
 
     /**
-     * Sets the type of the transaction.
-     * @param type The type of transaction to set
+     * Sets the transactionType of the transaction.
+     * @param transactionType The transactionType of transaction to set
      */
-    public void setType(String type) {
-        this.type = type;
+    public void setTransactionType(String type) {
+        this.transactionType = type;
     }
 
     /**

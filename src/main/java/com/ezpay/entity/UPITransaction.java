@@ -1,11 +1,11 @@
 /**
  * Author: Harshdeep Chhabra
- * Date: 09/08/2024
+ * Date: 02/09/2024
  * 
  * This class represents a UPI transaction in the transaction management system.
  * It extends the base Transaction class and adds specific attributes for UPI transaction details.
  */
-package com.ezpay.model;
+package com.ezpay.entity;
 
 import java.time.LocalDate;
 

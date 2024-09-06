@@ -1,21 +1,14 @@
+/**
+ * Author:  Preethi 
+ * Date: 03/09/2024
+ * **/
 package com.ezpay.test;
 
-/**
- * Author: Preethi R
- * Date: 04/09/2024
- * 
- * Unit test cases for the TransactionService class.
- * This class uses Mockito to mock dependencies and verify interactions with the TransactionRepository 
- * It tests the business logic layer for Transaction Module
- * It tests various methods including retrieving, filtering, and reviewing transactions,
- * including verifying save operations and exception handling.
- */
-
-import com.ezpay.model.TransactionDetailsResponse;
 import com.ezpay.service.TransactionService;
-import com.ezpay.model.UPITransaction;
-import com.ezpay.model.BankTransferTransaction;
-import com.ezpay.model.Transaction; 
+import com.ezpay.entity.BankTransferTransaction;
+import com.ezpay.entity.Transaction;
+import com.ezpay.entity.TransactionDetailsResponse;
+import com.ezpay.entity.UPITransaction;
 import com.ezpay.repository.TransactionRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -59,7 +52,7 @@ public class TransactionServiceTest {
         // Create and initialize sample UPITransaction
         upiTransaction = new UPITransaction();
         upiTransaction.setTransactionId(1);
-        upiTransaction.setType("UPI");
+        upiTransaction.setTransactionType("UPI");
         upiTransaction.setAmount(1000.0);
         upiTransaction.setDate(LocalDate.now().minusDays(2)); // Use LocalDate minus 2 days for sample data
         upiTransaction.setStatus("Failure");
@@ -69,7 +62,7 @@ public class TransactionServiceTest {
         // Create and initialize sample BankTransferTransaction
         bankTransferTransaction = new BankTransferTransaction();
         bankTransferTransaction.setTransactionId(2);
-        bankTransferTransaction.setType("Bank Transfer");
+        bankTransferTransaction.setTransactionType("Bank Transfer");
         bankTransferTransaction.setAmount(100000.0);
         bankTransferTransaction.setDate(LocalDate.now().minusDays(10)); // Use LocalDate minus 10 days for sample data
         bankTransferTransaction.setStatus("Success");
@@ -177,10 +170,10 @@ public class TransactionServiceTest {
     @ValueSource(strings = {"UPI", "Bank Transfer"})
     public void testFilterByType(String type) {
         // Mock the repository behavior for "UPI" type
-        when(transactionRepository.findByType("UPI")).thenReturn(Arrays.asList(upiTransaction));
+        when(transactionRepository.findByTransactionType("UPI")).thenReturn(Arrays.asList(upiTransaction));
 
         // Mock the repository behavior for "Bank Transfer" type
-        when(transactionRepository.findByType("Bank Transfer")).thenReturn(Arrays.asList(bankTransferTransaction));
+        when(transactionRepository.findByTransactionType("Bank Transfer")).thenReturn(Arrays.asList(bankTransferTransaction));
 
         // Call the service method to get transactions of the current type
         List<Transaction> transactions = transactionService.filterByType(type);
@@ -199,9 +192,9 @@ public class TransactionServiceTest {
 
         // Verify that 'findByType' was called in the expected order
         if ("UPI".equals(type)) {
-            inOrder.verify(transactionRepository).findByType("UPI");
+            inOrder.verify(transactionRepository).findByTransactionType("UPI");
         } else if ("Bank Transfer".equals(type)) {
-            inOrder.verify(transactionRepository).findByType("Bank Transfer");
+            inOrder.verify(transactionRepository).findByTransactionType("Bank Transfer");
         }
 
         // Ensure no other interactions with the repository occurred
@@ -218,7 +211,7 @@ public class TransactionServiceTest {
         TransactionService spyService = spy(transactionService);
 
         // Mock the repository method to return a list of transactions based on the type
-        when(transactionRepository.findByType("UPI")).thenReturn(Arrays.asList(upiTransaction, bankTransferTransaction));
+        when(transactionRepository.findByTransactionType("UPI")).thenReturn(Arrays.asList(upiTransaction, bankTransferTransaction));
 
         // Call the service method with a valid type
         String type = "UPI";
@@ -228,7 +221,7 @@ public class TransactionServiceTest {
         assertFalse(transactions.isEmpty()); // Ensure the list is not empty
 
         // Verify repository interaction
-        verify(transactionRepository, atLeast(1)).findByType(type); // Verify findByType was called at least once
+        verify(transactionRepository, atLeast(1)).findByTransactionType(type); // Verify findByType was called at least once
         verifyNoMoreInteractions(transactionRepository); // Ensure no other interactions occurred
 
         // Testing invalid input and ensuring the service method throws an exception if validation fails
@@ -294,7 +287,7 @@ public class TransactionServiceTest {
         // Create a sample transaction
         Transaction transaction = new UPITransaction();
         transaction.setTransactionId(1);
-        transaction.setType("UPI");
+        transaction.setTransactionType("UPI");
         transaction.setAmount(500.0);
         transaction.setDate(LocalDate.now());
         transaction.setStatus("Pending");

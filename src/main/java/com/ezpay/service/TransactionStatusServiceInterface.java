@@ -11,8 +11,7 @@ import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 
-//import com.example.demo.entity1.Transaction;
-import com.ezpay.model.Transaction;
+import com.ezpay.entity.Transaction;
 
 /**
  * Interface defining the contract for transaction-related operations.

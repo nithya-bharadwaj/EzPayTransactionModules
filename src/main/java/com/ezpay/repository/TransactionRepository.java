@@ -1,3 +1,6 @@
+/**
+ * Author:  Harshdeep Chhabra
+ * Date: 01/09/2024**/
 package com.ezpay.repository;
 
 import java.time.LocalDate;
@@ -8,7 +11,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.ezpay.model.Transaction;
+import com.ezpay.entity.Transaction;
 
 @Repository
 public interface TransactionRepository extends JpaRepository<Transaction,Integer> {
@@ -27,7 +30,7 @@ public interface TransactionRepository extends JpaRepository<Transaction,Integer
      * @param type Transaction type
      * @return List of transactions of the specified type
      */
-    List<Transaction> findByType(String type);
+    List<Transaction> findByTransactionType(String type);
 
     /**
      * Find transactions by status.

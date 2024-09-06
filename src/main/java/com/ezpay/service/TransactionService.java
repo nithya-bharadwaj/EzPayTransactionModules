@@ -1,3 +1,7 @@
+/**
+ * Author:  Harshdeep Chhabra
+ * Date: 01/09/2024
+ * **/
 package com.ezpay.service;
 
 import java.time.LocalDate;
@@ -7,10 +11,10 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ezpay.model.BankTransferTransaction;
-import com.ezpay.model.Transaction;
-import com.ezpay.model.TransactionDetailsResponse;
-import com.ezpay.model.UPITransaction;
+import com.ezpay.entity.BankTransferTransaction;
+import com.ezpay.entity.Transaction;
+import com.ezpay.entity.TransactionDetailsResponse;
+import com.ezpay.entity.UPITransaction;
 import com.ezpay.repository.TransactionRepository;
 
 /**
@@ -63,7 +67,7 @@ public class TransactionService {
      */
     public List<Transaction> filterByType(String type) {
         validateTransactionType(type);
-        return transactionRepository.findByType(type);
+        return transactionRepository.findByTransactionType(type);
     }
 
     /**
@@ -109,16 +113,16 @@ public class TransactionService {
         TransactionDetailsResponse response = new TransactionDetailsResponse();
 
         response.setTransactionId(String.valueOf(transaction.getTransactionId()));
-        response.setType(transaction.getType());
+        response.setType(transaction.getTransactionType());
         response.setDate(transaction.getDate().toString());
         response.setStatus(transaction.getStatus());
         response.setAmount(transaction.getAmount());
 
-        if (transaction.getType().equalsIgnoreCase("UPI") && transaction instanceof UPITransaction) {
+        if (transaction.getTransactionType().equalsIgnoreCase("UPI") && transaction instanceof UPITransaction) {
             UPITransaction upiTransaction = (UPITransaction) transaction;
             response.setUpiId(upiTransaction.getUpiId()); // Set UPI ID
             response.setUserId(upiTransaction.getUserId());
-        } else if (transaction.getType().equalsIgnoreCase("Bank Transfer") && transaction instanceof BankTransferTransaction) {
+        } else if (transaction.getTransactionType().equalsIgnoreCase("Bank Transfer") && transaction instanceof BankTransferTransaction) {
             BankTransferTransaction bankTransferTransaction = (BankTransferTransaction) transaction;
             response.setSender(bankTransferTransaction.getSenderAccount());
             response.setReceiver(bankTransferTransaction.getReceiverAccount());

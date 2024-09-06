@@ -1,11 +1,11 @@
 /**
  * Author:  Harshdeep Chhabra
- * Date: 09/08/2024
+ * Date: 02/09/2024
  * 
  * This class represents a bank transfer transaction in the transaction management system.
  * It extends the base Transaction class and adds specific attributes for bank transfer details.
  */
-package com.ezpay.model;
+package com.ezpay.entity;
 
 import java.time.LocalDate;
 import jakarta.persistence.Entity;

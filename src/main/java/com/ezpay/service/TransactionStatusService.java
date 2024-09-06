@@ -11,8 +11,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-//import com.example.demo.entity1.Transaction;
-import com.ezpay.model.Transaction;
+
+import com.ezpay.entity.Transaction;
 import com.ezpay.repository.TransactionStatusRepository;
 
 import java.util.List;
