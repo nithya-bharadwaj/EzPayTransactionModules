@@ -41,27 +41,27 @@ h1 {
 }
 
 /* Styling for the table */
-table {
-  width: 100%;
-  margin-bottom: 40px;
-  border-collapse: collapse;
-  background-color: red;
+.custom-table {
+  background-color: red; /* Light grey background */
 }
 
-table thead th {
-  background-color: #007bff;
-  color: white;
-  padding: 10px;
+.custom-table thead {
+  background-color: #333; /* Dark background for the header */
+  color: white; /* White text for the header */
 }
 
-table tbody td {
-  padding: 10px;
-  text-align: center;
+.custom-table tbody tr {
+  background-color: #fff; /* White background for rows */
 }
 
-table tbody tr:hover {
-  background-color: #f1f1f1;
+.custom-table tbody tr:nth-child(even) {
+  background-color: #f2f2f2; /* Alternating row color */
 }
+
+.table{
+  background-color:red;
+}
+
 
 button {
   background-color: #007bff;

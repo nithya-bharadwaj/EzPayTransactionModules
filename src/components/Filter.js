@@ -1,17 +1,18 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Table from 'react-bootstrap/Table';
-import { transactionList, filterTransactionsByDateRange, filterTransactionsByStatus, filterTransactionsByType } from '../data/Transactions';
+import { getTransactionHistory, filterTransactionsByType, filterTransactionsByStatus, filterTransactionsByDateRange, getTransactionById } from '../data/Transactions';
 import { useNavigate } from 'react-router-dom';
 import NavBar from './NavBar';
-import '../Filter.css'
+import '../Filter.css';
 
 const Filter = () => {
-	const [transactions, setTransactions] = useState(transactionList);
+	const [transactions, setTransactions] = useState([]);
 	const [filterType, setFilterType] = useState('');
 	const [filterStatus, setFilterStatus] = useState('');
 	const [startDate, setStartDate] = useState('');
 	const [endDate, setEndDate] = useState('');
 	const [transactionId, setTransactionId] = useState(''); // State for transaction ID
+	const [loading, setLoading] = useState(true); // Loading state
 
 	const navigate = useNavigate();
 
@@ -20,24 +21,36 @@ const Filter = () => {
 		navigate(`review/${id}`);
 	}
 
-	console.log("From Filter component: ",transactions);
-	// Filter transactions whenever the filters change
 	useEffect(() => {
-		let filteredTransactions = transactionList;
+		const fetchTransactions = async () => {
+			setLoading(true);
+			try {
+				let fetchedTransactions = [];
 
-		if (transactionId) {
-			filteredTransactions = transactionList.filter((transaction) => transaction.id.toString() === transactionId);
-		} else if (filterStatus) {
-			filteredTransactions = filterTransactionsByStatus(filterStatus);
-		} else if (filterType) {
-			filteredTransactions = filterTransactionsByType(filterType);
-		} else if (startDate && endDate) {
-			filteredTransactions = filterTransactionsByDateRange(new Date(startDate), new Date(endDate));
-		}
+				if (transactionId) {
+					fetchedTransactions = [await getTransactionById(transactionId)];
+				} else if (filterType) {
+					fetchedTransactions = await filterTransactionsByType(filterType);
+				} else if (filterStatus) {
+					fetchedTransactions = await filterTransactionsByStatus(filterStatus);
+				} else if (startDate && endDate) {
+					fetchedTransactions = await filterTransactionsByDateRange(startDate, endDate);
+				} else {
+					fetchedTransactions = await getTransactionHistory();
+				}
 
-		setTransactions(filteredTransactions);
+				setTransactions(fetchedTransactions);
+			} catch (error) {
+				console.error("Error fetching transactions: ", error);
+			} finally {
+				setLoading(false);
+			}
+		};
+
+		fetchTransactions();
 	}, [transactionId, filterType, filterStatus, startDate, endDate]);
 
+	if (loading) return <div>Loading...</div>;
 	// Handle type change and reset other filters
 	const handleTypeChange = (e) => {
 		setFilterType(e.target.value);
@@ -98,7 +111,7 @@ const Filter = () => {
 						<select value={filterType} onChange={handleTypeChange}>
 							<option value="">All</option>
 							<option value="UPI">UPI</option>
-							<option value="BankTransfer">Bank Transfer</option>
+							<option value="Bank Transfer">Bank Transfer</option>
 						</select>
 					</label>
 
@@ -107,7 +120,7 @@ const Filter = () => {
 						<select value={filterStatus} onChange={handleStatusChange}>
 							<option value="">All</option>
 							<option value="Success">Success</option>
-							<option value="Pending">Pending</option>
+							<option value="Processing">Processing</option>
 							<option value="Failure">Failure</option>
 						</select>
 					</label>
@@ -132,7 +145,7 @@ const Filter = () => {
 				</div>
 
 				{/* Transactions Table */}
-				<Table  bordered hover>
+				<Table className="table custom-table" bordered hover>
 					<thead>
 						<tr>
 							<th>Id</th>
@@ -149,12 +162,12 @@ const Filter = () => {
 							<tr key={obj.transactionId}>
 								<td>{obj.transactionId}</td>
 								<td>{obj.date}</td>
-								<td>{obj.type}</td>
+								<td>{obj.transactionType}</td>
 								<td>{obj.receiver}</td>
-								<td>{obj.amount}</td>
+								<td>₹{obj.amount}</td>
 								<td>{obj.status}</td>
 								<td>
-									<button onClick={() => reviewTransaction(obj.id)}>
+									<button onClick={() => reviewTransaction(obj.transactionId)}>
 										Review
 									</button>
 								</td>
