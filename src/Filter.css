@@ -1,74 +1,90 @@
 /* Styles for the page */
+
 .container {
-  max-width: 1200px;
+  max-width: 100%;
   margin: 0 auto;
   padding: 20px;
   background-color: #f9f9f9;
+}
+
+@media (min-width: 768px) {
+  .container {
+    max-width: 1200px;
+  }
 }
 
 /* Centering the heading */
 h1 {
   text-align: center;
   margin-bottom: 30px;
-  font-size: 2.5rem;
+  font-size: 2rem; /* Slightly smaller for responsiveness */
   color: #333;
 }
 
-/* Styling for the filter section */
-.filter {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 30px;
-  padding: 20px;
-  /*background-color: #f8f9fa;*/
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  background-color:#cce7ff;
+@media (min-width: 768px) {
+  h1 {
+    font-size: 2.5rem; /* Larger font size for bigger screens */
+  }
+}
+/* Styling search bar */
+.search-container {
+    display: flex;
+    align-items: center;
 }
 
-/* Styling for the filter dropdowns */
+.search-container input {
+    margin-right: 10px; /* Space between input and button */
+    flex-grow: 1; /* Allow the input to take up remaining space */
+}
+/* Styling for the filter section */
+
+.filter {
+  display: flex;
+  flex-direction: column; /* Stack filters on smaller screens */
+  gap: 10px; /* Add space between the elements */
+  margin-bottom: 30px;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  background-color: #cce7ff;
+}
+
+@media (min-width: 768px) {
+  .filter {
+    flex-direction: row; /* Side by side on larger screens */
+    justify-content: space-between;
+  }
+}
+
+/* Styling for the filter labels and inputs */
 .filter label {
-  margin-right: 15px;
   font-weight: bold;
 }
 
 .filter select,
 .filter input {
-  padding: 5px;
+  padding: 10px;
   border-radius: 5px;
   border: 1px solid #ccc;
-  margin-left: 10px;
+  margin-left: 0; /* Remove the margin for better alignment */
+  width: 100%; /* Full width on smaller screens */
 }
 
-/* Styling for the table */
-.custom-table {
-  background-color: red; /* Light grey background */
-}
-
-.custom-table thead {
-  background-color: #333; /* Dark background for the header */
-  color: white; /* White text for the header */
-}
-
-.custom-table tbody tr {
-  background-color: #fff; /* White background for rows */
-}
-
-.custom-table tbody tr:nth-child(even) {
-  background-color: #f2f2f2; /* Alternating row color */
-}
-
-.table{
-  background-color:red;
+@media (min-width: 768px) {
+  .filter select,
+  .filter input {
+    width: auto; /* Adjust width on larger screens */
+  }
 }
 
 
+
+/* Button styling */
 button {
+  padding: 8px 12px;
   background-color: #007bff;
   color: white;
-  padding: 8px 12px;
   border: none;
-  border-radius: 5px;
   cursor: pointer;
 }
 
@@ -76,22 +92,11 @@ button:hover {
   background-color: #0056b3;
 }
 
-/* Navbar styling */
-nav {
-  background-color: #007bff;
-  padding: 10px;
-  color: white;
-}
 
-nav a {
-  color: white;
-  margin-right: 15px;
-  text-decoration: none;
-}
 
-nav a:hover {
-  text-decoration: underline;
-}
+
+
+
 
 
 /*Filter component styles

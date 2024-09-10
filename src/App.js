@@ -25,7 +25,7 @@ function App() {
   return (
     <main>
       <RouterProvider router={route}></RouterProvider>
-      <a href="https://reactjs.org">learn react</a>
+      
     </main>
   );
 }
