@@ -1,6 +1,6 @@
 /**
  * Author: Nithya Bharadwaj P
- * Date: 2024-09-09
+ * Date: 2024/09/09
  * 
  * Main App component that sets up routing for the application.
  * Uses React Router to handle navigation between different components.
@@ -18,6 +18,8 @@ import {
 
 import Filter from './components/Filter';
 
+
+
 /**
  * The main application component that sets up the routes using React Router.
  * Defines routes and the components to render based on the current URL.
@@ -30,6 +32,7 @@ function App() {
       <Route>
         {/* Route for the Filter component at /transactions */}
         <Route path="/transactions" element={<Filter />} />
+       
       </Route>
     )
   );

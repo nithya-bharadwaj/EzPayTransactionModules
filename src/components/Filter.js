@@ -1,6 +1,6 @@
 /**
  * Author: Nithya Bharadwaj P , Harshdeep Chhabra , Shivaji Reddy
- * Date: 2024-09-09
+ * Date: 2024/09/09
  * 
  * Main component for displaying transaction history with filters.
  * Allows filtering by type, status, date range, or transaction ID.
@@ -62,6 +62,14 @@ const Filter = () => {
 	const fetchTransactions = useCallback(async () => {
 		setLoading(true);
 		setErrorMessage(null); // Reset error message on fetch
+		    const currentDate = new Date().toISOString().split('T')[0]; // Get the current date in yyyy-mm-dd format
+
+    // Check if startDate or endDate is greater than the current date
+    if ((startDate && startDate > currentDate) || (endDate && endDate > currentDate)) {
+        setLoading(false);
+        setErrorMessage('Date cannot be in the future. Please select a valid date range.');
+        return;
+    }
 
 		try {
 			let fetchedTransactions = [];
@@ -77,12 +85,21 @@ const Filter = () => {
 					throw new Error(`No transactions found with ${filterStatus} status `);
 				}
 			} else if (startDate && endDate) {
+				
+				 if(startDate>endDate){
+					throw new Error('Date range is not valid, Start Date can not be more than end Date');
+				}
+				else{
 				fetchedTransactions = await filterTransactionsByDateRange(startDate, endDate);
 				if (!fetchedTransactions || fetchedTransactions.length === 0) {
 					throw new Error(`No transactions found with date ranging from ${startDate} to ${endDate}`);
 				}
+			}
 			} else {
 				fetchedTransactions = await getTransactionHistory();
+				if(fetchedTransactions.length === 0){
+					throw new Error("No Transactions found");
+				}
 			}
 
 			if (!fetchedTransactions || fetchedTransactions.length === 0) {
@@ -152,6 +169,7 @@ const Filter = () => {
 	const handleDateChange = (e, field) => {
 		if (field === 'startDate') setStartDate(e.target.value);
 		else if (field === 'endDate') setEndDate(e.target.value);
+		
 
 		setFilterType('');
 		setFilterStatus('');
@@ -276,7 +294,7 @@ const Filter = () => {
 				)}
 
 				{/* Transactions Table */}
-				<Table className="table custom-table" bordered hover>
+				{!errorMessage &&(<Table className="table custom-table" bordered hover>
 					<thead>
 						<tr>
 							<th>Id</th>
@@ -306,6 +324,7 @@ const Filter = () => {
 						))}
 					</tbody>
 				</Table>
+				)}
 
 				{/* Modal for Transaction Details */}
 				<Modal show={showModal} onHide={handleCloseModal}>
