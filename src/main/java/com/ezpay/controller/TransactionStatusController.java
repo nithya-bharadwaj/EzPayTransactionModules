@@ -27,7 +27,7 @@ import com.ezpay.service.TransactionStatusService;
  */
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
-@RequestMapping("api/TransactionStatus")
+@RequestMapping("transactions")
 public class TransactionStatusController {
 	
 	@Autowired
