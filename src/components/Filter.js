@@ -91,6 +91,7 @@ const Filter = () => {
 			setTransactions(fetchedTransactions);
 		} catch (error) {
 			setErrorMessage(`Error fetching transactions: ${error.message}`);
+			setTransactions([]);
 		} finally {
 			setLoading(false);
 		}
@@ -110,7 +111,8 @@ const Filter = () => {
 				setTransactions([fetchedTransaction]);
 			} catch (error) {
 				setErrorMessage(`Transaction with ID ${transactionId} not found!!`);
-				setTransactionId('');
+				setTransactions([])
+				//setTransactionId('');
 			} finally {
 				setLoading(false);
 			}
@@ -124,6 +126,7 @@ const Filter = () => {
 		setStartDate('');
 		setEndDate('');
 		setTransactionId('');
+		handleCloseError();
 		fetchTransactions();
 	};
 
@@ -291,7 +294,7 @@ const Filter = () => {
 									<td>{obj.transactionId}</td>
 									<td>{new Date(obj.date).toLocaleDateString()}</td>
 									<td>{obj.transactionType}</td>
-									<td>{obj.receiverName}</td>
+									<td>{obj.receiver}</td>
 									<td>{obj.amount}</td>
 									<td style={getStatusStyle(obj.status)}>{obj.status}</td>
 									<td>
