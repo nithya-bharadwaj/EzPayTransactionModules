@@ -1,134 +1,104 @@
-/* Styles for the page */
-
+/* 
+  Author: Nithya Bharadwaj P, Harshdeep Chhabra, Shivaji Reddy
+  Date: 6th Sept 2024 
+*/
+/* Styles for the main container, ensuring full width and central alignment */
 .container {
   max-width: 100%;
   margin: 0 auto;
   padding: 20px;
-  background-color: #f9f9f9;
+  background-color: #f9f9f9; /* Light background color for contrast */
 }
 
+/* Adjust container width for medium and larger screens */
 @media (min-width: 768px) {
   .container {
     max-width: 1200px;
   }
 }
 
-/* Centering the heading */
+/* Centering the main heading for the page */
 h1 {
   text-align: center;
   margin-bottom: 30px;
-  font-size: 2rem; /* Slightly smaller for responsiveness */
-  color: #333;
+  font-size: 2rem; /* Slightly smaller for mobile responsiveness */
+  color: #333; /* Dark color for readability */
 }
 
+/* Larger heading size for bigger screens */
 @media (min-width: 768px) {
   h1 {
-    font-size: 2.5rem; /* Larger font size for bigger screens */
+    font-size: 2.5rem;
   }
 }
-/* Styling search bar */
+
+/* Styling the search bar and container */
 .search-container {
     display: flex;
-    align-items: center;
+    align-items: center; /* Align input and button vertically */
 }
 
+/* Styling the search input and adding space between input and button */
 .search-container input {
-    margin-right: 10px; /* Space between input and button */
-    flex-grow: 1; /* Allow the input to take up remaining space */
+    margin-right: 10px;
+    flex-grow: 1; /* Input expands to take remaining space */
 }
-/* Styling for the filter section */
 
+/* Styling for the filter section with a stacked layout on small screens */
 .filter {
   display: flex;
-  flex-direction: column; /* Stack filters on smaller screens */
-  gap: 10px; /* Add space between the elements */
+  flex-direction: column;
+  gap: 10px; /* Space between filter elements */
   margin-bottom: 30px;
   padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  background-color: #cce7ff;
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Light shadow for depth */
+  background-color: #cce7ff; /* Light blue background for the filter section */
 }
 
+/* Arrange filters side by side on larger screens */
 @media (min-width: 768px) {
   .filter {
-    flex-direction: row; /* Side by side on larger screens */
+    flex-direction: row;
     justify-content: space-between;
   }
 }
 
-/* Styling for the filter labels and inputs */
+/* Styling the labels in the filter section */
 .filter label {
-  font-weight: bold;
+  font-weight: bold; /* Bold for emphasis */
 }
 
+/* Styling filter inputs and dropdowns */
 .filter select,
 .filter input {
   padding: 10px;
   border-radius: 5px;
   border: 1px solid #ccc;
-  margin-left: 0; /* Remove the margin for better alignment */
-  width: 100%; /* Full width on smaller screens */
+  margin-left: 0; /* Remove margin for proper alignment */
+  width: 100%; /* Full width for smaller screens */
 }
 
+/* Adjust filter input width for larger screens */
 @media (min-width: 768px) {
   .filter select,
   .filter input {
-    width: auto; /* Adjust width on larger screens */
+    width: auto; /* Auto-width for larger screens */
   }
 }
 
-
-
-/* Button styling */
+/* Basic button styling */
 button {
   padding: 8px 12px;
-  background-color: #007bff;
+  background-color: #007bff; /* Primary blue background */
   color: white;
   border: none;
   cursor: pointer;
 }
 
+/* Button hover effect */
 button:hover {
-  background-color: #0056b3;
+  background-color: #0056b3; /* Darker blue on hover */
 }
 
 
-
-
-
-
-
-
-/*Filter component styles
-.filter {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	padding: 10px;
-	background-color: #f2f2f2;
-	border-radius: 5px;
-}
-
-.filter label {
-	font-weight: bold;
-	margin-right: 10px;
-}
-
-.filter select {
-	padding: 5px;
-	border: 1px solid #ccc;
-	border-radius: 3px;
-}
-
-.filter button {
-	padding: 8px 16px;
-	background-color: #007bff;
-	color: #fff;
-	border: none;
-	border-radius: 3px;
-	cursor: pointer;
-}
-
-.filter button:hover {
-	background-color: #0056b3;
-}*/

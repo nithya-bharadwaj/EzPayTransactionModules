@@ -1,4 +1,13 @@
-import React, { useState, useEffect,useCallback } from 'react';
+/**
+ * Author: Nithya Bharadwaj P , Harshdeep Chhabra , Shivaji Reddy
+ * Date: 2024-09-09
+ * 
+ * Main component for displaying transaction history with filters.
+ * Allows filtering by type, status, date range, or transaction ID.
+ * Provides a modal for detailed review of individual transactions.
+ */
+
+import React, { useState, useEffect, useCallback } from 'react';
 import Table from 'react-bootstrap/Table';
 import { getTransactionHistory, filterTransactionsByType, filterTransactionsByStatus, filterTransactionsByDateRange, getTransactionById } from '../data/Transactions';
 import Button from 'react-bootstrap/Button';
@@ -6,23 +15,39 @@ import Spinner from 'react-bootstrap/Spinner';
 import Modal from 'react-bootstrap/Modal';
 import '../Filter.css';
 
-
 const Filter = () => {
+	// State for storing fetched transactions
 	const [transactions, setTransactions] = useState([]);
+	
+	// State for storing selected type filter
 	const [filterType, setFilterType] = useState('');
+	
+	// State for storing selected status filter
 	const [filterStatus, setFilterStatus] = useState('');
+	
+	// State for storing date range filters
 	const [startDate, setStartDate] = useState('');
 	const [endDate, setEndDate] = useState('');
+	
+	// State for storing search input for transaction ID
 	const [transactionId, setTransactionId] = useState('');
+	
+	// Loading state to indicate data fetching
 	const [loading, setLoading] = useState(true);
+	
+	// State for handling error messages
 	const [errorMessage, setErrorMessage] = useState(null);
+	
+	// State to store selected transaction for detailed view
 	const [selectedTransaction, setSelectedTransaction] = useState(null);
+	
+	// State to control modal visibility
 	const [showModal, setShowModal] = useState(false);
 
+	// Function to close the modal
 	const handleCloseModal = () => setShowModal(false);
 
-
-
+	// Function to fetch transaction by ID and display in modal
 	const reviewTransaction = async (id) => {
 		try {
 			const transaction = await getTransactionById(id);
@@ -33,6 +58,7 @@ const Filter = () => {
 		}
 	};
 
+	// Fetch transactions based on filters or fetch all if no filters
 	const fetchTransactions = useCallback(async () => {
 		setLoading(true);
 		setErrorMessage(null); // Reset error message on fetch
@@ -43,21 +69,22 @@ const Filter = () => {
 			if (filterType) {
 				fetchedTransactions = await filterTransactionsByType(filterType);
 				if (!fetchedTransactions || fetchedTransactions.length === 0) {
-				throw new Error(`No transactions found with the selected ${filterType} type`);
-			}
+					throw new Error(`No transactions found with the selected ${filterType} type`);
+				}
 			} else if (filterStatus) {
 				fetchedTransactions = await filterTransactionsByStatus(filterStatus);
 				if (!fetchedTransactions || fetchedTransactions.length === 0) {
-				throw new Error(`No transactions found with ${filterStatus} status `);
-			}
+					throw new Error(`No transactions found with ${filterStatus} status `);
+				}
 			} else if (startDate && endDate) {
 				fetchedTransactions = await filterTransactionsByDateRange(startDate, endDate);
 				if (!fetchedTransactions || fetchedTransactions.length === 0) {
-				throw new Error(`No transactions found with date ranging from ${startDate} to ${endDate}`);
-			}
+					throw new Error(`No transactions found with date ranging from ${startDate} to ${endDate}`);
+				}
 			} else {
 				fetchedTransactions = await getTransactionHistory();
 			}
+
 			if (!fetchedTransactions || fetchedTransactions.length === 0) {
 				throw new Error("No transactions found");
 			}
@@ -67,12 +94,14 @@ const Filter = () => {
 		} finally {
 			setLoading(false);
 		}
-	}, [filterType, filterStatus, startDate, endDate]); // Add dependencies here
+	}, [filterType, filterStatus, startDate, endDate]);
 
+	// Automatically fetch transactions when filters change
 	useEffect(() => {
 		fetchTransactions();
-	}, [fetchTransactions]); // Use fetchTransactions in dependency array
+	}, [fetchTransactions]);
 
+	// Handle search by transaction ID
 	const handleTransactionIdSubmit = async () => {
 		if (transactionId) {
 			setLoading(true);
@@ -87,15 +116,18 @@ const Filter = () => {
 			}
 		}
 	};
+
+	// Reset filters and fetch all transactions again
 	const handleReset = () => {
 		setFilterType('');
 		setFilterStatus('');
 		setStartDate('');
 		setEndDate('');
 		setTransactionId('');
-		fetchTransactions(); // Fetch all transactions again
+		fetchTransactions();
 	};
 
+	// Handle filter type change
 	const handleTypeChange = (e) => {
 		setFilterType(e.target.value);
 		setFilterStatus('');
@@ -104,6 +136,7 @@ const Filter = () => {
 		setTransactionId('');
 	};
 
+	// Handle filter status change
 	const handleStatusChange = (e) => {
 		setFilterStatus(e.target.value);
 		setFilterType('');
@@ -112,6 +145,7 @@ const Filter = () => {
 		setTransactionId('');
 	};
 
+	// Handle date range change
 	const handleDateChange = (e, field) => {
 		if (field === 'startDate') setStartDate(e.target.value);
 		else if (field === 'endDate') setEndDate(e.target.value);
@@ -121,6 +155,7 @@ const Filter = () => {
 		setTransactionId('');
 	};
 
+	// Handle transaction ID input change
 	const handleTransactionIdChange = (e) => {
 		setTransactionId(e.target.value);
 		setFilterType('');
@@ -129,6 +164,7 @@ const Filter = () => {
 		setEndDate('');
 	};
 
+	// Styling for status based on success, failure, or processing
 	const getStatusStyle = (status) => {
 		switch (status) {
 			case 'Success':
@@ -142,8 +178,9 @@ const Filter = () => {
 		}
 	};
 
+	// Handle error message close button
 	const handleCloseError = () => {
-		setErrorMessage(null); // Clear error message
+		setErrorMessage(null);
 	};
 
 	return (
@@ -202,7 +239,7 @@ const Filter = () => {
 							onChange={(e) => handleDateChange(e, 'endDate')}
 						/>
 					</label>
-					<Button className ="reset-btn" onClick={handleReset}>Reset</Button>
+					<Button className="reset-btn" onClick={handleReset}>Reset</Button>
 					
 				</div>
 
@@ -219,7 +256,7 @@ const Filter = () => {
 					</div>
 				)}
 
-				{/* Loading Button */}
+				{/* Loading Spinner */}
 				{loading && (
 					<div className="text-center">
 						<Button variant="primary" disabled>
@@ -251,59 +288,49 @@ const Filter = () => {
 					<tbody>
 						{transactions.map((obj) => (
 							<tr key={obj.transactionId}>
-								<td>{obj.transactionId}</td>
-								<td>{obj.date}</td>
-								<td>{obj.transactionType}</td>
-								<td>{obj.receiver}</td>
-								<td>₹{obj.amount}</td>
-								<td style={getStatusStyle(obj.status)}>
-									{obj.status}
-								</td>
-								<td>
-									<Button variant="primary" onClick={() => reviewTransaction(obj.transactionId)}>Review</Button>
-								</td>
+									<td>{obj.transactionId}</td>
+									<td>{new Date(obj.date).toLocaleDateString()}</td>
+									<td>{obj.transactionType}</td>
+									<td>{obj.receiverName}</td>
+									<td>{obj.amount}</td>
+									<td style={getStatusStyle(obj.status)}>{obj.status}</td>
+									<td>
+										<Button onClick={() => reviewTransaction(obj.transactionId)}>
+											Review
+										</Button>
+									</td>
 							</tr>
 						))}
 					</tbody>
 				</Table>
-			</div>
 
-			{/* Modal for Transaction Details */}
-			<Modal show={showModal} onHide={handleCloseModal}>
-				<Modal.Header closeButton>
-					<Modal.Title>Transaction Details</Modal.Title>
-				</Modal.Header>
-				<Modal.Body>
-					{selectedTransaction && (
-						<div>
-							<p>Type: {selectedTransaction.transactionType}</p>
-							<p>Date: {selectedTransaction.date}</p>
-							<p>Amount: {selectedTransaction.amount}</p>
-							<p>Status: {selectedTransaction.status}</p>
-							{selectedTransaction.transactionType === 'UPI' && (
-								<>
-									<p>Sender: {selectedTransaction.sender}</p>
-									<p>Receiver: {selectedTransaction.receiver}</p>
-									<p>UPI ID: {selectedTransaction.upiId}</p>
-									<p>User ID: {selectedTransaction.userId}</p>
-								</>
-							)}
-							{selectedTransaction.transactionType === 'Bank Transfer' && (
-								<>
-									<p>Sender: {selectedTransaction.sender}</p>
-									<p>Receiver: {selectedTransaction.receiver}</p>
-									<p>Transfer ID: {selectedTransaction.transferId}</p>
-									<p>Sender Account: {selectedTransaction.senderAccount}</p>
-									<p>Receiver Account: {selectedTransaction.receiverAccount}</p>
-								</>
-							)}
-						</div>
-					)}
-				</Modal.Body>
-				<Modal.Footer>
-					<Button variant="secondary" onClick={handleCloseModal}>Close</Button>
-				</Modal.Footer>
-			</Modal>
+				{/* Modal for Transaction Details */}
+				<Modal show={showModal} onHide={handleCloseModal}>
+					<Modal.Header closeButton>
+						<Modal.Title>Transaction Details</Modal.Title>
+					</Modal.Header>
+					<Modal.Body>
+						{selectedTransaction ? (
+							<div>
+								<p><strong>Transaction ID:</strong> {selectedTransaction.transactionId}</p>
+								<p><strong>Date:</strong> {new Date(selectedTransaction.date).toLocaleDateString()}</p>
+								<p><strong>Transaction Type:</strong> {selectedTransaction.transactionType}</p>
+								<p><strong>Receiver Name:</strong> {selectedTransaction.receiverName}</p>
+								<p><strong>Amount:</strong> {selectedTransaction.amount}</p>
+								<p><strong>Status:</strong> {selectedTransaction.status}</p>
+								{/* Other transaction details can be added here */}
+							</div>
+						) : (
+							<p>No transaction selected</p>
+						)}
+					</Modal.Body>
+					<Modal.Footer>
+						<Button variant="secondary" onClick={handleCloseModal}>
+							Close
+						</Button>
+					</Modal.Footer>
+				</Modal>
+			</div>
 		</>
 	);
 };

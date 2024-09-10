@@ -1,38 +1,59 @@
+/**
+ * Author: Nithya Bharadwaj P , Harshdeep Chhabra, Shivaji Reddy
+ * Date: 2024-09-09
+ * 
+ * Styling for the main App component. This includes layout and animations 
+ * for the app logo, header, and other components in the application.
+ */
+
 .App {
+  /* Center the text within the App container */
   text-align: center;
 }
 
 .App-logo {
+  /* Set the logo size using viewport width and height */
   height: 40vmin;
+  /* Disable pointer events for the logo */
   pointer-events: none;
 }
 
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
+    /* Apply a spinning animation to the logo if the user has no motion preference */
     animation: App-logo-spin infinite 20s linear;
   }
 }
 
 .App-header {
+  /* Set background color and define layout for the header section */
   background-color: #282c34;
+  /* Ensure the header takes up the full height of the viewport */
   min-height: 100vh;
+  /* Use Flexbox to center content vertically and horizontally */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  /* Dynamic font size based on viewport dimensions */
   font-size: calc(10px + 2vmin);
+  /* Set text color to white */
   color: white;
 }
 
 .App-link {
+  /* Set the link color to a blue shade */
   color: #61dafb;
 }
 
 @keyframes App-logo-spin {
+  /* Define keyframes for spinning the logo */
   from {
+    /* Starting rotation at 0 degrees */
     transform: rotate(0deg);
   }
   to {
+    /* Ending rotation at 360 degrees (full spin) */
     transform: rotate(360deg);
   }
 }
