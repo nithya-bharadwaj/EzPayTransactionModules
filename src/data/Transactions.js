@@ -29,7 +29,7 @@ export async function getTransactionHistory() {
  * @throws {Error} If fetching the transaction by ID fails.
  */
 export async function getTransactionById(id) {
-	const response = await fetch(`http://localhost:9090/api/TransactionStatus/${id}`);
+	const response = await fetch(`${base_url}/${id}`);
 	if (response.ok) {
 		return response.json();
 	} else {
