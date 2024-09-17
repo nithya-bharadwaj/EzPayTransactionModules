@@ -62,7 +62,7 @@ const Filter = () => {
 	const fetchTransactions = useCallback(async () => {
 		setLoading(true);
 		setErrorMessage(null); // Reset error message on fetch
-		    const currentDate = new Date().toISOString().split('T')[0]; // Get the current date in yyyy-mm-dd format
+		const currentDate = new Date().toISOString().split('T')[0]; // Get the current date in yyyy-mm-dd format
 
     // Check if startDate or endDate is greater than the current date
     if ((startDate && startDate > currentDate) || (endDate && endDate > currentDate)) {
@@ -128,7 +128,7 @@ const Filter = () => {
 				setTransactions([fetchedTransaction]);
 			} catch (error) {
 				setErrorMessage(`Transaction with ID ${transactionId} not found!!`);
-				setTransactions([])
+				//setTransactions([])
 				//setTransactionId('');
 			} finally {
 				setLoading(false);
@@ -294,7 +294,7 @@ const Filter = () => {
 				)}
 
 				{/* Transactions Table */}
-				{!errorMessage &&(<Table className="table custom-table" bordered hover>
+				{!errorMessage &&(<Table striped className="table custom-table" bordered hover>
 					<thead>
 						<tr>
 							<th>Id</th>

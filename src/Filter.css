@@ -2,15 +2,15 @@
   Author: Nithya Bharadwaj P, Harshdeep Chhabra, Shivaji Reddy
   Date: 2024 /09/06
 */
-/*body{
-  background-color:#F2E7CF;
-}*/
+body{
+  background-color:#faf8f5;
+}
 /* Styles for the main container, ensuring full width and central alignment */
 .container {
   max-width: 100%;
   margin: 0 auto;
   padding: 20px;
-  background-color: #F2E7CF; /* Light background color for contrast */
+  /*background-color: #F2E7CF; Light background color for contrast*/
 }
 
 /* Adjust container width for medium and larger screens */
@@ -56,7 +56,7 @@ h1 {
   padding: 20px;
   border-radius: 8px; /* Rounded corners */
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Light shadow for depth */
-  /*background-color: #F6EFDF; Light blue background for the filter section*/
+  background-color: #F6EFDF; /*Light blue background for the filter section */
 }
 
 /* Arrange filters side by side on larger screens */
@@ -104,19 +104,21 @@ button:hover {
   background-color: #0056b3; /* Darker blue on hover */
 }
 /* Adding styles for table */
-/*.table {
-   --bs-table-bg:#F2E6CE ; /* or --bs-table-bg: transparent; 
+.table {
+   /*--bs-table-bg:#F6EFDF ; or --bs-table-bg: transparent;*/
+   --bs-table-bg:#fffefc;
 }
+
 .table th{
   background-color:#E6CE9E;
 }
 .table tr{
   border-color:black;
 }
-/* Styles for Modal */
-/*.modal-content{
-  background-color:#F7EFDE;
-}*/
+/*Styles for Modal */
+.modal-content{
+  background-color:#f9f7f4;
+}
 
 
 
