@@ -20,6 +20,8 @@ import {
 import Filter from './components/Filter';
 import Home from './Home'; // Import Home component
 import AboutUs from './AboutUs';
+import TransactionHistoryPage from './Pages/TransactionHistoryPage';
+
 
 
 /**
@@ -35,6 +37,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<AboutUs/>} /> Placeholder for About Us
         <Route path="/transactions" element={<Filter />} />
+        <Route path="/transactionCopy" element={<TransactionHistoryPage/>} />
       </Route>
     )
   );
