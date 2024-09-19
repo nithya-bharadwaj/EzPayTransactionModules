@@ -9,6 +9,7 @@
 
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+
 import {
   Route,
   createBrowserRouter,
@@ -17,7 +18,8 @@ import {
 } from "react-router-dom";
 
 import Filter from './components/Filter';
-
+import Home from './Home'; // Import Home component
+import AboutUs from './AboutUs';
 
 
 /**
@@ -30,9 +32,9 @@ function App() {
   const route = createBrowserRouter(
     createRoutesFromElements(
       <Route>
-        {/* Route for the Filter component at /transactions */}
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<AboutUs/>} /> Placeholder for About Us
         <Route path="/transactions" element={<Filter />} />
-       
       </Route>
     )
   );

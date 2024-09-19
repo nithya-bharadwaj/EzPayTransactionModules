@@ -1,0 +1,148 @@
+/* Import Bogaloo Font */
+@import url('https://fonts.googleapis.com/css2?family=Bogaloo&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Glass+Antiqua&display=swap');
+
+
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body and Background */
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(to top, #09203f 0%, #537895 100%);
+    color: #f0f0f0;
+}
+
+/* Home Container */
+.home-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+/* Navbar */
+.navbar {
+    background-color:#00416A; /* Dark gray header */
+    padding: 10px 20px;
+    animation: fadeIn 2s ease-in-out;
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+}
+
+.navbar-brand .logo {
+    width: 70px;
+    margin-right: 10px;
+}
+
+.navbar-title {
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.navbar-nav {
+    display: flex;
+    justify-content: space-between;
+}
+
+.nav-item {
+    margin: 0 10px;
+}
+
+.nav-link {
+    color: #f0f0f0;
+    font-weight: 500;
+    transition: color 0.3s;
+    display: flex;
+    align-items: center;
+    font-size: 1.5rem; /* Increase font size of navbar links */
+}
+
+.nav-link:hover,
+.nav-link.active {
+    color: #99FFFF; /* Highlighted color */
+}
+
+/* Hero Section */
+.hero-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 50px;
+    height: 100%;
+    position: relative;
+}
+
+/* Popup content container */
+.popup-content {
+    background: rgba(255, 255, 255, 0.1); /* Subtle transparent popup */
+    padding: 20px;
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    width: 60%; /* Reduced width for better fit */
+    height: 85%; /* Increased height */
+    color: #f8f9fa; /* Lighter text for contrast */
+}
+
+/* Apply Bogaloo Font to Welcome Message */
+.popup-content h1 {
+    font-size: 5rem; /* Adjust size for fit */
+    font-family: 'Bogaloo', cursive; /* Use Bogaloo font */
+    margin-bottom: 20px;
+    color: #ffffff; /* White for high contrast */
+}
+
+.popup-content .tagline {
+    font-family: 'Dancing Script', cursive;
+    /* font-style: italic; */
+    font-size: 2rem;
+    color: #ffcc00; /* Bright color for contrast */
+    margin-bottom: 15px;
+    padding-left: 100px;
+}
+
+.popup-content .description {
+    font-family: 'Glass Antiqua', serif;
+    /* font-family: 'Poppins', sans-serif; */
+    font-size: 1.3rem; /* Adjust size for fit */
+    line-height: 1.8;
+    color: #e0e0e0; /* Soft color for readability */
+}
+
+.button-group .btn {
+    margin-right: 50px;
+    border: 2px solid #007bff;
+    color: #007bff;
+    padding: 10px 20px;
+    transition: all 0.3s ease;
+}
+.button-group .btn:first-of-type {
+    margin-left: 150px; /* Move the first button to the right */
+}
+
+.button-group .btn:hover {
+    background-color: #007bff;
+    color: white;
+}
+
+/* Right Side Image Section */
+.image-container {
+    width: 40%; /* Adjust width to make the image fit better */
+    height: 100%; /* Control the height */
+    background-image: url('./assets/Home_bg.png'); /* Path to your image */
+    background-position: right;
+    background-size: contain; /* Keep the aspect ratio and contain the image */
+    background-repeat: no-repeat; /* Prevent the image from repeating */
+    background-blend-mode: overlay; /* Blend with the background */
+    opacity: 0.4; /* Increase transparency to make it blend better */
+    border-radius: 10px; /* Add subtle rounded corners */
+}
