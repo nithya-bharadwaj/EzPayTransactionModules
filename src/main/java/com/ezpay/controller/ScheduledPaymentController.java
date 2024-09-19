@@ -10,7 +10,7 @@ import com.ezpay.service.ScheduledPaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.bind.annotation.CrossOrigin;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,7 +18,7 @@ import java.util.Optional;
  * Controller class for handling scheduled payment-related requests.
  * Provides endpoints to add, retrieve, modify, and cancel scheduled payments.
  */
-
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("api/scheduled-payments")
 public class ScheduledPaymentController {
