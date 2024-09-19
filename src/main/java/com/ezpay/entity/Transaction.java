@@ -33,7 +33,8 @@ import jakarta.persistence.Table;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "transactionType")
 @JsonSubTypes({
     @JsonSubTypes.Type(value = UPITransaction.class, name = "UPI"),
-    @JsonSubTypes.Type(value = BankTransferTransaction.class, name = "Bank Transfer")
+    @JsonSubTypes.Type(value = BankTransferTransaction.class, name = "Bank Transfer"),
+    @JsonSubTypes.Type(value = ScheduledPayment.class, name = "Scheduled Payment")
 })
 public class Transaction {
 
