@@ -14,6 +14,8 @@ import TableComponent from '../components/Table';
 import ErrorMessage from '../components/ErrorComponent';
 import FilterComponent from '../components/FilterComponent';
 import SpinnerComponent from '../components/SpinnerComponent';
+import ErrorPage from './ErrorPage';
+
 
 const TransactionHistoryPage = () => {
 	// State for storing fetched transactions
@@ -38,20 +40,16 @@ const TransactionHistoryPage = () => {
 	// State for handling error messages
 	const [errorMessage, setErrorMessage] = useState(null);
 
-
+	const [errorPage, setErrorPage] = useState(null);
 
 	// Fetch transactions based on filters or fetch all if no filters
 	const fetchTransactions = useCallback(async () => {
-		setLoading(true);
-		setErrorMessage(null); // Reset error message on fetch
-		const currentDate = new Date().toISOString().split('T')[0]; // Get the current date in yyyy-mm-dd format
+		if (startDate && !endDate) {
 
-		// Check if startDate or endDate is greater than the current date
-		if ((startDate && startDate > currentDate) || (endDate && endDate > currentDate)) {
-			setLoading(false);
-			setErrorMessage('Date cannot be in the future. Please select a valid date range.');
 			return;
 		}
+		setLoading(true);
+		setErrorMessage(null); // Reset error message on fetch
 
 		try {
 			let fetchedTransactions = [];
@@ -68,15 +66,12 @@ const TransactionHistoryPage = () => {
 				}
 			} else if (startDate && endDate) {
 
-				if (startDate > endDate) {
-					throw new Error('Date range is not valid, Start Date can not be more than end Date');
+
+				fetchedTransactions = await filterTransactionsByDateRange(startDate, endDate);
+				if (!fetchedTransactions || fetchedTransactions.length === 0) {
+					throw new Error(`No transactions found with date ranging from ${startDate} to ${endDate}`);
 				}
-				else {
-					fetchedTransactions = await filterTransactionsByDateRange(startDate, endDate);
-					if (!fetchedTransactions || fetchedTransactions.length === 0) {
-						throw new Error(`No transactions found with date ranging from ${startDate} to ${endDate}`);
-					}
-				}
+
 			} else {
 				fetchedTransactions = await getTransactionHistory();
 				if (fetchedTransactions.length === 0) {
@@ -89,12 +84,26 @@ const TransactionHistoryPage = () => {
 			}
 			setTransactions(fetchedTransactions);
 		} catch (error) {
-			setErrorMessage(`Error fetching transactions: ${error.message}`);
+			if (!navigator.onLine) {
+				setErrorMessage("Network error: Please check your internet connection.");
+			} else if (error.message === "Failed to fetch") {
+				setErrorPage(true)
+				//setErrorMessage("Unable to connect to the server. Please try after some time.");
+			} else if (error.response && error.response.status >= 500) {
+				setErrorMessage("Server error: Please try again later.");
+			} else if (error.response && error.response.status >= 400 && error.response.status < 500) {
+				setErrorMessage("Client error: The request could not be processed.");
+			} else if (error.response && error.response.data && error.response.data.message) {
+				setErrorMessage(error.response.data.message);
+			} else {
+				setErrorMessage("Error fetching transactions: " + error.message);
+			}
 			setTransactions([]);
 		} finally {
 			setLoading(false);
 		}
-	}, [filterType, filterStatus, startDate, endDate]);
+	}, [filterType, startDate, filterStatus, endDate]);
+
 
 	// Automatically fetch transactions when filters change
 	useEffect(() => {
@@ -116,17 +125,20 @@ const TransactionHistoryPage = () => {
 				setLoading(false);
 			}
 		}
+		else {
+			window.alert("Enter the  ID to search!")
+		}
 	};
 
 	// Reset filters and fetch all transactions again
-	const handleReset = () => {
+	const handleReset = async () => {
 		setFilterType('');
 		setFilterStatus('');
 		setStartDate('');
 		setEndDate('');
 		setTransactionId('');
-		handleCloseError();
-		fetchTransactions();
+		if (errorMessage) setErrorMessage(null);
+		//await fetchTransactions();
 	};
 
 	// Handle filter type change
@@ -149,6 +161,7 @@ const TransactionHistoryPage = () => {
 
 	// Handle date range change
 	const handleDateChange = (e, field) => {
+		//console.log("date is",date)
 		if (field === 'startDate') setStartDate(e.target.value);
 		else if (field === 'endDate') setEndDate(e.target.value);
 
@@ -170,15 +183,22 @@ const TransactionHistoryPage = () => {
 	// Handle error message close button
 	const handleCloseError = () => {
 		setErrorMessage(null);
+		handleReset();
 	};
 
 	return (
 		<>
+
 			<div className="container">
 				<h1>Transaction History</h1>
 
+
+				{errorPage && (<ErrorPage />)
+				}
+
+
 				{/* Filter Controls */}
-				{!errorMessage && (<FilterComponent
+			{!errorPage &&	(<FilterComponent
 					transactionId={transactionId}
 					handleTransactionIdChange={handleTransactionIdChange}
 					handleTransactionIdSubmit={handleTransactionIdSubmit}
@@ -191,6 +211,7 @@ const TransactionHistoryPage = () => {
 					handleDateChange={handleDateChange}
 					handleReset={handleReset} />)}
 
+
 				{/* Error Message */}
 				{errorMessage && (
 					<ErrorMessage message={errorMessage} onClose={handleCloseError} />
@@ -202,7 +223,7 @@ const TransactionHistoryPage = () => {
 
 				)}
 
-				{!errorMessage && (<TableComponent transactions={transactions} />) }
+				{!errorMessage && !errorPage && (<TableComponent transactions={transactions} />)}
 
 
 

@@ -1,8 +1,10 @@
+import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Table from 'react-bootstrap/Table';
-import { useState } from 'react';
+import Pagination from 'react-bootstrap/Pagination'; // Import Pagination component from Bootstrap
 import { getTransactionById } from '../data/TransactionHistory';
 import ModalComponent from './ModalComponent';
+
 const TableComponent = ({ transactions }) => {
 	// State to store selected transaction for detailed view
 	const [selectedTransaction, setSelectedTransaction] = useState(null);
@@ -10,9 +12,12 @@ const TableComponent = ({ transactions }) => {
 	// State to control modal visibility
 	const [showModal, setShowModal] = useState(false);
 
+	// Pagination states
+	const [currentPage, setCurrentPage] = useState(1); // Current active page
+	const itemsPerPage = 5; // Number of items per page
+
 	// Function to close the modal
 	const handleCloseModal = () => setShowModal(false);
-
 
 	// Function to fetch transaction by ID and display in modal
 	const reviewTransaction = async (id) => {
@@ -20,7 +25,6 @@ const TableComponent = ({ transactions }) => {
 			const transaction = await getTransactionById(id);
 			setSelectedTransaction(transaction);
 			setShowModal(true);
-			<ModalComponent showModal={showModal} handleCloseModal={handleCloseModal} selectedTransaction={selectedTransaction} />
 		} catch (error) {
 			console.error("Error fetching transaction: ", error);
 		}
@@ -40,37 +44,76 @@ const TableComponent = ({ transactions }) => {
 		}
 	};
 
+	// Pagination Logic
+	const indexOfLastTransaction = currentPage * itemsPerPage;
+	const indexOfFirstTransaction = indexOfLastTransaction - itemsPerPage;
+	const currentTransactions = transactions.slice(indexOfFirstTransaction, indexOfLastTransaction);
+
+	const totalPages = Math.ceil(transactions.length / itemsPerPage);
+
+	// Handle page change
+	const handlePageChange = (pageNumber) => {
+		setCurrentPage(pageNumber);
+	};
+
+	// Render pagination items
+	const renderPagination = () => {
+		let items = [];
+		for (let number = 1; number <= totalPages; number++) {
+			items.push(
+				<Pagination.Item
+					key={number}
+					active={number === currentPage}
+					onClick={() => handlePageChange(number)}
+				>
+					{number}
+				</Pagination.Item>
+			);
+		}
+		return items;
+	};
+
 	return (
-	<Table striped className="table custom-table" bordered hover>
-		<thead>
-			<tr>
-				<th>Id</th>
-				<th>Date</th>
-				<th>Type</th>
-				<th>Receiver</th>
-				<th>Amount</th>
-				<th>Status</th>
-				<th>Review</th>
-			</tr>
-		</thead>
-		<tbody>
-			{transactions.map((obj) => (
-				<tr key={obj.transactionId}>
-					<td>{obj.transactionId}</td>
-					<td>{new Date(obj.date).toLocaleDateString()}</td>
-					<td>{obj.transactionType}</td>
-					<td>{obj.receiver}</td>
-					<td>{obj.amount}</td>
-					<td style={getStatusStyle(obj.status)}>{obj.status}</td>
-					<td>
-						<Button onClick={() => reviewTransaction(obj.transactionId)}>
-							Review
-						</Button>
-					</td>
-				</tr>
-			))}
-		</tbody>
-	</Table>);
-}
+		<>
+			<Table striped className="table custom-table" bordered hover>
+				<thead>
+					<tr>
+						<th>Id</th>
+						<th>Date</th>
+						<th>Type</th>
+						<th>Receiver</th>
+						<th>Amount</th>
+						<th>Status</th>
+						<th>Review</th>
+					</tr>
+				</thead>
+				<tbody>
+					{currentTransactions.map((obj) => (
+						<tr key={obj.transactionId}>
+							<td>{obj.transactionId}</td>
+							<td>{new Date(obj.date).toLocaleDateString()}</td>
+							<td>{obj.transactionType}</td>
+							<td>{obj.receiver}</td>
+							<td>{obj.amount}</td>
+							<td style={getStatusStyle(obj.status)}>{obj.status}</td>
+							<td>
+								<Button onClick={() => reviewTransaction(obj.transactionId)}>
+									Review
+								</Button>
+							</td>
+						</tr>
+					))}
+				</tbody>
+			</Table>
+
+			{/* Pagination Component */}
+			<Pagination>
+				{renderPagination()}
+			</Pagination>
+
+			<ModalComponent showModal={showModal} handleCloseModal={handleCloseModal} selectedTransaction={selectedTransaction} />
+		</>
+	);
+};
 
 export default TableComponent;

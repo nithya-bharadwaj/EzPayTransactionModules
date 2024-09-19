@@ -113,6 +113,8 @@ const Filter = () => {
 			setLoading(false);
 		}
 	}, [filterType, filterStatus, startDate, endDate]);
+	const today = new Date();
+ 
 
 	// Automatically fetch transactions when filters change
 	useEffect(() => {
@@ -249,6 +251,7 @@ const Filter = () => {
 							type="date"
 							value={startDate}
 							onChange={(e) => handleDateChange(e, 'startDate')}
+							max={today}
 						/>
 					</label>
 

@@ -1,0 +1,110 @@
+/* General styles */
+body {
+    font-family: Arial, sans-serif; /* Font for the entire app */
+    background-color: #f0f2f5; /* Light background for contrast */
+}
+
+/* Filter section */
+.filter {
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #ffffff; /* White background for filters */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Light shadow for depth */
+    margin-bottom: 20px;
+}
+
+/* Responsive layout for filters */
+.filter-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Space between filter elements */
+}
+
+/* Search container */
+.search-container {
+    display: flex;
+    align-items: center; /* Align input and button vertically */
+    margin-bottom: 20px;
+}
+
+.search-container input {
+    margin-right: 10px;
+    padding: 10px; /* Increased padding for better usability */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    flex-grow: 1; /* Input expands to take remaining space */
+}
+
+/* Labels */
+label {
+    font-weight: bold; /* Bold for emphasis */
+}
+
+/* Filter dropdowns and inputs */
+.filter select,
+.filter input {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width: 100%; /* Full width for smaller screens */
+}
+
+/* Adjust filter input width for larger screens */
+@media (min-width: 768px) {
+    .filter {
+        flex-direction: row;
+        justify-content: space-between; /* Distribute space on larger screens */
+    }
+
+    .filter select,
+    .filter input {
+        width: auto; /* Auto-width for larger screens */
+    }
+}
+
+/* Reset button styling */
+.reset-btn {
+    margin-top: 10px;
+    background-color: #dc3545; /* Bootstrap danger color */
+    color: white;
+    padding: 8px 12px; /* Added padding for better appearance */
+    border: none; /* Remove default border */
+    border-radius: 4px; /* Rounded corners */
+    cursor: pointer; /* Pointer on hover */
+}
+
+/* Button hover effect */
+.reset-btn:hover {
+    background-color: #c82333; /* Darker red on hover */
+}
+
+/* Accordion styles */
+.accordion-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    cursor: pointer;
+    background-color: #007bff; /* Bootstrap primary color */
+    color: white;
+    border-radius: 4px; /* Rounded corners */
+}
+
+/* Accordion body */
+.accordion-body {
+    padding: 20px; /* Space inside the accordion body */
+    background-color: #f8f9fa; /* Light background for body */
+    border: 1px solid #ddd; /* Border around body */
+    border-radius: 0 0 4px 4px; /* Rounded bottom corners */
+}
+
+/* Media queries for responsive design */
+@media (max-width: 768px) {
+    .filter {
+        flex-direction: column; /* Stack elements on small screens */
+    }
+
+    .search-container {
+        margin-bottom: 15px; /* Space below search bar */
+    }
+}
