@@ -11,11 +11,11 @@ import React from 'react';
 import '../styles/AboutUs.css';
 
 const teamMembers = [
-  { name: 'Harsh', email: 'harsh123@gmail.com', color: '#FF6F61' }, // Red
-  { name: 'Preethi R', email: 'rpreethir02@gmail.com', color: '#F7CAC9' }, // Pink
-  { name: 'Nithya', email: 'nithya23@gmail.com', color: '#6B5B95' }, // Purple
-  { name: 'Sivaji', email: 'sivaji25@gmail.com', color: '#92A8D1' },  // Blue
-  { name: 'Naveen', email: 'naveen12@gmail.com', color: '#88B04B' }, // Green
+  { name: 'Harshdeep Singh', email: 'chhabra.harsh2108@gmail.com', color: '#FF6F61' },
+  { name: 'Preethi R', email: 'rpreethir02@gmail.com', color: '#F7CAC9' },
+  { name: 'Nithya Bharadwaj P', email: 'nithya.bharadwajp33@gmail.com', color: '#6B5B95' },
+  { name: 'Shivaji Reddy Suram', email: 'shivajireddy980@gmail.com', color: '#92A8D1' },
+  { name: 'Navin Kumar Yadav', email: 'navin.yadav897@gmail.com', color: '#88B04B' }
 ];
 
 const AboutUs = () => {
@@ -62,7 +62,11 @@ const AboutUs = () => {
                 </div>
                 <div className="team-info">
                   <p>{member.name}</p>
-                  <p className="email">{member.email}</p>
+                  <p className="email">
+                    <a href={`https://mail.google.com/mail/?view=cm&fs=1&to=${member.email}`} className="email-link" tabIndex="0">
+                      {member.email}
+                    </a>
+                  </p>
                 </div>
               </div>
             ))}

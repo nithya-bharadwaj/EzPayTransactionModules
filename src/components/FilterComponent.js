@@ -24,11 +24,18 @@ const FilterComponent = ({
 		<div className="search-container">
 			
 				<input
-					type="text"
+					type="search"
 					value={transactionId}
-					onChange={handleTransactionIdChange}
+				onChange={(event) => {
+					handleTransactionIdChange(event); // Update transaction ID
+					if (event.target.value === '') { // Check if input is cleared
+						handleReset(); // Call the function if cleared
+					}
+				}}
 					placeholder="Search by Transaction ID"
+					onmousemove={handleReset}
 				/>
+			
 				<Button onClick={handleTransactionIdSubmit}>Search</Button>
 			
 		</div>

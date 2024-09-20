@@ -149,8 +149,15 @@
     padding-top: 15px;
 }
 
-/* Email Text Styling */
-.email {
-    margin-left: 5px;
-    font-size: 0.9rem;
+/* Email Link Styling */
+.email-link {
+    color: #48D1CC; 
+    text-decoration: underline; 
+    position: relative; 
+    z-index: 2; 
+}
+
+.email-link:hover {
+    color: #FFBF00;
+    text-decoration: none;
 }

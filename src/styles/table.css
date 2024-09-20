@@ -1,0 +1,9 @@
+/* Adding styles for table */
+.table {
+   /*--bs-table-bg:#F6EFDF ; or --bs-table-bg: transparent;*/
+   --bs-table-bg:#fffefc;
+}
+
+.table th{
+  background-color:#fef7ef;
+}
