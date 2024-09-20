@@ -1,21 +1,22 @@
 /* General styles */
 body {
-    font-family: Arial, sans-serif; /* Font for the entire app */
-    background-color: #f0f2f5; /* Light background for contrast */
-    margin: 0; /* Remove default margin */
-    padding: 20px; /* Add some padding around the body */
+    font-family: Arial, sans-serif;
+    background-color: #f0f2f5;
+    margin: 0;
+    padding: 20px;
 }
 
 /* Filter section */
 .filter {
     display: flex;
+    flex-wrap: wrap; /* Ensure flexibility on smaller screens */
     padding: 20px;
     border: 1px solid #ddd;
     border-radius: 5px;
-    background-color: #ffffff; /* White background for filters */
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Light shadow for depth */
+    background-color: #ffffff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
-    gap: 20px; /* Space between filter elements */
+    gap: 20px; /* Increased gap for better spacing */
     align-items: center;
 }
 
@@ -23,32 +24,32 @@ body {
 .filter-container {
     display: flex;
     flex-direction: column;
-    gap: 20px; /* Increased gap for better spacing */
-    max-width: 800px; /* Limit width to prevent it from taking too much space */
-    margin: auto; /* Center the filter container */
+    gap: 20px;
+    width: 100%; /* Full width to allow flexibility */
+    max-width: 1200px; /* Adjust for larger screens */
+    margin: auto;
 }
 
 /* Search container */
 .search-container {
     display: flex;
-    align-items: center; /* Align input and button vertically */
-    flex-grow: 1; /* Make search grow to take the remaining space */
+    align-items: center;
+    flex: 2; /* Make it take 2 parts of space */
+    gap: 10px; /* Add some space between input and button */
 }
 
 .search-container input {
-    margin-right: 10px;
-    padding: 10px; /* Increased padding for better usability */
+    padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    width: 100%; /* Full width for smaller screens */
+    flex-grow: 1; /* Ensure the search input takes up the remaining space */
 }
 
-/* Labels */
-label {
-    font-weight: bold; /* Bold for emphasis */
+.search-container button {
+    padding: 10px 20px; /* More padding for the search button */
 }
 
-/* Filter dropdowns and inputs */
+/* Filter options */
 .filter select,
 .filter input {
     padding: 10px;
@@ -61,90 +62,73 @@ label {
 @media (min-width: 768px) {
     .filter-container {
         flex-direction: row;
-        justify-content: space-between; /* Align items side by side */
+        justify-content: space-between;
     }
 
     .filter {
-        flex-direction: row;
-        align-items: center;
-        gap: 10px; /* Space between filter and search container */
+        flex: 1; /* Filters take equal space as the search */
+        gap: 20px; /* More gap for better spacing */
     }
 
-    .filter select,
-    .filter input {
-        width: auto; /* Auto width for larger screens */
-        flex: 1; /* Inputs take available space */
-    }
-
-    .search-container input {
-        width: auto; /* Make search input adjust properly */
-        flex-grow: 1; /* Ensure it takes remaining space */
-    }
-
-    .filter select:last-child,
-    .filter input:last-child {
-        margin-right: 0; /* Remove right margin from last element */
+    .search-container {
+        flex-grow: 1; /* Ensure search bar takes available space */
     }
 }
 
 /* Reset button styling */
 .reset-btn {
     margin-top: 10px;
-    background-color: #dc3545; /* Bootstrap danger color */
+    background-color: #dc3545;
     color: white;
-    padding: 8px 12px; /* Added padding for better appearance */
-    border: none; /* Remove default border */
-    border-radius: 4px; /* Rounded corners */
-    cursor: pointer; /* Pointer on hover */
-    transition: background-color 0.3s; /* Smooth transition for hover effect */
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
 }
 
-/* Button hover effect */
 .reset-btn:hover {
-    background-color: #c82333; /* Darker red on hover */
+    background-color: #c82333;
 }
 
 /* Accordion styles */
 .accordion-header {
-    display: flex;
-    justify-content: space-between;
     padding: 10px;
-    cursor: pointer;
-    background-color: #007bff; /* Bootstrap primary color */
+    background-color: #007bff;
     color: white;
-    border-radius: 4px; /* Rounded corners */
+    border-radius: 4px;
+    cursor: pointer;
 }
 
-/* Accordion body */
 .accordion-body {
-    padding: 20px; /* Space inside the accordion body */
-    background-color: #f8f9fa; /* Light background for body */
-    border: 1px solid #ddd; /* Border around body */
-    border-radius: 0 0 4px 4px; /* Rounded bottom corners */
+    padding: 20px;
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
 }
 
 /* Media queries for responsive design */
 @media (max-width: 768px) {
     .filter-container {
-        flex-direction: column; /* Stack elements on small screens */
+        flex-direction: column;
     }
 
     .filter {
-        flex-direction: column; /* Stack filters and search container vertically */
+        flex-direction: column;
+        gap: 20px;
     }
 
     .search-container {
-        margin-bottom: 15px; /* Space below search bar */
-        flex-direction: column; /* Stack search input and button vertically */
+        margin-bottom: 15px;
+        flex-direction: column;
+        gap: 15px;
     }
 
-    /* Ensuring full width on smaller screens */
     .filter select,
     .filter input {
-        width: 100%; /* Full width for smaller screens */
+        width: 100%;
     }
 
     .search-container input {
-        width: 100%; /* Full width for smaller screens */
+        width: 100%;
     }
 }

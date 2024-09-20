@@ -4,6 +4,7 @@ import Table from 'react-bootstrap/Table';
 import Pagination from 'react-bootstrap/Pagination'; // Import Pagination component from Bootstrap
 import { getTransactionById } from '../data/TransactionHistory';
 import ModalComponent from './ModalComponent';
+import '../styles/table.css'
 
 const TableComponent = ({ transactions }) => {
 	// State to store selected transaction for detailed view
@@ -34,11 +35,11 @@ const TableComponent = ({ transactions }) => {
 	const getStatusStyle = (status) => {
 		switch (status) {
 			case 'Success':
-				return { color: 'green', fontWeight: 'bold', padding: '5px', borderRadius: '4px' };
+				return { color: 'green',  padding: '5px' };
 			case 'Failure':
-				return { color: 'red', fontWeight: 'bold', padding: '5px', borderRadius: '4px' };
+				return { color: 'red', padding: '5px' };
 			case 'Processing':
-				return { color: 'brown', fontWeight: 'bold', padding: '5px', borderRadius: '4px' };
+				return { color: 'brown',  padding: '5px' };
 			default:
 				return {};
 		}
@@ -75,8 +76,8 @@ const TableComponent = ({ transactions }) => {
 
 	return (
 		<>
-			<Table striped className="table custom-table" bordered hover>
-				<thead>
+			<Table id="transaction-table"  className="table"  hover>
+				<thead className="fw-bold">
 					<tr>
 						<th>Id</th>
 						<th>Date</th>
@@ -89,12 +90,12 @@ const TableComponent = ({ transactions }) => {
 				</thead>
 				<tbody>
 					{currentTransactions.map((obj) => (
-						<tr key={obj.transactionId}>
+						<tr className="fs-6"key={obj.transactionId}>
 							<td>{obj.transactionId}</td>
 							<td>{new Date(obj.date).toLocaleDateString()}</td>
 							<td>{obj.transactionType}</td>
 							<td>{obj.receiver}</td>
-							<td>{obj.amount}</td>
+							<td>{`Rs.${obj.amount}`}</td>
 							<td style={getStatusStyle(obj.status)}>{obj.status}</td>
 							<td>
 								<Button onClick={() => reviewTransaction(obj.transactionId)}>
