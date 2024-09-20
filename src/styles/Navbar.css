@@ -1,0 +1,42 @@
+/* 
+ * Author: Preethi R
+ * Date: 20/09/2024
+ * 
+ * Description:
+ * This stylesheet defines the styling for the Navbar component in the EzPay application.
+ * It includes styles for the navbar background, brand logo, links, and hover effects.
+ */
+
+/* Navbar */
+.navbar {
+    background-color: #00416A;
+    padding: 10px 20px;
+    font-size: 1.5rem;
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+}
+
+.navbar-brand .logo {
+    width: 70px;
+    margin-right: 10px;
+}
+
+.navbar-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: white;
+}
+
+.nav-link {
+    color: white;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    color: #FFA700;
+}
