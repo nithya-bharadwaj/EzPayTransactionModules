@@ -16,12 +16,15 @@ import com.ezpay.entity.Transaction;
 @Repository
 public interface TransactionRepository extends JpaRepository<Transaction,Integer> {
 
+	// Fetch all transactions sorted by date in descending order
+    List<Transaction> findAllByOrderByDateDesc();
 	 /**
      * Find transactions by date range.
      * @param startDate Start date
      * @param endDate End date
      * @return List of transactions in the date range
      */
+	
     @Query("SELECT t FROM Transaction t WHERE t.date BETWEEN :startDate AND :endDate")
     List<Transaction> findByDateRange(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
 
