@@ -20,9 +20,9 @@ import {
 } from "react-router-dom";
 
 import Filter from './components/Filter';
-import Home from './Home'; 
-import AboutUs from './AboutUs';
-import Navbar from './Navbar';
+import Home from './Pages/Home'; 
+import AboutUs from './Pages/AboutUs';
+import Navbar from './components/Navbar';
 
 function App() {
   // Create the routes using createBrowserRouter and createRoutesFromElements
