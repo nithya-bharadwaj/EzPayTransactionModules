@@ -42,7 +42,7 @@ public class TransactionController {
      */
     @GetMapping("/history")
     public ResponseEntity<List<Transaction>> getAllHistory() {
-        List<Transaction> transactions = transactionService.getAllTransactions();
+        List<Transaction> transactions = transactionService.getAllTransactionsSort();
         return new ResponseEntity<>(transactions, HttpStatus.OK);
     }
 

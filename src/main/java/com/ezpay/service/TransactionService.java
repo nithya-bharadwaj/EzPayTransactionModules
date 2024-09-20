@@ -32,7 +32,10 @@ public class TransactionService {
      * @return List of all transactions
      */
     public List<Transaction> getAllTransactions() {
-        return transactionRepository.findAllByOrderByDateDesc();
+        return transactionRepository.findAll();
+    }
+    public List<Transaction> getAllTransactionsSort(){
+    	return transactionRepository.findAllByOrderByDateDesc();
     }
 
     /**
