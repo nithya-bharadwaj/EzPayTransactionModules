@@ -1,134 +1,57 @@
-/* General styles */
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f2f5;
-    margin: 0;
-    padding: 20px;
-}
-
-/* Filter section */
 .filter {
-    display: flex;
-    flex-wrap: wrap; /* Ensure flexibility on smaller screens */
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    background-color: #ffffff;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
-    gap: 20px; /* Increased gap for better spacing */
-    align-items: center;
+    max-width: 100%; /* Ensure full width */
+    padding: 15px; /* Consistent padding */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    border-radius: 5px; /* Rounded corners */
+    background-color: white; /* White background for clarity */
 }
 
-/* Responsive layout for filters */
-.filter-container {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    width: 100%; /* Full width to allow flexibility */
-    max-width: 1200px; /* Adjust for larger screens */
-    margin: auto;
-}
-
-/* Search container */
 .search-container {
-    display: flex;
-    align-items: center;
-    flex: 2; /* Make it take 2 parts of space */
-    gap: 10px; /* Add some space between input and button */
+    display: flex; /* Flexbox for input and button alignment */
+    align-items: center; /* Center items vertically */
+    margin-bottom: 15px; /* Space below the search */
 }
 
-.search-container input {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    flex-grow: 1; /* Ensure the search input takes up the remaining space */
+.search-container input[type="search"] {
+    flex-grow: 1; /* Allow input to take available space */
+    padding: 8px; /* Uniform padding for input */
+    border: 1px solid #ccc; /* Border around input */
+    border-radius: 4px; /* Rounded corners */
+    font-size: 14px; /* Font size for readability */
 }
 
 .search-container button {
-    padding: 10px 20px; /* More padding for the search button */
+    margin-left: 10px; /* Space between input and button */
 }
 
-/* Filter options */
-.filter select,
-.filter input {
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    width: 100%; /* Full width for smaller screens */
+label {
+    display: block; /* Block display for labels */
+    margin-bottom: 5px; /* Space below each label */
+    font-weight: 600; /* Bold labels */
 }
 
-/* Adjust filter input width for larger screens */
-@media (min-width: 768px) {
-    .filter-container {
-        flex-direction: row;
-        justify-content: space-between;
-    }
-
-    .filter {
-        flex: 1; /* Filters take equal space as the search */
-        gap: 20px; /* More gap for better spacing */
-    }
-
-    .search-container {
-        flex-grow: 1; /* Ensure search bar takes available space */
-    }
+select, input[type="date"] {
+    width: 100%; /* Full width for inputs */
+    padding: 8px; /* Padding for inputs */
+    border: 1px solid #ccc; /* Border color */
+    border-radius: 4px; /* Rounded corners */
+    margin-bottom: 10px; /* Space below each input */
 }
 
-/* Reset button styling */
 .reset-btn {
-    margin-top: 10px;
-    background-color: #dc3545;
-    color: white;
-    padding: 8px 12px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s;
+    margin-top: 10px; /* Space above the reset button */
 }
 
-.reset-btn:hover {
-    background-color: #c82333;
-}
-
-/* Accordion styles */
-.accordion-header {
-    padding: 10px;
-    background-color: #007bff;
-    color: white;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.accordion-body {
-    padding: 20px;
-    background-color: #f8f9fa;
-    border: 1px solid #ddd;
-}
-
-/* Media queries for responsive design */
 @media (max-width: 768px) {
-    .filter-container {
-        flex-direction: column;
-    }
-
     .filter {
-        flex-direction: column;
-        gap: 20px;
+        padding: 10px; /* Reduced padding on smaller screens */
     }
 
-    .search-container {
-        margin-bottom: 15px;
-        flex-direction: column;
-        gap: 15px;
+    .search-container input[type="search"] {
+        padding: 6px; /* Smaller padding for input */
     }
 
-    .filter select,
-    .filter input {
-        width: 100%;
-    }
-
-    .search-container input {
-        width: 100%;
+    .search-container button {
+        padding: 6px; /* Smaller padding for button */
     }
 }

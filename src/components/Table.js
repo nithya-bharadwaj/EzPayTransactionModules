@@ -15,7 +15,7 @@ const TableComponent = ({ transactions }) => {
 
 	// Pagination states
 	const [currentPage, setCurrentPage] = useState(1); // Current active page
-	const itemsPerPage = 5; // Number of items per page
+	const itemsPerPage = 10; // Number of items per page
 
 	// Function to close the modal
 	const handleCloseModal = () => setShowModal(false);
@@ -76,7 +76,7 @@ const TableComponent = ({ transactions }) => {
 
 	return (
 		<>
-			<Table id="transaction-table"  className="table"  hover>
+			<Table   className="table"  hover>
 				<thead className="fw-bold">
 					<tr>
 						<th>Id</th>
@@ -84,6 +84,7 @@ const TableComponent = ({ transactions }) => {
 						<th>Type</th>
 						<th>Receiver</th>
 						<th>Amount</th>
+						<th></th>
 						<th>Status</th>
 						<th>Review</th>
 					</tr>
@@ -96,6 +97,9 @@ const TableComponent = ({ transactions }) => {
 							<td>{obj.transactionType}</td>
 							<td>{obj.receiver}</td>
 							<td>{`Rs.${obj.amount}`}</td>
+							 <td style={{ color: obj.receiver === "user10" ? 'green' : 'red' }}>
+                                {obj.receiver === "user10" ? 'Credit' : 'Debit'}
+                            </td>
 							<td style={getStatusStyle(obj.status)}>{obj.status}</td>
 							<td>
 								<Button onClick={() => reviewTransaction(obj.transactionId)}>

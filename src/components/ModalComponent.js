@@ -1,9 +1,10 @@
 import Modal from 'react-bootstrap/Modal';
 
 import Button from 'react-bootstrap/Button';
-const ModalComponent = ({showModal,handleCloseModal,selectedTransaction}) => {
-	
-	return ( 
+import '../styles/modal.css';
+const ModalComponent = ({ showModal, handleCloseModal, selectedTransaction }) => {
+
+	return (
 		<Modal className="modal" show={showModal} onHide={handleCloseModal}>
 			<Modal.Header closeButton>
 				<Modal.Title>Transaction Details</Modal.Title>
@@ -41,7 +42,7 @@ const ModalComponent = ({showModal,handleCloseModal,selectedTransaction}) => {
 				</Button>
 			</Modal.Footer>
 		</Modal>
-	 );
+	);
 }
- 
+
 export default ModalComponent;

@@ -1,9 +1,47 @@
-/* Adding styles for table */
 .table {
-   /*--bs-table-bg:#F6EFDF ; or --bs-table-bg: transparent;*/
-   --bs-table-bg:#fffefc;
+    width: 100%; /* Full width for the table */
+    margin: 10px 0; /* Reduced margin for spacing */
+    border-collapse: collapse; /* Collapse borders */
 }
 
-.table th{
-  background-color:#fef7ef;
+.table th, .table td {
+    padding: 4px; /* Reduced padding for cells */
+    text-align: left; /* Left align text */
+    /*border-bottom: 1px solid #ddd; /* Bottom border for cells */
+}
+
+.table th {
+    background-color: #f9f9f9; /* Slightly lighter background for header */
+    font-weight: bold; /* Bold font for headers */
+}
+
+.table tr:hover {
+    background-color: #f1f1f1; /* Subtle hover effect */
+}
+
+.pagination {
+    justify-content: center; /* Center pagination items */
+    margin-top: 10px; /* Reduced margin for spacing */
+}
+
+@media (max-width: 768px) {
+    .table {
+        font-size: 14px; /* Smaller font on mobile */
+    }
+
+    .table th,
+    .table td {
+        padding: 3px; /* Further reduced padding for smaller screens */
+    }
+}
+
+@media (max-width: 576px) {
+    .table {
+        font-size: 12px; /* Even smaller font on extra small screens */
+    }
+
+    .table th,
+    .table td {
+        padding: 2px; /* Minimal padding for compactness */
+    }
 }

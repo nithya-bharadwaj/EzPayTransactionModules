@@ -1,45 +1,48 @@
-/* 
-  Author: Nithya Bharadwaj P, Harshdeep Chhabra, Shivaji Reddy
-  Date: 2024 /09/06
-*/
 body{
-  background-color:#faf8f5;
+    background-color: grey;
 }
-/* Styles for the main container, ensuring full width and central alignment */
-.container {
-  max-width: 100%;
-  margin: 0 auto;
-  padding: 20px;
-  /*background-color: #F2E7CF; Light background color for contrast*/
-}
-
-/* Adjust container width for medium and larger screens */
-@media (min-width: 768px) {
-  .container {
-    max-width: 1200px;
-  }
+.transaction-history-container {
+    max-width: 1200px; /* Max width for larger screens */
+    margin: 0 auto; /* Center the container */
+    padding: 20px; /* Padding around the container */
+    font-family: Arial, sans-serif; /* Professional font */
+    background-color: #f8f9fa; /* Light gray background color */
 }
 
-/* Centering the main heading for the page */
 h1 {
-  text-align: center;
-  margin-bottom: 30px;
-  font-size: 2rem; /* Slightly smaller for mobile responsiveness */
-  color: #333; /* Dark color for readability */
+    font-size: 2.5em; /* Larger title */
+    color: #003366; /* Dark blue color for header */
+    margin-bottom: 20px; /* Space below the header */
+    text-align: center; /* Centered title */
 }
 
-/* Larger heading size for bigger screens */
-@media (min-width: 768px) {
-  h1 {
-    font-size: 2.5rem;
-  }
+.download-btn {
+    background-color: #007bff; /* Bootstrap primary color */
+    color: white; /* White text */
+    border: none; /* Remove default border */
+    padding: 10px 15px; /* Padding for button */
+    border-radius: 4px; /* Rounded corners */
+    margin-top: 10px; /* Space above the button */
+    display: block; /* Make button full width */
+    width: 100%; /* Full width for smaller screens */
 }
 
-
-/*Styles for Modal */
-.modal-content{
-  background-color:#f9f7f4;
+.download-btn:hover {
+    background-color: #0056b3; /* Darker blue on hover */
 }
 
+.error-message {
+    color: red; /* Red color for error messages */
+    text-align: center; /* Center error messages */
+    margin: 20px 0; /* Space around error messages */
+}
 
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2em; /* Smaller font on mobile */
+    }
 
+    .download-btn {
+        padding: 8px 12px; /* Smaller padding on mobile */
+    }
+}

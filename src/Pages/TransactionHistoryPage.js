@@ -12,9 +12,8 @@ import Button from 'react-bootstrap/Button';
 import { FaDownload } from 'react-icons/fa'; // Ensure this is also imported
 import { jsPDF } from 'jspdf';
 import 'jspdf-autotable';
-import { FaArrowUp, FaArrowDown } from 'react-icons/fa';
 import { getTransactionHistory, filterTransactionsByType, filterTransactionsByStatus, filterTransactionsByDateRange, getTransactionById } from '../data/TransactionHistory';
-import '../Filter.css';
+//import '../Filter.css';
 import TableComponent from '../components/Table';
 import ErrorMessage from '../components/ErrorComponent';
 import FilterComponent from '../components/FilterComponent';
@@ -240,11 +239,11 @@ const TransactionHistoryPage = () => {
 				transaction.transactionId.toString(),
 				transaction.date.toString(),
 				transaction.transactionType,
-				'Rs. '+transaction.amount.toString(),
+				'Rs. ' + transaction.amount.toString(),
 				transaction.receiver,
 				additionalInfo,
 				{ content: transaction.status, styles: { textColor: statusColor } },
-				{ content:statusIcon, styles: { textColor: statusIcon === 'Cr' ? 'green' : 'red' } }
+				{ content: statusIcon, styles: { textColor: statusIcon === 'Cr' ? 'green' : 'red' } }
 			];
 		});
 
@@ -307,9 +306,7 @@ const TransactionHistoryPage = () => {
 						endDate={endDate}
 						handleDateChange={handleDateChange}
 						handleReset={handleReset} />
-					<Button className="download-btn" onClick={downloadPDF}>
-						<FaDownload style={{ marginRight: '5px' }} /> Download Transactions
-					</Button>
+
 
 				</>)}
 
@@ -325,7 +322,13 @@ const TransactionHistoryPage = () => {
 
 				)}
 
-				{!errorMessage && !errorPage && (<TableComponent transactions={transactions} />)}
+				{!errorMessage && !errorPage && (<>
+					<TableComponent transactions={transactions} />
+					<Button className="download-btn" onClick={downloadPDF}>
+						<FaDownload style={{ marginRight: '5px' }} /> Download Transactions
+					</Button>
+				</>
+				)}
 
 
 

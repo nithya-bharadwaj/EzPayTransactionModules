@@ -1,0 +1,40 @@
+.modal-header {
+    background-color: #007bff; /* Blue background for the header */
+    color: white; /* White text for the header */
+}
+
+.modal-title {
+    font-weight: bold; /* Bold title */
+}
+
+.modal-body {
+    font-family: Arial, sans-serif; /* Professional font */
+    line-height: 1.5; /* Increased line height for readability */
+    color: #333; /* Dark text color for better contrast */
+}
+
+.modal-body p {
+    margin: 5px 0; /* Reduced margin for compactness */
+}
+
+.status {
+    font-weight: bold; /* Bold status text */
+}
+
+.status.success {
+    color: green; /* Green color for success */
+}
+
+.status.failure {
+    color: red; /* Red color for failure */
+}
+
+.status.processing {
+    color: orange; /* Orange color for processing */
+}
+
+.modal-footer {
+    display: flex; /* Flex layout for footer */
+    justify-content: flex-end; /* Align button to the right */
+    padding: 10px; /* Consistent padding */
+}

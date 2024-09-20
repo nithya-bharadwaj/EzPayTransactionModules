@@ -19,11 +19,14 @@ import {
   Outlet
 } from "react-router-dom";
 
-import Filter from './components/Filter';
+
 import Home from './Pages/Home'; 
 import AboutUs from './Pages/AboutUs';
 import Navbar from './components/Navbar';
 import AutopayManager from './components/AutopayManager';
+
+
+import TransactionHistoryPage from './Pages/TransactionHistoryPage';
 
 function App() {
   // Create the routes using createBrowserRouter and createRoutesFromElements
@@ -32,7 +35,7 @@ function App() {
       <Route path="/" element={<Layout />}>
         <Route index element={<Home />} />
         <Route path="about" element={<AboutUs />} />
-        <Route path="transactions" element={<Filter />} />
+        <Route path="transactions" element={<TransactionHistoryPage />} />
         <Route path="schedule" element={<AutopayManager/>}/>
       </Route>
     )
