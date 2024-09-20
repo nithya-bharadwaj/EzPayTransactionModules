@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import AutopayCard from "./AutopayCard";// Import the AutopayCard component
 
 const AutopayManager = () => {
-  const baseUrl2="http://localhost:8080/api/scheduled-payments"
+  const baseUrl2="http://localhost:9090/api/scheduled-payments"
   const [autopayList, setAutopayList] = useState([]);
 
   // Fetch the autopay data from the backend
