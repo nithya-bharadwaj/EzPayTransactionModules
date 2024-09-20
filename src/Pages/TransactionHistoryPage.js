@@ -102,7 +102,7 @@ const TransactionHistoryPage = () => {
 		} finally {
 			setLoading(false);
 		}
-	}, [filterType, startDate, filterStatus, endDate]);
+	}, [filterType, startDate, filterStatus, endDate, transactionId]);
 
 
 	// Automatically fetch transactions when filters change
@@ -198,7 +198,7 @@ const TransactionHistoryPage = () => {
 
 
 				{/* Filter Controls */}
-			{!errorPage &&	(<FilterComponent
+				{!errorPage && (<FilterComponent
 					transactionId={transactionId}
 					handleTransactionIdChange={handleTransactionIdChange}
 					handleTransactionIdSubmit={handleTransactionIdSubmit}

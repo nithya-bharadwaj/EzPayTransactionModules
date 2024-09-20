@@ -1,5 +1,5 @@
 import React from 'react';
-import './AboutUs.css'; // Import the CSS for About Us page only
+import '../styles/AboutUs.css'; // Import the CSS for About Us page only
 
 const teamMembers = [
   { name: 'Harsh', email: 'harsh123@gmail.com', color: '#FF6F61' }, // Red

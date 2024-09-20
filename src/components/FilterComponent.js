@@ -22,16 +22,15 @@ const FilterComponent = ({
 
 	return (<div className="filter">
 		<div className="search-container">
-			<label>
-				Search by Transaction ID:
+			
 				<input
 					type="text"
 					value={transactionId}
 					onChange={handleTransactionIdChange}
-					placeholder="Enter Transaction ID"
+					placeholder="Search by Transaction ID"
 				/>
 				<Button onClick={handleTransactionIdSubmit}>Search</Button>
-			</label>
+			
 		</div>
 
 		{/* Accordion for Filters */}

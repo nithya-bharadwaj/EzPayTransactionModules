@@ -2,30 +2,37 @@
 body {
     font-family: Arial, sans-serif; /* Font for the entire app */
     background-color: #f0f2f5; /* Light background for contrast */
+    margin: 0; /* Remove default margin */
+    padding: 20px; /* Add some padding around the body */
 }
 
 /* Filter section */
 .filter {
+    display: flex;
     padding: 20px;
     border: 1px solid #ddd;
     border-radius: 5px;
     background-color: #ffffff; /* White background for filters */
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Light shadow for depth */
     margin-bottom: 20px;
+    gap: 20px; /* Space between filter elements */
+    align-items: center;
 }
 
 /* Responsive layout for filters */
 .filter-container {
     display: flex;
     flex-direction: column;
-    gap: 10px; /* Space between filter elements */
+    gap: 20px; /* Increased gap for better spacing */
+    max-width: 800px; /* Limit width to prevent it from taking too much space */
+    margin: auto; /* Center the filter container */
 }
 
 /* Search container */
 .search-container {
     display: flex;
     align-items: center; /* Align input and button vertically */
-    margin-bottom: 20px;
+    flex-grow: 1; /* Make search grow to take the remaining space */
 }
 
 .search-container input {
@@ -33,7 +40,7 @@ body {
     padding: 10px; /* Increased padding for better usability */
     border: 1px solid #ccc;
     border-radius: 4px;
-    flex-grow: 1; /* Input expands to take remaining space */
+    width: 100%; /* Full width for smaller screens */
 }
 
 /* Labels */
@@ -52,14 +59,31 @@ label {
 
 /* Adjust filter input width for larger screens */
 @media (min-width: 768px) {
+    .filter-container {
+        flex-direction: row;
+        justify-content: space-between; /* Align items side by side */
+    }
+
     .filter {
         flex-direction: row;
-        justify-content: space-between; /* Distribute space on larger screens */
+        align-items: center;
+        gap: 10px; /* Space between filter and search container */
     }
 
     .filter select,
     .filter input {
-        width: auto; /* Auto-width for larger screens */
+        width: auto; /* Auto width for larger screens */
+        flex: 1; /* Inputs take available space */
+    }
+
+    .search-container input {
+        width: auto; /* Make search input adjust properly */
+        flex-grow: 1; /* Ensure it takes remaining space */
+    }
+
+    .filter select:last-child,
+    .filter input:last-child {
+        margin-right: 0; /* Remove right margin from last element */
     }
 }
 
@@ -72,6 +96,7 @@ label {
     border: none; /* Remove default border */
     border-radius: 4px; /* Rounded corners */
     cursor: pointer; /* Pointer on hover */
+    transition: background-color 0.3s; /* Smooth transition for hover effect */
 }
 
 /* Button hover effect */
@@ -100,11 +125,26 @@ label {
 
 /* Media queries for responsive design */
 @media (max-width: 768px) {
-    .filter {
+    .filter-container {
         flex-direction: column; /* Stack elements on small screens */
+    }
+
+    .filter {
+        flex-direction: column; /* Stack filters and search container vertically */
     }
 
     .search-container {
         margin-bottom: 15px; /* Space below search bar */
+        flex-direction: column; /* Stack search input and button vertically */
+    }
+
+    /* Ensuring full width on smaller screens */
+    .filter select,
+    .filter input {
+        width: 100%; /* Full width for smaller screens */
+    }
+
+    .search-container input {
+        width: 100%; /* Full width for smaller screens */
     }
 }

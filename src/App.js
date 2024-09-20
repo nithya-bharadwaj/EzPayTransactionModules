@@ -17,10 +17,11 @@ import {
   createRoutesFromElements,
 } from "react-router-dom";
 
-import Filter from './components/Filter';
-import Home from './Home'; // Import Home component
-import AboutUs from './AboutUs';
+
+import Home from './Pages/Home'; // Import Home component
+import AboutUs from './Pages/AboutUs';
 import TransactionHistoryPage from './Pages/TransactionHistoryPage';
+import Layout from './components/Layout';
 
 
 
@@ -33,11 +34,11 @@ function App() {
   // Create the routes using createBrowserRouter and createRoutesFromElements
   const route = createBrowserRouter(
     createRoutesFromElements(
-      <Route>
+      <Route element={<Layout />}>
         <Route path="/" element={<Home />} />
-        <Route path="/about" element={<AboutUs/>} /> Placeholder for About Us
-        <Route path="/transactions" element={<Filter />} />
-        <Route path="/transactionCopy" element={<TransactionHistoryPage/>} />
+        <Route path="/about" element={<AboutUs />} /> Placeholder for About Us
+        {/*<Route path="/transactions" element={<Filter />} />*/}
+        <Route path="/transactions" element={<TransactionHistoryPage />} />
       </Route>
     )
   );

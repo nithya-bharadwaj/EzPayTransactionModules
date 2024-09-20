@@ -138,7 +138,7 @@ body {
 .image-container {
     width: 40%; /* Adjust width to make the image fit better */
     height: 100%; /* Control the height */
-    background-image: url('./assets/Home_bg.png'); /* Path to your image */
+    background-image: url('../assets/Home_bg.png'); /* Path to your image */
     background-position: right;
     background-size: contain; /* Keep the aspect ratio and contain the image */
     background-repeat: no-repeat; /* Prevent the image from repeating */
