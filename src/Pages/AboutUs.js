@@ -1,5 +1,14 @@
+/**
+ * Author: Preethi R
+ * Date: 20/09/2024
+ * 
+ * Description:
+ * This component serves as the About Us page for the EzPay application. It provides an overview 
+ * of the platform's services and introduces the development team. 
+ */
+
 import React from 'react';
-import '../styles/AboutUs.css'; // Import the CSS for About Us page only
+import './AboutUs.css'; // Import the CSS for About Us page styling
 
 const teamMembers = [
   { name: 'Harsh', email: 'harsh123@gmail.com', color: '#FF6F61' }, // Red
@@ -7,8 +16,6 @@ const teamMembers = [
   { name: 'Nithya', email: 'nithya23@gmail.com', color: '#6B5B95' }, // Purple
   { name: 'Sivaji', email: 'sivaji25@gmail.com', color: '#92A8D1' },  // Blue
   { name: 'Naveen', email: 'naveen12@gmail.com', color: '#88B04B' }, // Green
-  
-  
 ];
 
 const AboutUs = () => {
@@ -18,7 +25,13 @@ const AboutUs = () => {
 
       <div className="content">
         <p className="description">
-          EzPay is your go-to solution for effortless transaction management. Our platform delivers real-time services that ensure you stay in control of your financial activities, with unparalleled ease and efficiency. Whether you’re reviewing your transaction history, scheduling payments, or searching through past activities, EzPay provides a seamless experience. Our intuitive interface allows you to effortlessly navigate through your financial data, offering comprehensive tools to manage your transactions with precision. Our robust features are crafted for simplicity and functionality, making it straightforward to track, manage, and optimize your financial life.
+          EzPay is your go-to solution for effortless transaction management. Our platform delivers 
+          real-time services that ensure you stay in control of your financial activities, with 
+          unparalleled ease and efficiency. Whether you’re reviewing your transaction history, scheduling 
+          payments, or searching through past activities, EzPay provides a seamless experience. Our intuitive 
+          interface allows you to effortlessly navigate through your financial data, offering comprehensive tools 
+          to manage your transactions with precision. Our features are crafted for simplicity and functionality, 
+          making it straightforward to track, manage, and optimize your financial life.
         </p>
       </div>
 
@@ -45,7 +58,7 @@ const AboutUs = () => {
             {teamMembers.map((member, index) => (
               <div className={`team-member ${index === 2 ? 'centered' : ''}`} key={index}>
                 <div className="profile-icon" style={{ backgroundColor: member.color }}>
-                  <span role="img" aria-label="user">👤</span> {/* User icon */}
+                  <span role="img" aria-label="user">👤</span>
                 </div>
                 <div className="team-info">
                   <p>{member.name}</p>
