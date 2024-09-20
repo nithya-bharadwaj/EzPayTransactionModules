@@ -33,7 +33,7 @@
 
 /* Title Styling */
 .about-us-title {
-    font-family: 'Itim', cursive; 
+    font-family: Arial, sans-serif; 
     color: #FFBF00;
     font-size: 4rem;
     text-align: center;
@@ -53,7 +53,7 @@
 
 /* Description Text Styling */
 .description {
-    font-family: 'Kalam', cursive;
+    font-family: Arial, sans-serif;
     font-size: 1.2rem;
     margin-top: 10px;
     text-align: justify;
@@ -79,7 +79,7 @@
 
 /* Section Titles Styling */
 .services-box h2, .developers-box h2 {
-    font-family: 'Itim', cursive;
+    font-family: Arial, sans-serif;
     color: #FFBF00;
 }
 
@@ -104,7 +104,7 @@
 
 /* Developers Section */
 .developers-box h2 {
-    font-family: 'Itim', cursive;
+    font-family: Arial, sans-serif;
     color: #FFBF00;
 }
 

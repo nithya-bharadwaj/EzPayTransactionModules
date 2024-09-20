@@ -22,7 +22,7 @@
 
 /* Body and Background */
 body {
-    font-family: 'Poppins', sans-serif;
+    font-family: Arial, sans-serif;
     background: linear-gradient(to top, #09203f 0%, #537895 100%);
     color: #f0f0f0;
 }
@@ -59,14 +59,14 @@ body {
 /* Main heading */
 .popup-content h1 {
     font-size: 5rem;
-    font-family: 'Bogaloo', cursive;
+    font-family: Arial, sans-serif;
     margin-bottom: 20px;
     color: #ffffff;
 }
 
 /* Tagline */
 .popup-content .tagline {
-    font-family: 'Dancing Script', cursive;
+    font-family: Arial, sans-serif;
     font-size: 2rem;
     color: #ffcc00;
     margin-bottom: 15px;
@@ -75,7 +75,7 @@ body {
 
 /* Description */
 .popup-content .description {
-    font-family: 'Glass Antiqua', serif;
+    font-family: Arial, sans-serif;
     font-size: 1.3rem;
     line-height: 1.8;
     color: #adf7b6;
