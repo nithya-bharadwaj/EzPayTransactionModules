@@ -12,7 +12,7 @@
 
 import React from "react";
 import { Link } from "react-router-dom";
-import "./Home.css"; // CSS for styling the Home component
+import '../styles/Home.css';
 
 const Home = () => {
   return (
