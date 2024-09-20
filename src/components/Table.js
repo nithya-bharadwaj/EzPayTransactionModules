@@ -1,3 +1,25 @@
+/**
+ * TableComponent - A component to display a paginated table of transactions with detailed review functionality.
+ * 
+ * @component
+ * @param {Object[]} transactions - Array of transaction objects to be displayed in the table.
+ * @param {string} transactions[].transactionId - Unique identifier for the transaction.
+ * @param {string} transactions[].date - Date of the transaction.
+ * @param {string} transactions[].transactionType - Type of the transaction.
+ * @param {string} transactions[].receiver - Receiver of the transaction.
+ * @param {number} transactions[].amount - Amount of the transaction.
+ * @param {string} transactions[].status - Status of the transaction (Success, Failure, Processing).
+ * 
+ * @example
+ * const transactions = [
+ *   { transactionId: '1', date: '2023-10-01', transactionType: 'Credit', receiver: 'user10', amount: 1000, status: 'Success' },
+ *   { transactionId: '2', date: '2023-10-02', transactionType: 'Debit', receiver: 'user20', amount: 500, status: 'Processing' },
+ * ];
+ * <TableComponent transactions={transactions} />
+ * 
+ * @author Nithya Bharadwaj P
+*/
+
 import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Table from 'react-bootstrap/Table';
@@ -5,7 +27,6 @@ import Pagination from 'react-bootstrap/Pagination'; // Import Pagination compon
 import { getTransactionById } from '../data/TransactionHistory';
 import ModalComponent from './ModalComponent';
 import '../styles/table.css'
-
 const TableComponent = ({ transactions }) => {
 	// State to store selected transaction for detailed view
 	const [selectedTransaction, setSelectedTransaction] = useState(null);

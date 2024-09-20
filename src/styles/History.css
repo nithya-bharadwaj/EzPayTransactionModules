@@ -1,3 +1,6 @@
+/* Author: Nithya Bharadwaj P */
+/* This section styles the History Page */
+
 body{
     background-color: grey;
 }
@@ -5,7 +8,7 @@ body{
     max-width: 1200px; /* Max width for larger screens */
     margin: 0 auto; /* Center the container */
     padding: 20px; /* Padding around the container */
-    font-family: Arial, sans-serif; /* Professional font */
+    font-family: Arial, sans-serif; 
     background-color: #f8f9fa; /* Light gray background color */
 }
 

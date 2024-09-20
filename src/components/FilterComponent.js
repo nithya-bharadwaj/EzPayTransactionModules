@@ -3,6 +3,42 @@ import 'react-datepicker/dist/react-datepicker.css';
 import Card from 'react-bootstrap/Card';
 import Accordion from 'react-bootstrap/Accordion';
 import '../styles/filter.css';
+/**
+ * FilterComponent - A React component for filtering transactions.
+ *
+ * @component
+ * @param {Object} props - The properties object.
+ * @param {string} props.transactionId - The current transaction ID to filter by.
+ * @param {function} props.handleTransactionIdChange - Function to handle changes to the transaction ID input.
+ * @param {function} props.handleTransactionIdSubmit - Function to handle the submission of the transaction ID search.
+ * @param {string} props.filterType - The current filter type.
+ * @param {function} props.handleTypeChange - Function to handle changes to the filter type.
+ * @param {string} props.filterStatus - The current filter status.
+ * @param {function} props.handleStatusChange - Function to handle changes to the filter status.
+ * @param {string} props.startDate - The current start date for filtering.
+ * @param {string} props.endDate - The current end date for filtering.
+ * @param {function} props.handleDateChange - Function to handle changes to the date inputs.
+ * @param {function} props.handleReset - Function to reset all filters.
+ *
+ * @returns {JSX.Element} The rendered FilterComponent.
+ *
+ * @example
+ * <FilterComponent
+ *   transactionId={transactionId}
+ *   handleTransactionIdChange={handleTransactionIdChange}
+ *   handleTransactionIdSubmit={handleTransactionIdSubmit}
+ *   filterType={filterType}
+ *   handleTypeChange={handleTypeChange}
+ *   filterStatus={filterStatus}
+ *   handleStatusChange={handleStatusChange}
+ *   startDate={startDate}
+ *   endDate={endDate}
+ *   handleDateChange={handleDateChange}
+ *   handleReset={handleReset}
+ * />
+ *
+ * @author Nithya Bharadwaj P
+ */
 const FilterComponent = ({
 	transactionId,
 	handleTransactionIdChange,

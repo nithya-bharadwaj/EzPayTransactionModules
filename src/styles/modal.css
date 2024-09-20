@@ -1,3 +1,7 @@
+/* Author: Nithya Bharadwaj P */
+/* This section styles the modal header */
+/* It includes background and text color */
+/* for a visually appealing header */
 .modal-header {
     background-color: #007bff; /* Blue background for the header */
     color: white; /* White text for the header */
@@ -8,7 +12,7 @@
 }
 
 .modal-body {
-    font-family: Arial, sans-serif; /* Professional font */
+    font-family: Arial, sans-serif; 
     line-height: 1.5; /* Increased line height for readability */
     color: #333; /* Dark text color for better contrast */
 }
