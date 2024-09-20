@@ -9,8 +9,8 @@
 
 import React from "react";
 import { NavLink } from "react-router-dom"; 
-import "./Navbar.css";
-import logo from './assets/EzPayLogo.png'; 
+import '../styles/Navbar.css';
+import logo from '../assets/EzPayLogo.png';  
 
 const Navbar = () => {
   return (
