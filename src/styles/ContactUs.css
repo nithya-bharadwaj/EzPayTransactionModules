@@ -6,9 +6,12 @@
  * This CSS file provides the styling for the Contact Us page of the EzPay application.
  */
 
+/* Import Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
 /* Contact Us Page Container */
 .contact-us-container {
-    height: 100vh;
+    min-height: 100vh; /* Changed to min-height to allow growth */
     background: linear-gradient(to bottom, #002f4b 0%, #537895 100%);
     position: relative;
     overflow: hidden;
@@ -18,8 +21,8 @@
 
 /* Title Styling */
 .contact-us-title {
-    font-family: 'Itim', cursive;
-    color: #FFBF00;
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
     font-size: 4rem;
     text-align: center;
     margin: 0;
@@ -38,7 +41,7 @@
 
 /* Contact Description */
 .contact-description {
-    font-family: 'Kalam', cursive;
+    font-family: Arial, Helvetica, sans-serif;
     font-size: 1.2rem;
     text-align: justify;
     color: #fde2e4;
@@ -61,7 +64,7 @@
 }
 
 .contact-item h3 {
-    font-family: 'Itim', cursive;
+    font-family: Arial, Helvetica, sans-serif;
     color: #48D1CC;
     margin-top: 0;
 }
@@ -88,7 +91,6 @@
 label {
     display: block;
     font-size: 1.2rem;
-    color: #FFBF00;
     margin-bottom: 5px;
 }
 
@@ -133,8 +135,8 @@ textarea {
     align-items: center;
     z-index: 1000;
 }
-  
-  .popup {
+
+.popup {
     background-color: white;
     padding: 30px;
     border-radius: 10px;
@@ -142,19 +144,19 @@ textarea {
     text-align: center;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
-  
-  .popup h2 {
+
+.popup h2 {
     margin: 0 0 15px;
     color: #002f4b;
 }
-  
-  .popup p {
+
+.popup p {
     margin-bottom: 20px;
     font-size: 1rem;
     color: #555;
 }
-  
-  .close-button {
+
+.close-button {
     background-color: #48D1CC;
     color: white;
     font-size: 1rem;
@@ -163,8 +165,9 @@ textarea {
     border-radius: 5px;
     cursor: pointer;
 }
-  
-  .close-button:hover {
+
+.close-button:hover {
     background-color: #FFBF00;
     color: #002f4b;
 }
+

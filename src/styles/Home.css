@@ -9,9 +9,7 @@
  */
 
 /* Import Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Bogaloo&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Glass+Antiqua&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
 /* General Reset */
 * {
@@ -22,7 +20,7 @@
 
 /* Body and Background */
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Roboto', sans-serif;
     background: linear-gradient(to top, #09203f 0%, #537895 100%);
     color: #f0f0f0;
 }
@@ -37,7 +35,7 @@ body {
 /* Hero Section Layout */
 .hero-section {
     display: flex;
-    justify-content: space-between;
+    justify-content: center; /* Centering the popup */
     align-items: center;
     padding: 50px;
     height: 100%;
@@ -52,46 +50,49 @@ body {
     backdrop-filter: blur(10px);
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     width: 60%;
-    height: 72%;
+    max-height: 80%; /* Set max-height to avoid overflow */
+    overflow: hidden; /* Prevent scrolling */
     color: #f8f9fa;
+    display: flex;
+    flex-direction: column; /* Stack elements vertically */
 }
 
 /* Main heading */
 .popup-content h1 {
-    font-size: 5rem;
-    font-family: Arial, sans-serif;
+    font-size: 3rem; /* Adjusted font size */
     margin-bottom: 20px;
     color: #ffffff;
+    flex-shrink: 0; /* Prevent shrinking */
 }
 
 /* Tagline */
 .popup-content .tagline {
-    font-family: Arial, sans-serif;
-    font-size: 2rem;
+    font-size: 1.5rem; /* Adjusted font size */
     color: #ffcc00;
     margin-bottom: 15px;
-    padding-left: 100px;
+    padding-left: 50px; /* Adjusted padding */
 }
 
 /* Description */
 .popup-content .description {
-    font-family: Arial, sans-serif;
-    font-size: 1.3rem;
-    line-height: 1.8;
+    font-size: 1rem; /* Adjusted font size */
+    line-height: 1.5; /* Line height for readability */
     color: #adf7b6;
+    flex-grow: 1; /* Allow this to grow and fill space */
 }
 
 /* Button group styling */
+.button-group {
+    display: flex;
+    justify-content: center; /* Center buttons */
+}
+
 .button-group .btn {
-    margin-right: 50px;
+    margin: 0 10px; /* Adjusted margin */
     border: 2px solid #007bff;
     color: #007bff;
     padding: 10px 20px;
     transition: all 0.3s ease;
-}
-
-.button-group .btn:first-of-type {
-    margin-left: 150px;
 }
 
 /* Hover effect on buttons */

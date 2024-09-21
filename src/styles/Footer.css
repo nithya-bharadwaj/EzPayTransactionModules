@@ -1,0 +1,27 @@
+/* 
+ * Author: Preethi R
+ * Date: 20/09/2024
+ * 
+ * Description:
+ * This stylesheet defines the styling for the footer component in the EzPay application.
+ * It includes styles for the footer background, text alignment, and responsive design.
+ */
+
+/* Footer */
+.footer {
+    background-color: #00416A; /* Match the navbar background color */
+    color: white; /* White text for visibility */
+    text-align: center; /* Center the text */
+    padding: 20px; /* Padding for spacing */
+    position: relative; /* Relative positioning for potential future adjustments */
+    bottom: 0; /* Stick to the bottom of the page */
+    width: 100%; /* Full width */
+    font-size: 1rem; /* Font size for the footer */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .footer {
+        font-size: 0.9rem; /* Smaller font on mobile */
+    }
+}

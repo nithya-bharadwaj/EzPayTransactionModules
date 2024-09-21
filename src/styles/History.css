@@ -1,53 +1,60 @@
 /* Author: Nithya Bharadwaj P */
 /* This section styles the History Page */
 
-body{
-    background-color: grey;
+/* Ensure the container fills the page */
+body {
+  margin: 0; /* Remove default margin */
+  height: 100vh; /* Full height */
+  width: 100%;
+  display: flex;
+  flex-direction: column; /* Column layout */
 }
 
 .container {
-    /*max-width: 1200px; Max width for larger screens*/
-    margin: 0 auto; /* Center the container */
-    padding: 20px; /* Padding around the container */
-    font-family: Arial, sans-serif; 
-    background-color: #f8f9fa; /* Light gray background color */
+  /*max-width: 1200px; Max width for larger screens*/
+  /*margin:auto;*/
+  /*padding: 20px; Padding around the container*/
+  font-family: Arial, sans-serif;
+  background: linear-gradient(to top, #09203f 0%, #537895 100%);
+  /*height: 100vh;*/
+  /*width: 100%;*/
 }
 
 h1 {
-    font-size: 2.5em; /* Larger title */
-    color: #003366; /* Dark blue color for header */
-    margin-bottom: 20px; /* Space below the header */
-    text-align: center; /* Centered title */
+  font-size: 2.5em; /* Larger title */
+  color:white; /* Dark blue color for header */
+  margin-bottom: 20px; /* Space below the header */
+  text-align: center; /* Centered title */
 }
 
 .download-btn {
-    background-color: #007bff; /* Bootstrap primary color */
-    color: white; /* White text */
-    border: none; /* Remove default border */
-    padding: 10px 15px; /* Padding for button */
-    border-radius: 4px; /* Rounded corners */
-    /*margin-top: 10px; Space above the button*/
-    display: block; /* Make button full width */
-    margin:auto;
-    /*width: 100%; Full width for smaller screens*/
+  background-color: #007bff; /* Bootstrap primary color */
+  color: white; /* White text */
+  border: none; /* Remove default border */
+  padding: 10px 15px; /* Padding for button */
+  border-radius: 4px; /* Rounded corners */
+  /*margin-top: 10px; Space above the button*/
+  display: block; /* Make button full width */
+  margin: auto;
+  /*width: 100%; Full width for smaller screens*/
 }
 
 .download-btn:hover {
-    background-color: #0056b3; /* Darker blue on hover */
+  background-color: #0056b3; /* Darker blue on hover */
 }
 
 .error-message {
-    color: red; /* Red color for error messages */
-    text-align: center; /* Center error messages */
-    margin: 20px 0; /* Space around error messages */
+  color: red; /* Red color for error messages */
+  text-align: center; /* Center error messages */
+  margin: 20px 0; /* Space around error messages */
 }
 
 @media (max-width: 768px) {
-    h1 {
-        font-size: 2em; /* Smaller font on mobile */
-    }
+  h1 {
+    font-size: 2em; /* Smaller font on mobile */
+  }
 
-    .download-btn {
-        padding: 8px 12px; /* Smaller padding on mobile */
-    }
+  .download-btn {
+    padding: 8px 12px; /* Smaller padding on mobile */
+  }
 }

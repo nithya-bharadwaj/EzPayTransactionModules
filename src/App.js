@@ -24,10 +24,9 @@ import Home from './Pages/Home';
 import AboutUs from './Pages/AboutUs';
 import Navbar from './components/Navbar';
 import AutopayManager from './components/AutopayManager';
-
-
 import TransactionHistoryPage from './Pages/TransactionHistoryPage';
 import ContactUs from './Pages/ContactUs';
+import Footer from './components/Footer';
 
 function App() {
   // Create the routes using createBrowserRouter and createRoutesFromElements
@@ -53,6 +52,7 @@ function Layout() {
     <div>
       <Navbar /> {/* Use Navbar component for navigation */}
       <Outlet /> {/* Renders the routed page content */}
+     <Footer />
     </div>
   );
 }
