@@ -39,6 +39,11 @@ public class TransactionService {
         logger.info("Fetching all transactions.");
         return transactionRepository.findAll();
     }
+    public List<Transaction> findAllTransactionsSortByDate(){
+    	logger.info("Fetching all transactions in descending order of date.");
+    	return transactionRepository.findAllSortAndFilterScheduled();
+    	
+    }
 
     /**
      * Get a transaction by its ID.
@@ -92,7 +97,27 @@ public class TransactionService {
         logger.info("Filtering transactions with status: {}", status);
         return transactionRepository.findByStatus(status);
     }
+    /**
+     * 
+     * @param startDate
+     * @param endDate
+     * @param type
+     * @param status
+     * @return 
+     */
 
+    public List<Transaction> getFilteredTransactions(LocalDate startDate, LocalDate endDate, String type, String status) {
+        logger.info("Filtering transactions with applied filters.");
+        List<Transaction> transactions=transactionRepository.getFilteredTransactions(startDate, endDate, type, status);
+        if (transactions.isEmpty() ){
+            logger.error("Transactions not found with applied filters");
+            throw new RuntimeException("Transactions not found with applied filters");
+        }
+        
+        	return transactions;
+        
+       
+    }
     /**
      * Review a transaction.
      * This can be used to approve, reject, or mark transactions in review.

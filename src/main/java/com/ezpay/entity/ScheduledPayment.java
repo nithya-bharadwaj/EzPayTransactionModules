@@ -67,7 +67,7 @@ public class ScheduledPayment extends Transaction {
      */
     public ScheduledPayment(double amount, LocalDateTime nextPaymentDate, String status, String sender, 
                             String receiver, LocalDateTime startDate, LocalDateTime endDate, 
-                            String frequency, boolean isAutoPayEnabled, String currency, 
+                            String frequency, boolean isAutoPayEnabled,  
                             String sourceAccount, String destinationAccount) {
         super(amount, LocalDate.now(), status); // Call to the Transaction constructor
         this.nextPaymentDate = nextPaymentDate;

@@ -42,7 +42,7 @@ public class TransactionController {
      */
     @GetMapping("/history")
     public ResponseEntity<List<Transaction>> getAllHistory() {
-        List<Transaction> transactions = transactionService.getAllTransactions();
+        List<Transaction> transactions = transactionService.findAllTransactionsSortByDate();
         return new ResponseEntity<>(transactions, HttpStatus.OK);
     }
 
@@ -92,7 +92,25 @@ public class TransactionController {
         List<Transaction> transactions = transactionService.filterByStatus(status);
         return new ResponseEntity<>(transactions, HttpStatus.OK);
     }
-
+/**
+ * 
+ * @param startDate
+ * @param endDate
+ * @param type
+ * @param status
+ * @return List of transactions filtered with applied filters.
+ */
+    @GetMapping("/filterByMultipleFilters")
+    public ResponseEntity<List<Transaction>> filterByMultipleFilters( 
+    		@RequestParam(required = false) String startDate,
+            @RequestParam(required = false) String endDate,
+            @RequestParam(required = false) String type,
+            @RequestParam(required = false) String status){
+    	 LocalDate start = (startDate != null) ? LocalDate.parse(startDate) : null;
+         LocalDate end = (endDate != null) ? LocalDate.parse(endDate) : null;
+    	List<Transaction> transactions = transactionService.getFilteredTransactions(start, end, type, status);
+    	return new ResponseEntity<>(transactions,HttpStatus.OK);
+    }
     /**
      * Review a transaction.
      * @param transaction Transaction details
