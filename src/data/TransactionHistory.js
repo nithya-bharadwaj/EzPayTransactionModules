@@ -12,7 +12,7 @@
  * @returns {Promise<Array>} An array of all transactions.
  * @throws {Error} If fetching the transaction history fails.
  */
-import base_url from './apiurls'
+import {base_url} from './apiurls'
 export async function getTransactionHistory() {
 	const response = await fetch(`${base_url}/history`);
 	if (response.ok) {

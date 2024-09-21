@@ -322,7 +322,7 @@ const TransactionHistoryPage = () => {
 
 				)}
 
-				{!errorMessage && !errorPage && (<>
+				{!loading && !errorMessage && !errorPage && (<>
 					<TableComponent transactions={transactions} />
 					<Button className="download-btn" onClick={downloadPDF}>
 						<FaDownload style={{ marginRight: '5px' }} /> Download Transactions

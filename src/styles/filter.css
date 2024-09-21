@@ -45,6 +45,13 @@ select, input[type="date"] {
     margin-top: 10px; /* Space above the reset button */
 }
 
+.filterOptions{
+    display:flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+}
 @media (max-width: 768px) {
     .filter {
         padding: 10px; /* Reduced padding on smaller screens */

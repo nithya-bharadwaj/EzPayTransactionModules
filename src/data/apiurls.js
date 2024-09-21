@@ -6,8 +6,9 @@
  * 
 **/
 
-const base_url = "http://localhost:9090/transactions"; // Replace with your actual base URL
+const base_url = "http://localhost:8090/transactions"; // Replace with your actual base URL
+const schedulePaymentUrl = "http://localhost:8090/api/scheduled-payments";
 
 
 
-export default base_url;
+export {base_url,schedulePaymentUrl};

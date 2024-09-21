@@ -3,6 +3,8 @@ import 'react-datepicker/dist/react-datepicker.css';
 import Card from 'react-bootstrap/Card';
 import Accordion from 'react-bootstrap/Accordion';
 import '../styles/filter.css';
+import Offcanvas from 'react-bootstrap/Offcanvas';
+import { useState } from 'react';
 /**
  * FilterComponent - A React component for filtering transactions.
  *
@@ -55,51 +57,117 @@ const FilterComponent = ({
 	const today = new Date()
 		.toISOString()
 		.split('T')[0];
+	const [show, setShow] = useState(false);
+
+	const handleClose = () => setShow(false);
+	const handleShow = () => setShow(true);
 
 	return (<div className="filter">
 		<div className="search-container">
-			
-				<input
-					type="search"
-					value={transactionId}
+
+			<input
+				type="search"
+				value={transactionId}
 				onChange={(event) => {
 					handleTransactionIdChange(event); // Update transaction ID
 					if (event.target.value === '') { // Check if input is cleared
 						handleReset(); // Call the function if cleared
 					}
 				}}
-					placeholder="Search by Transaction ID"
-					onmousemove={handleReset}
-				/>
-			
-				<Button onClick={handleTransactionIdSubmit}>Search</Button>
-			
-		</div>
+				placeholder="Search by Transaction ID"
+				onmousemove={handleReset}
+			/>
 
-		{/* Accordion for Filters */}
-		<Accordion defaultActiveKey="0" className="mt-3">
+			<Button onClick={handleTransactionIdSubmit}>Search</Button>
+
+		</div>
+		<Button variant="primary" onClick={handleShow}>
+			Launch
+		</Button>
+
+		<Offcanvas show={show} onHide={handleClose}>
+			<Offcanvas.Header closeButton>
+				<Offcanvas.Title>Offcanvas</Offcanvas.Title>
+			</Offcanvas.Header>
+			<Offcanvas.Body>
+				<div className="filterLabel">
+					<label>
+						Filter by Type:
+						<select value={filterType} onChange={handleTypeChange}>
+							<option value="">All</option>
+							<option value="UPI">UPI</option>
+							<option value="Bank Transfer">Bank Transfer</option>
+						</select>
+					</label>
+				</div>
+
+				<div className="filterLabel">
+					<label>
+						Filter by Status:
+						<select value={filterStatus} onChange={handleStatusChange}>
+							<option value="">All</option>
+							<option value="Success">Success</option>
+							<option value="Processing">Processing</option>
+							<option value="Failure">Failure</option>
+						</select>
+					</label>
+				</div>
+				<label>Filter by Date
+				<label>
+					Start Date:
+					<input
+						type="date"
+						value={startDate}
+						onChange={(e) => handleDateChange(e, 'startDate')}
+						max={today}
+					/>
+				</label>
+
+				{startDate && (<label>
+					End Date:
+					<input
+						type="date"
+						value={endDate}
+						onChange={(e) => handleDateChange(e, 'endDate')}
+						min={startDate}
+						max={today}
+					/>
+				</label>
+				)}
+				</label>
+				<Button className="reset-btn w-25 my-2" onClick={handleReset}>Apply</Button>
+				<Button className="reset-btn w-25 my-2 mx-4" onClick={handleReset}>Reset</Button>
+			</Offcanvas.Body>
+		</Offcanvas>
+
+		{/*Accordion for Filters
+		<Accordion className="mt-3 collapsed filterOptions">
 			<Accordion.Item eventKey="0">
 				<Accordion.Header>Filters</Accordion.Header>
 				<Accordion.Body>
 					<Card.Body>
-						<label>
-							Filter by Type:
-							<select value={filterType} onChange={handleTypeChange}>
-								<option value="">All</option>
-								<option value="UPI">UPI</option>
-								<option value="Bank Transfer">Bank Transfer</option>
-							</select>
-						</label>
+						<div className="filterLabel">
+							<label>
+								Filter by Type:
+								<select value={filterType} onChange={handleTypeChange}>
+									<option value="">All</option>
+									<option value="UPI">UPI</option>
+									<option value="Bank Transfer">Bank Transfer</option>
+								</select>
+							</label>
+						</div>
 
-						<label>
-							Filter by Status:
-							<select value={filterStatus} onChange={handleStatusChange}>
-								<option value="">All</option>
-								<option value="Success">Success</option>
-								<option value="Processing">Processing</option>
-								<option value="Failure">Failure</option>
-							</select>
-						</label>
+						<div className="filterLabel">
+							<label>
+								Filter by Status:
+								<select value={filterStatus} onChange={handleStatusChange}>
+									<option value="">All</option>
+									<option value="Success">Success</option>
+									<option value="Processing">Processing</option>
+									<option value="Failure">Failure</option>
+								</select>
+							</label>
+						</div>
 
 						<label>
 							Start Date:
@@ -111,7 +179,7 @@ const FilterComponent = ({
 							/>
 						</label>
 
-						{ startDate &&(<label>
+						{startDate && (<label>
 							End Date:
 							<input
 								type="date"
@@ -127,7 +195,7 @@ const FilterComponent = ({
 					</Card.Body>
 				</Accordion.Body>
 			</Accordion.Item>
-		</Accordion>
+		</Accordion>*/}
 
 	</div>);
 }
