@@ -12,7 +12,8 @@
  * @returns {Promise<Array>} An array of all transactions.
  * @throws {Error} If fetching the transaction history fails.
  */
-import {base_url} from './apiurls'
+import {base_url} from './apiurls';
+
 export async function getTransactionHistory() {
 	const response = await fetch(`${base_url}/history`);
 	if (response.ok) {
@@ -36,6 +37,19 @@ export async function getTransactionById(id) {
 		throw new Error(`Error fetching transaction by ID`);
 	}
 }
+
+export const getFilteredTransactionHistory = async ({ type, status, startDate, endDate }) => {
+	const params = new URLSearchParams();
+	if (type) params.append('type', type);
+	if (status) params.append('status', status);
+	if (startDate) params.append('startDate', startDate);
+	if (endDate) params.append('endDate', endDate);
+	const response = await fetch(`${base_url}/filterByMultipleFilters?${params.toString()}`);
+	if (!response.ok) {
+		throw new Error('Error fetching transactions');
+	}
+	return  response.json();
+};
 
 /**
  * Filters transactions based on the type of transaction (e.g., UPI, Bank Transfer).

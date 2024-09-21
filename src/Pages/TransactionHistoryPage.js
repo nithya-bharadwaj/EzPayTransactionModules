@@ -8,11 +8,8 @@
  */
 
 import React, { useState, useEffect, useCallback } from 'react';
-import Button from 'react-bootstrap/Button';
-import { FaDownload } from 'react-icons/fa'; // Ensure this is also imported
+import { getTransactionHistory, getFilteredTransactionHistory, getTransactionById } from '../data/TransactionHistory';
 
-import { getTransactionHistory, filterTransactionsByType, filterTransactionsByStatus, filterTransactionsByDateRange, getTransactionById } from '../data/TransactionHistory';
-//import '../Filter.css';
 import TableComponent from '../components/Table';
 import ErrorMessage from '../components/ErrorComponent';
 import FilterComponent from '../components/FilterComponent';
@@ -45,74 +42,57 @@ const TransactionHistoryPage = () => {
 	const [errorMessage, setErrorMessage] = useState(null);
 
 	const [errorPage, setErrorPage] = useState(null);
-	const [fetch,setFetch]=useState(true);
+	const [fetch, setFetch] = useState(true);
 
 	// Fetch transactions based on filters or fetch all if no filters
 	const fetchTransactions = useCallback(async () => {
-		if(fetch){
-		if (startDate && !endDate) {
+		if (fetch) {
+			if (startDate && !endDate) {
+				return;
+			}
+			setLoading(true);
+			setErrorMessage(null); // Reset error message on fetch
 
-			return;
+			try {
+				let fetchedTransactions = [];
+
+				if (filterType || filterStatus || (startDate && endDate)) {
+					// Fetch based on multiple filters
+					fetchedTransactions = await getFilteredTransactionHistory({
+						type: filterType || null,
+						status: filterStatus || null,
+						startDate: startDate || null,
+						endDate: endDate || null,
+					});
+					if (!fetchedTransactions || fetchedTransactions.length === 0) {
+						throw new Error(`No transactions found with the selected filters`);
+					}
+				} else {
+					// Fetch all if no filters are applied
+					fetchedTransactions = await getTransactionHistory();
+					if (fetchedTransactions.length === 0) {
+						throw new Error("No Transactions found");
+					}
+				}
+
+				setTransactions(fetchedTransactions);
+			} catch (error) {
+				if (!navigator.onLine) {
+					setErrorMessage("Network error: Please check your internet connection.");
+				} else if (error.response && error.response.data && error.response.data.message) {
+					setErrorMessage(error.response.data.message);
+				} else if (error.message === "Failed to fetch") {
+					setErrorPage(true)
+				} else {
+					setErrorMessage("Error fetching transactions: " + error.message);
+				}
+				setTransactions([]);
+			} finally {
+				setLoading(false);
+				setFetch(false);
+			}
 		}
-		setLoading(true);
-		setErrorMessage(null); // Reset error message on fetch
-
-		try {
-			let fetchedTransactions = [];
-
-			if (filterType) {
-				fetchedTransactions = await filterTransactionsByType(filterType);
-				if (!fetchedTransactions || fetchedTransactions.length === 0) {
-					throw new Error(`No transactions found with the selected ${filterType} type`);
-				}
-			} else if (filterStatus) {
-				fetchedTransactions = await filterTransactionsByStatus(filterStatus);
-				if (!fetchedTransactions || fetchedTransactions.length === 0) {
-					throw new Error(`No transactions found with ${filterStatus} status `);
-				}
-			} else if (startDate && endDate) {
-
-
-				fetchedTransactions = await filterTransactionsByDateRange(startDate, endDate);
-				if (!fetchedTransactions || fetchedTransactions.length === 0) {
-					throw new Error(`No transactions found with date ranging from ${startDate} to ${endDate}`);
-				}
-
-			} else {
-				fetchedTransactions = await getTransactionHistory();
-				if (fetchedTransactions.length === 0) {
-					throw new Error("No Transactions found");
-				}
-			}
-
-			if (!fetchedTransactions || fetchedTransactions.length === 0) {
-				throw new Error("No transactions found");
-			}
-			setTransactions(fetchedTransactions);
-		} catch (error) {
-			if (!navigator.onLine) {
-				setErrorMessage("Network error: Please check your internet connection.");
-			} else if (error.message === "Failed to fetch") {
-				setErrorPage(true)
-				//setErrorMessage("Unable to connect to the server. Please try after some time.");
-			} else if (error.response && error.response.status >= 500) {
-				setErrorMessage("Server error: Please try again later.");
-			} else if (error.response && error.response.status >= 400 && error.response.status < 500) {
-				setErrorMessage("Client error: The request could not be processed.");
-			} else if (error.response && error.response.data && error.response.data.message) {
-				setErrorMessage(error.response.data.message);
-			} else {
-				setErrorMessage("Error fetching transactions: " + error.message);
-			}
-			setTransactions([]);
-		} finally {
-			setLoading(false);
-			setFetch(false);
-		}
-	}
-	// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [fetch]);
-
+	}, [fetch, filterType, filterStatus, startDate, endDate]);
 
 	// Automatically fetch transactions when filters change
 	useEffect(() => {
@@ -128,8 +108,7 @@ const TransactionHistoryPage = () => {
 				setTransactions([fetchedTransaction]);
 			} catch (error) {
 				setErrorMessage(`Transaction with ID ${transactionId} not found!!`);
-				//setTransactions([])
-				//setTransactionId('');
+
 			} finally {
 				setLoading(false);
 			}
@@ -138,66 +117,47 @@ const TransactionHistoryPage = () => {
 			window.alert("Enter the  ID to search!")
 		}
 	};
-	const handleApply =  () =>{
-		if(filterType || filterStatus || endDate)
-		setFetch(true);
-		else{
+	const handleApply = () => {
+		if (filterType || filterStatus || endDate)
+			setFetch(true);
+		else {
 			window.alert("No filters selected to apply");
 		}
 	}
 
 	// Reset filters and fetch all transactions again
 	const handleReset = async () => {
-	
-		if(filterType || filterStatus || endDate || transactionId){
-		setFetch(true);
-		setFilterType('');
-		setFilterStatus('');
-		setStartDate('');
-		setEndDate('');
-		setTransactionId('');
-		
+
+		if (filterType || filterStatus || endDate || transactionId) {
+			setFetch(true);
+			setFilterType('');
+			setFilterStatus('');
+			setStartDate('');
+			setEndDate('');
+			setTransactionId('');
+
 		}
-		
 	};
 
 	// Handle filter type change
 	const handleTypeChange = (e) => {
 		setFilterType(e.target.value);
-		setFilterStatus('');
-		setStartDate('');
-		setEndDate('');
-		setTransactionId('');
 	};
 
 	// Handle filter status change
 	const handleStatusChange = (e) => {
 		setFilterStatus(e.target.value);
-		setFilterType('');
-		setStartDate('');
-		setEndDate('');
-		setTransactionId('');
 	};
 
 	// Handle date range change
 	const handleDateChange = (e, field) => {
-		//console.log("date is",date)
 		if (field === 'startDate') setStartDate(e.target.value);
 		else if (field === 'endDate') setEndDate(e.target.value);
-
-
-		setFilterType('');
-		setFilterStatus('');
-		setTransactionId('');
 	};
 
 	// Handle transaction ID input change
 	const handleTransactionIdChange = (e) => {
 		setTransactionId(e.target.value);
-		setFilterType('');
-		setFilterStatus('');
-		setStartDate('');
-		setEndDate('');
 	};
 
 	// Handle error message close button
@@ -205,26 +165,16 @@ const TransactionHistoryPage = () => {
 		setErrorMessage(null);
 		handleReset();
 	};
-	// Function to download transactions as a CSV file
-
-
-	
-
 	return (
 		<>
-
 			<div className="container">
 				<h1>Transaction History</h1>
-
-
 				{errorPage && (<ErrorPage />)
 				}
-
-
 				{/* Filter Controls */}
-				{!errorPage && (<>
+				{!errorPage && !errorMessage &&(<>
 					<FilterComponent
-						handleApply = {handleApply}
+						handleApply={handleApply}
 						transactionId={transactionId}
 						handleTransactionIdChange={handleTransactionIdChange}
 						handleTransactionIdSubmit={handleTransactionIdSubmit}
@@ -237,33 +187,21 @@ const TransactionHistoryPage = () => {
 						handleDateChange={handleDateChange}
 						handleReset={handleReset}
 						transactions={transactions} />
-
-
 				</>)}
-
-
 				{/* Error Message */}
 				{errorMessage && (
 					<ErrorMessage message={errorMessage} onClose={handleCloseError} />
 				)}
-
 				{/* Loading Spinner */}
 				{loading && (
 					<SpinnerComponent />
-
 				)}
-
 				{!loading && !errorMessage && !errorPage && (<>
 					<TableComponent transactions={transactions} />
-					
 				</>
 				)}
-
-
-
 			</div >
 		</>
 	);
 };
-
 export default TransactionHistoryPage;

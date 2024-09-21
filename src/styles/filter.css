@@ -6,7 +6,7 @@
     padding: 15px; /* Consistent padding */
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
     border-radius: 5px; /* Rounded corners */
-    background-color: white; /* White background for clarity */
+    background-color:  rgb(237, 231, 231); /* White background for clarity */
 
     display: flex;
   justify-content:space-between;

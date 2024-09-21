@@ -8,7 +8,7 @@ const downloadPDF = ( transactions ) => {
 
 	// Set up the PDF
 	doc.setFontSize(16);
-	doc.text('Transaction Report', 14, 22);
+	doc.text('Transaction History', 14, 22);
 
 	// Prepare the data for the table
 	const headers = [['ID', 'Date', 'Type', 'Amount', 'Receiver', 'Additional Info', 'Status', '']];

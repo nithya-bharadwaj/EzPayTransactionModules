@@ -1,0 +1,170 @@
+/**
+ * Author: Navin Kumar Yadav
+ * Date: 20/09/2024
+ * 
+ * Description:
+ * This CSS file provides the styling for the Contact Us page of the EzPay application.
+ */
+
+/* Contact Us Page Container */
+.contact-us-container {
+    height: 100vh;
+    background: linear-gradient(to bottom, #002f4b 0%, #537895 100%);
+    position: relative;
+    overflow: hidden;
+    color: #fff;
+    padding: 20px;
+}
+
+/* Title Styling */
+.contact-us-title {
+    font-family: 'Itim', cursive;
+    color: #FFBF00;
+    font-size: 4rem;
+    text-align: center;
+    margin: 0;
+    position: relative;
+    z-index: 2;
+}
+
+/* Contact Page Content */
+.contact-content {
+    z-index: 2;
+    text-align: center;
+    color: #fff;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+/* Contact Description */
+.contact-description {
+    font-family: 'Kalam', cursive;
+    font-size: 1.2rem;
+    text-align: justify;
+    color: #fde2e4;
+    margin-bottom: 40px;
+}
+
+/* Contact Information Styling */
+.contact-info {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 40px;
+}
+
+.contact-item {
+    background: rgba(0, 0, 0, 0.5);
+    padding: 15px;
+    border-radius: 10px;
+    border: 2px solid #FFBF00;
+    width: 30%;
+}
+
+.contact-item h3 {
+    font-family: 'Itim', cursive;
+    color: #48D1CC;
+    margin-top: 0;
+}
+
+.contact-item p {
+    font-size: 1.1rem;
+    margin: 5px 0;
+}
+
+/* Form Styling */
+.contact-form {
+    margin: 40px auto;
+    width: 60%;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 20px;
+    border-radius: 10px;
+    border: 2px solid #FFBF00;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    font-size: 1.2rem;
+    color: #FFBF00;
+    margin-bottom: 5px;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #FFBF00;
+    border-radius: 5px;
+    font-size: 1rem;
+    background-color: #fff;
+}
+
+textarea {
+    height: 100px;
+}
+
+.submit-button {
+    background-color: #48D1CC;
+    color: white;
+    font-size: 1.2rem;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.submit-button:hover {
+    background-color: #FFBF00;
+    color: #002f4b;
+}
+
+/* Popup Styling */
+.popup-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+  
+  .popup {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    width: 300px;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+  
+  .popup h2 {
+    margin: 0 0 15px;
+    color: #002f4b;
+}
+  
+  .popup p {
+    margin-bottom: 20px;
+    font-size: 1rem;
+    color: #555;
+}
+  
+  .close-button {
+    background-color: #48D1CC;
+    color: white;
+    font-size: 1rem;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+  
+  .close-button:hover {
+    background-color: #FFBF00;
+    color: #002f4b;
+}

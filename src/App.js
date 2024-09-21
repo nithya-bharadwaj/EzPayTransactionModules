@@ -20,27 +20,29 @@ import {
 } from "react-router-dom";
 
 
-import Home from './Pages/Home'; 
+import Home from './Pages/Home';
 import AboutUs from './Pages/AboutUs';
 import Navbar from './components/Navbar';
 import AutopayManager from './components/AutopayManager';
 
 
 import TransactionHistoryPage from './Pages/TransactionHistoryPage';
+import ContactUs from './Pages/ContactUs';
 
 function App() {
   // Create the routes using createBrowserRouter and createRoutesFromElements
   const router = createBrowserRouter(
     createRoutesFromElements(
+      
       <Route path="/" element={<Layout />}>
         <Route index element={<Home />} />
         <Route path="about" element={<AboutUs />} />
         <Route path="transactions" element={<TransactionHistoryPage />} />
         <Route path="schedule" element={<AutopayManager/>}/>
-      </Route>
+        <Route path="contact" element={<ContactUs />}/>
+      </Route>  
     )
   );
-
   return (
     <RouterProvider router={router} />
   );

@@ -61,13 +61,8 @@ const FilterComponent = ({
 		.toISOString()
 		.split('T')[0];
 	const [show, setShow] = useState(false);
-
 	const handleClose = () => setShow(false);
-
-
 	const handleShow = () => setShow(true);
-	console.log("Transactions from filter component: ",transactions);
-
 	return (
 		<>
 			<div className="filter">
@@ -75,7 +70,6 @@ const FilterComponent = ({
 					Filter / Reset
 				</Button>
 				<div className="search-container ">
-
 					<input
 						type="search"
 						value={transactionId}
@@ -86,17 +80,11 @@ const FilterComponent = ({
 							}
 						}}
 						placeholder="Search by Transaction ID"
-
 					/>
-
 					<Button size="md" onClick={handleTransactionIdSubmit}>Search</Button>
-					
-
 				</div>
 				<Button size="md"  onClick={() => {
 					if(transactions){
-       
-     
 					downloadPDF(transactions);
 					}
 					else{
@@ -106,13 +94,11 @@ const FilterComponent = ({
 					<FaDownload style={{ marginRight: '5px' }} /> Download Transactions
 				</Button>
 			</div>
-
 			<Offcanvas show={show} onHide={handleClose}>
 				<Offcanvas.Header closeButton>
 					<Offcanvas.Title>Filter Results</Offcanvas.Title>
 				</Offcanvas.Header>
 				<Offcanvas.Body>
-
 					<label>
 						Filter by Type:
 						<select value={filterType} onChange={handleTypeChange}>
@@ -121,7 +107,6 @@ const FilterComponent = ({
 							<option value="Bank Transfer">Bank Transfer</option>
 						</select>
 					</label>
-
 					<label>
 						Filter by Status:
 						<select value={filterStatus} onChange={handleStatusChange}>
@@ -131,7 +116,6 @@ const FilterComponent = ({
 							<option value="Failure">Failure</option>
 						</select>
 					</label>
-
 					<label>Filter by Date
 						<label>
 							Start Date:
@@ -142,7 +126,6 @@ const FilterComponent = ({
 								max={today}
 							/>
 						</label>
-
 						{startDate && (<label>
 							End Date:
 							<input
@@ -165,65 +148,6 @@ const FilterComponent = ({
 					}}>Reset</Button>
 				</Offcanvas.Body>
 			</Offcanvas>
-
-			{/*Accordion for Filters
-		<Accordion className="mt-3 collapsed filterOptions">
-			<Accordion.Item eventKey="0">
-				<Accordion.Header>Filters</Accordion.Header>
-				<Accordion.Body>
-					<Card.Body>
-						<div className="filterLabel">
-							<label>
-								Filter by Type:
-								<select value={filterType} onChange={handleTypeChange}>
-									<option value="">All</option>
-									<option value="UPI">UPI</option>
-									<option value="Bank Transfer">Bank Transfer</option>
-								</select>
-							</label>
-						</div>
-
-						<div className="filterLabel">
-							<label>
-								Filter by Status:
-								<select value={filterStatus} onChange={handleStatusChange}>
-									<option value="">All</option>
-									<option value="Success">Success</option>
-									<option value="Processing">Processing</option>
-									<option value="Failure">Failure</option>
-								</select>
-							</label>
-						</div>
-
-						<label>
-							Start Date:
-							<input
-								type="date"
-								value={startDate}
-								onChange={(e) => handleDateChange(e, 'startDate')}
-								max={today}
-							/>
-						</label>
-
-						{startDate && (<label>
-							End Date:
-							<input
-								type="date"
-								value={endDate}
-								onChange={(e) => handleDateChange(e, 'endDate')}
-								min={startDate}
-								max={today}
-							/>
-						</label>
-						)}
-
-						<Button className="reset-btn" onClick={handleReset}>Reset</Button>
-					</Card.Body>
-				</Accordion.Body>
-			</Accordion.Item>
-		</Accordion>*/}
-
 		</>);
 }
-
 export default FilterComponent;
