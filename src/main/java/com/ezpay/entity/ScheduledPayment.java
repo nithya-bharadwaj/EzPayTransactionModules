@@ -115,11 +115,11 @@ public class ScheduledPayment extends Transaction {
         this.frequency = frequency;
     }
 
-    public boolean isAutoPayEnabled() {
+    public boolean getIsAutoPayEnabled() {
         return isAutoPayEnabled;
     }
 
-    public void setAutoPayEnabled(boolean isAutoPayEnabled) {
+    public void setIsAutoPayEnabled(boolean isAutoPayEnabled) {
         this.isAutoPayEnabled = isAutoPayEnabled;
     }
 

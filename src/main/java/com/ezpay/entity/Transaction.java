@@ -39,7 +39,9 @@ import jakarta.persistence.Table;
 public class Transaction {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "transaction_seq")
+//    @SequenceGenerator(name = "transaction_seq", sequenceName = "transaction_sequence", allocationSize = 1)
+   @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "transaction_id")
     private int transactionId;  // Unique identifier for the transaction
 
@@ -98,6 +100,11 @@ public class Transaction {
         this.status = status;
     }
 
+    public Transaction(double amount, LocalDate date, String status) {
+        this.amount = amount;
+        this.date = date;
+        this.status = status;
+    }
     // Getters and setters for all fields
 
     /**

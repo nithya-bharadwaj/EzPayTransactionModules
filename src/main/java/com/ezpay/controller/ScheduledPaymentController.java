@@ -1,4 +1,3 @@
-
 /**
  * Author: Shivaji Reddy Suram
  * Date: 18/09/2024
@@ -7,10 +6,12 @@ package com.ezpay.controller;
 
 import com.ezpay.entity.ScheduledPayment;
 import com.ezpay.service.ScheduledPaymentService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.CrossOrigin;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -23,6 +24,8 @@ import java.util.Optional;
 @RequestMapping("api/scheduled-payments")
 public class ScheduledPaymentController {
 
+    private static final Logger logger = LogManager.getLogger(ScheduledPaymentController.class);
+
     @Autowired
     private ScheduledPaymentService scheduledPaymentService;
 
@@ -34,7 +37,10 @@ public class ScheduledPaymentController {
      */
     @PostMapping("/add")
     public ResponseEntity<ScheduledPayment> addScheduledPayment(@RequestBody ScheduledPayment scheduledPayment) {
+        logger.info("Adding scheduled payment: {}", scheduledPayment);
+        scheduledPayment.setTransactionType("Scheduled Payment");
         ScheduledPayment createdPayment = scheduledPaymentService.addScheduledPayment(scheduledPayment);
+        logger.info("Successfully added scheduled payment with ID: {}", createdPayment.getTransactionId());
         return ResponseEntity.ok(createdPayment);
     }
 
@@ -45,7 +51,9 @@ public class ScheduledPaymentController {
      */
     @GetMapping("/ScheduledPaymentsHistory")
     public ResponseEntity<List<ScheduledPayment>> getAllScheduledPayments() {
+        logger.info("Retrieving all scheduled payments.");
         List<ScheduledPayment> payments = scheduledPaymentService.getAllScheduledPayments();
+        logger.info("Retrieved {} scheduled payments.", payments.size());
         return ResponseEntity.ok(payments);
     }
 
@@ -57,8 +65,15 @@ public class ScheduledPaymentController {
      */
     @GetMapping("/{transactionId}")
     public ResponseEntity<ScheduledPayment> getScheduledPaymentById(@PathVariable int transactionId) {
+        logger.info("Retrieving scheduled payment with transaction ID: {}", transactionId);
         Optional<ScheduledPayment> payment = scheduledPaymentService.getScheduledPaymentById(transactionId);
-        return payment.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+        if (payment.isPresent()) {
+            logger.info("Scheduled payment found: {}", payment.get());
+            return ResponseEntity.ok(payment.get());
+        } else {
+            logger.warn("Scheduled payment with transaction ID {} not found.", transactionId);
+            return ResponseEntity.notFound().build();
+        }
     }
 
     /**
@@ -70,8 +85,15 @@ public class ScheduledPaymentController {
      */
     @PutMapping("/modify/{transactionId}")
     public ResponseEntity<ScheduledPayment> modifyScheduledPayment(@PathVariable int transactionId, @RequestBody ScheduledPayment updatedPayment) {
+        logger.info("Modifying scheduled payment with transaction ID: {}", transactionId);
         ScheduledPayment modifiedPayment = scheduledPaymentService.modifyScheduledPayment(transactionId, updatedPayment);
-        return modifiedPayment != null ? ResponseEntity.ok(modifiedPayment) : ResponseEntity.notFound().build();
+        if (modifiedPayment != null) {
+            logger.info("Successfully modified scheduled payment with ID: {}", modifiedPayment.getTransactionId());
+            return ResponseEntity.ok(modifiedPayment);
+        } else {
+            logger.warn("Scheduled payment with transaction ID {} not found for modification.", transactionId);
+            return ResponseEntity.notFound().build();
+        }
     }
 
     /**
@@ -82,7 +104,15 @@ public class ScheduledPaymentController {
      */
     @DeleteMapping("/cancel/{transactionId}")
     public ResponseEntity<Void> cancelScheduledPayment(@PathVariable int transactionId) {
-        scheduledPaymentService.cancelScheduledPayment(transactionId);
-        return ResponseEntity.noContent().build();
+        logger.info("Cancelling scheduled payment with transaction ID: {}", transactionId);
+        Optional<ScheduledPayment> payment = scheduledPaymentService.getScheduledPaymentById(transactionId);
+        if (payment.isPresent()) {
+            scheduledPaymentService.cancelScheduledPayment(transactionId);
+            logger.info("Successfully cancelled scheduled payment with ID: {}", transactionId);
+            return ResponseEntity.noContent().build();
+        } else {
+            logger.warn("Scheduled payment with transaction ID {} not found for cancellation.", transactionId);
+            return ResponseEntity.notFound().build(); // Return 404 if not found
+        }
     }
 }

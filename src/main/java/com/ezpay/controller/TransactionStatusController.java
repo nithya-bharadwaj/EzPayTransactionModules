@@ -7,6 +7,8 @@ package com.ezpay.controller;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +18,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ezpay.entity.BankTransferTransaction;
 import com.ezpay.entity.Transaction;
+import com.ezpay.entity.UPITransaction;
 import com.ezpay.exception.TransactionNotFoundException;
 import com.ezpay.service.TransactionStatusService;
 
@@ -27,8 +31,10 @@ import com.ezpay.service.TransactionStatusService;
  */
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
-@RequestMapping("transactions")
+@RequestMapping("transactionstatus")
 public class TransactionStatusController {
+	
+    private static final Logger logger = LogManager.getLogger(TransactionStatusController.class);
 	
 	@Autowired
 	TransactionStatusService transactionService;
@@ -40,9 +46,18 @@ public class TransactionStatusController {
 	 * @return The added transaction object.
 	 */
 	@PostMapping("/AddTransaction")
-    public Transaction AddTransaction(@RequestBody Transaction transaction){
-        return transactionService.addTransactionService(transaction);
-		
+    public Transaction AddTransaction(@RequestBody Transaction transaction) {
+		 if (transaction instanceof UPITransaction) {
+	            logger.info("Processing UPI transaction");
+	            transaction.setTransactionType("UPI");
+	        } else if (transaction instanceof BankTransferTransaction) {
+	            logger.info("Processing Bank Transfer transaction");
+	            transaction.setTransactionType("Bank Transfer");
+	        }
+        logger.info("Adding a new transaction: {}", transaction);
+        Transaction addedTransaction = transactionService.addTransactionService(transaction);
+        logger.info("Transaction added successfully: {}", addedTransaction);
+        return addedTransaction;
     }
 	
 	/**
@@ -52,13 +67,15 @@ public class TransactionStatusController {
 	 * or NOT_FOUND if no transactions are found.
 	 */
 	@GetMapping("/history")
-    public List<Transaction> getTransactionHistory(){
-        
-        	List<Transaction> transactions = transactionService.getTransactionHistory();
-        	if (transactions.isEmpty()) {
-                throw new TransactionNotFoundException("No history found.");
-            }
-            return transactions;
+    public List<Transaction> getTransactionHistory() {
+        logger.info("Fetching transaction history.");
+        List<Transaction> transactions = transactionService.getTransactionHistory();
+        if (transactions.isEmpty()) {
+            logger.warn("No transaction history found.");
+            throw new TransactionNotFoundException("No history found.");
+        }
+        logger.info("Retrieved {} transactions.", transactions.size());
+        return transactions;
     }
 	
 	/**
@@ -68,15 +85,19 @@ public class TransactionStatusController {
 	 * @return A ResponseEntity containing the transaction if found, or NOT_FOUND if not.
 	 */
 	@GetMapping("/{transactionId}")
-    public Optional<Transaction> getTransactionById(@PathVariable String transactionId) throws Exception{
-			if (!isValidInteger(transactionId)) {
+    public Optional<Transaction> getTransactionById(@PathVariable String transactionId) throws Exception {
+        logger.info("Fetching transaction with ID: {}", transactionId);
+        if (!isValidInteger(transactionId)) {
+            logger.error("Invalid transaction ID format: {}", transactionId);
             throw new TransactionNotFoundException("Invalid transaction ID format: " + transactionId);
-			}
-        	Optional<Transaction> transaction= transactionService.getTransactionById(Integer.parseInt(transactionId));
-        	if (transaction.isEmpty()) {
-                throw new TransactionNotFoundException("Transaction with ID " + transactionId + " not found.");
-            }
-            return transaction;
+        }
+        Optional<Transaction> transaction = transactionService.getTransactionById(Integer.parseInt(transactionId));
+        if (transaction.isEmpty()) {
+            logger.error("Transaction with ID {} not found.", transactionId);
+            throw new TransactionNotFoundException("Transaction with ID " + transactionId + " not found.");
+        }
+        logger.info("Transaction retrieved successfully: {}", transaction.get());
+        return transaction;
     }
 	
 	/**
@@ -88,19 +109,22 @@ public class TransactionStatusController {
 	 */
 	@GetMapping("/status/{transactionId}")
     public String getTransactionStatus(@PathVariable String transactionId) throws Exception {
-		if (!isValidInteger(transactionId)) {
+        logger.info("Tracking status for transaction ID: {}", transactionId);
+        if (!isValidInteger(transactionId)) {
+            logger.error("Invalid transaction ID format: {}", transactionId);
             throw new TransactionNotFoundException("Invalid transaction ID format: " + transactionId);
-			}
-		String status = transactionService.trackTransactionStatus(Integer.parseInt(transactionId));
+        }
+        String status = transactionService.trackTransactionStatus(Integer.parseInt(transactionId));
         if (status == null) {
+            logger.error("Transaction with ID {} not found.", transactionId);
             throw new TransactionNotFoundException("Transaction with ID " + transactionId + " not found.");
         }
+        logger.info("Status for transaction ID {}: {}", transactionId, status);
         return status;
     }
 	
-	
 	/**
-	 * checks the validity of the transaction ID.
+	 * Checks the validity of the transaction ID.
 	 */
 	private boolean isValidInteger(String transactionId) {
         try {
@@ -110,15 +134,4 @@ public class TransactionStatusController {
             return false;
         }
     }
-	
-//	@GetMapping("/history1")
-//    public Page<Transaction> getTransactionHistoryUsingPaging(@RequestParam(defaultValue="0") Integer pageNo, @RequestParam(defaultValue="1") Integer pageSize, @RequestParam(defaultValue="transactionId") String sortBy){
-////		PageRequest pageRequest= PageRequest.of(pageNo, pageSize,Sort.by(sortBy));
-////		Page<Transaction> pageOfCustomer=transactionrepository.findAll(pageRequest);
-////		return pageOfCustomer.getContent();
-//		
-//		Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
-//	    return transactionrepository.findAll(pageable);
-//	}
 }
-

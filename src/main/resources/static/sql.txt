@@ -69,6 +69,21 @@ You can change values of different fields to create new Transactions
 }
 
 
+{
+     "transactionType": "Scheduled Payment",
+    "amount": 700,
+    "status": "Success",
+    "sender": "testing_api",
+    "receiver": "YouTube",
+    "nextPaymentDate": "2024-09-20T10:00:00",
+    "startDate": "2024-09-01T10:00:00",
+    "endDate": "2025-09-01T10:00:00",
+    "frequency": "Quarterly",
+    "isAutoPayEnabled": false,
+    "sourceAccount": "123456789",
+    "destinationAccount": "Google987654321"
+}
+
 
 
 

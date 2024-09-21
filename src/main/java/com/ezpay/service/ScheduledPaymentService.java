@@ -2,6 +2,8 @@ package com.ezpay.service;
 
 import com.ezpay.entity.ScheduledPayment;
 import com.ezpay.repository.ScheduledPaymentRepository;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +17,8 @@ import java.util.Optional;
 @Service
 public class ScheduledPaymentService {
 
+    private static final Logger logger = LogManager.getLogger(ScheduledPaymentService.class);
+
     @Autowired
     private ScheduledPaymentRepository scheduledPaymentRepository;
 
@@ -25,7 +29,11 @@ public class ScheduledPaymentService {
      * @return The added ScheduledPayment object.
      */
     public ScheduledPayment addScheduledPayment(ScheduledPayment scheduledPayment) {
-        return scheduledPaymentRepository.save(scheduledPayment);
+        logger.info("Adding scheduled payment: {}", scheduledPayment);
+        
+        ScheduledPayment savedPayment = scheduledPaymentRepository.save(scheduledPayment);
+        logger.info("Successfully added scheduled payment with ID: {}", savedPayment.getTransactionId());
+        return savedPayment;
     }
 
     /**
@@ -34,7 +42,10 @@ public class ScheduledPaymentService {
      * @return A list of all ScheduledPayment objects.
      */
     public List<ScheduledPayment> getAllScheduledPayments() {
-        return scheduledPaymentRepository.findAll();
+        logger.info("Retrieving all scheduled payments.");
+        List<ScheduledPayment> payments = scheduledPaymentRepository.findAll();
+        logger.info("Retrieved {} scheduled payments.", payments.size());
+        return payments;
     }
 
     /**
@@ -44,16 +55,34 @@ public class ScheduledPaymentService {
      * @return An Optional containing the ScheduledPayment if found, or empty if not found.
      */
     public Optional<ScheduledPayment> getScheduledPaymentById(int transactionId) {
-        return scheduledPaymentRepository.findByTransactionId(transactionId);
+        logger.info("Retrieving scheduled payment with transaction ID: {}", transactionId);
+        Optional<ScheduledPayment> payment = scheduledPaymentRepository.findByTransactionId(transactionId);
+        if (payment.isPresent()) {
+            logger.info("Scheduled payment found: {}", payment.get());
+        } else {
+            logger.warn("Scheduled payment with transaction ID {} not found.", transactionId);
+        }
+        return payment;
     }
 
     /**
-     * Cancels a scheduled payment by deleting it from the repository.
+     * Cancels a scheduled payment by updating its status and auto-pay settings.
      *
      * @param transactionId The ID of the transaction to be canceled.
      */
     public void cancelScheduledPayment(int transactionId) {
-        scheduledPaymentRepository.deleteById(transactionId);
+        logger.info("Cancelling scheduled payment with transaction ID: {}", transactionId);
+        Optional<ScheduledPayment> optionalPayment = scheduledPaymentRepository.findByTransactionId(transactionId);
+        
+        if (optionalPayment.isPresent()) {
+            ScheduledPayment payment = optionalPayment.get();
+            payment.setIsAutoPayEnabled(false); // Set auto-pay to false
+            payment.setStatus("cancelled"); // Set status to cancelled
+            scheduledPaymentRepository.save(payment); // Save the updated payment
+            logger.info("Successfully cancelled scheduled payment with ID: {}", transactionId);
+        } else {
+            logger.warn("Scheduled payment with transaction ID {} not found for cancellation.", transactionId);
+        }
     }
 
     /**
@@ -64,10 +93,15 @@ public class ScheduledPaymentService {
      * @return The modified ScheduledPayment object, or null if not found.
      */
     public ScheduledPayment modifyScheduledPayment(int transactionId, ScheduledPayment updatedPayment) {
+        logger.info("Modifying scheduled payment with transaction ID: {}", transactionId);
         if (scheduledPaymentRepository.existsById(transactionId)) {
             updatedPayment.setTransactionId(transactionId);
-            return scheduledPaymentRepository.save(updatedPayment);
+            ScheduledPayment modifiedPayment = scheduledPaymentRepository.save(updatedPayment);
+            logger.info("Successfully modified scheduled payment with ID: {}", modifiedPayment.getTransactionId());
+            return modifiedPayment;
+        } else {
+            logger.warn("Scheduled payment with transaction ID {} not found for modification.", transactionId);
+            return null; // Or throw an exception
         }
-        return null; // Or throw an exception
     }
 }

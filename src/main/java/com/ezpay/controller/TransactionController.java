@@ -1,12 +1,10 @@
-/**
- * Author:  Harshdeep Chhabra
- * Date: 02/09/2024
- * **/
 package com.ezpay.controller;
 
 import java.time.LocalDate;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,6 +31,8 @@ import com.ezpay.service.TransactionService;
 @RequestMapping("/transactions")
 public class TransactionController {
 
+    private static final Logger logger = LogManager.getLogger(TransactionController.class);
+
     @Autowired
     private TransactionService transactionService;
 
@@ -42,7 +42,7 @@ public class TransactionController {
      */
     @GetMapping("/history")
     public ResponseEntity<List<Transaction>> getAllHistory() {
-        List<Transaction> transactions = transactionService.getAllTransactionsSort();
+        List<Transaction> transactions = transactionService.getAllTransactions();
         return new ResponseEntity<>(transactions, HttpStatus.OK);
     }
 
@@ -102,13 +102,15 @@ public class TransactionController {
     public ResponseEntity<String> reviewTransaction(@RequestBody Transaction transaction) {
         
         if (transaction instanceof UPITransaction) {
-        	System.out.println("Running UPI type");
+            logger.info("Processing UPI transaction");
             transaction.setTransactionType("UPI");
         } else if (transaction instanceof BankTransferTransaction) {
-        	System.out.println("Running Bank Transfer type");
+            logger.info("Processing Bank Transfer transaction");
             transaction.setTransactionType("Bank Transfer");
         }
+        
         String statusMessage = transactionService.reviewTransaction(transaction);
+        logger.info("Transaction review completed: {}", statusMessage);
         return new ResponseEntity<>(statusMessage, HttpStatus.OK);
     }
 

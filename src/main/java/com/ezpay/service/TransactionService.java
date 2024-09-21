@@ -2,12 +2,15 @@
  * Author:  Harshdeep Chhabra
  * Date: 01/09/2024
  * **/
+
 package com.ezpay.service;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,19 +26,18 @@ import com.ezpay.repository.TransactionRepository;
 @Service
 public class TransactionService {
 
+    private static final Logger logger = LogManager.getLogger(TransactionService.class);
+
     @Autowired
     private TransactionRepository transactionRepository;
-    
 
     /**
      * Get all transactions.
      * @return List of all transactions
      */
     public List<Transaction> getAllTransactions() {
+        logger.info("Fetching all transactions.");
         return transactionRepository.findAll();
-    }
-    public List<Transaction> getAllTransactionsSort(){
-    	return transactionRepository.findAllByOrderByDateDesc();
     }
 
     /**
@@ -46,8 +48,12 @@ public class TransactionService {
      */
     public Transaction getTransactionById(int transactionId) {
         validateTransactionId(transactionId);
+        logger.info("Fetching transaction with ID: {}", transactionId);
         Optional<Transaction> transaction = transactionRepository.findById(transactionId);
-        return transaction.orElseThrow(() -> new RuntimeException("Transaction not found with ID: " + transactionId));
+        return transaction.orElseThrow(() -> {
+            logger.error("Transaction not found with ID: {}", transactionId);
+            return new RuntimeException("Transaction not found with ID: " + transactionId);
+        });
     }
 
     /**
@@ -59,6 +65,7 @@ public class TransactionService {
      */
     public List<Transaction> filterByDateRange(LocalDate startDate, LocalDate endDate) {
         validateDateRange(startDate, endDate);
+        logger.info("Filtering transactions from {} to {}", startDate, endDate);
         return transactionRepository.findByDateRange(startDate, endDate);
     }
 
@@ -70,6 +77,7 @@ public class TransactionService {
      */
     public List<Transaction> filterByType(String type) {
         validateTransactionType(type);
+        logger.info("Filtering transactions by type: {}", type);
         return transactionRepository.findByTransactionType(type);
     }
 
@@ -81,7 +89,7 @@ public class TransactionService {
      */
     public List<Transaction> filterByStatus(String status) {
         validateTransactionStatus(status);
-        System.out.println("Status is :"+status);
+        logger.info("Filtering transactions with status: {}", status);
         return transactionRepository.findByStatus(status);
     }
 
@@ -93,9 +101,9 @@ public class TransactionService {
      * @throws RuntimeException if transaction is not found
      */
     public String reviewTransaction(Transaction transaction) {
-//    	validateTransactionId(transaction.getTransactionId());
-        transactionRepository.save(transaction);     
-        return ("Transaction is :"+transaction.getStatus());       
+        transactionRepository.save(transaction);
+        logger.info("Reviewed transaction: {}", transaction);
+        return ("Transaction is :" + transaction.getStatus());
     }
 
     /**
@@ -106,9 +114,11 @@ public class TransactionService {
      */
     public TransactionDetailsResponse viewMoreDetails(int transactionId) {
         validateTransactionId(transactionId);
+        logger.info("Fetching details for transaction ID: {}", transactionId);
 
         Optional<Transaction> optionalTransaction = transactionRepository.findById(transactionId);
         if (optionalTransaction.isEmpty()) {
+            logger.error("Transaction not found with ID: {}", transactionId);
             throw new RuntimeException("Transaction not found");
         }
 
@@ -123,13 +133,13 @@ public class TransactionService {
 
         if (transaction.getTransactionType().equalsIgnoreCase("UPI") && transaction instanceof UPITransaction) {
             UPITransaction upiTransaction = (UPITransaction) transaction;
-            response.setUpiId(upiTransaction.getUpiId()); // Set UPI ID
+            response.setUpiId(upiTransaction.getUpiId());
             response.setUserId(upiTransaction.getUserId());
         } else if (transaction.getTransactionType().equalsIgnoreCase("Bank Transfer") && transaction instanceof BankTransferTransaction) {
             BankTransferTransaction bankTransferTransaction = (BankTransferTransaction) transaction;
             response.setSender(bankTransferTransaction.getSenderAccount());
             response.setReceiver(bankTransferTransaction.getReceiverAccount());
-            response.setTransferId(bankTransferTransaction.getTransferId()); // Set Transfer ID
+            response.setTransferId(bankTransferTransaction.getTransferId());
         }
 
         return response;
