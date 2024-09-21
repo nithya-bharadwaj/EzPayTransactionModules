@@ -26,19 +26,19 @@ const Navbar = () => {
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav ms-auto">
             <li className="nav-item">
-              <NavLink className="nav-link" to="/" activeClassName="active">Home</NavLink>
+              <NavLink className="nav-link" to="/" activeclassname="active">Home</NavLink>
             </li>
             <li className="nav-item">
-              <NavLink className="nav-link" to="/about" activeClassName="active">About Us</NavLink>
+              <NavLink className="nav-link" to="/about" activeclassname="active">About Us</NavLink>
             </li>
             <li className="nav-item">
-              <NavLink className="nav-link" to="/contact" activeClassName="active">Contact Us</NavLink>
+              <NavLink className="nav-link" to="/contact" activeclassname="active">Contact Us</NavLink>
             </li>
             <li className="nav-item">
-              <NavLink className="nav-link" to="/transactions" activeClassName="active">Transaction History</NavLink>
+              <NavLink className="nav-link" to="/transactions" activeclassname="active">Transaction History</NavLink>
             </li>
             <li className="nav-item">
-              <NavLink className="nav-link" to="/schedule" activeClassName="active">Scheduled Payments</NavLink>
+              <NavLink className="nav-link" to="/schedule" activeclassname="active">Scheduled Payments</NavLink>
             </li>
           </ul>
         </div>

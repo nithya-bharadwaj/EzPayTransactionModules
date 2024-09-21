@@ -7,6 +7,10 @@
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
     border-radius: 5px; /* Rounded corners */
     background-color: white; /* White background for clarity */
+
+    display: flex;
+  justify-content:space-between;
+  align-items: center;
 }
 
 .search-container {
@@ -21,6 +25,7 @@
     border: 1px solid #ccc; /* Border around input */
     border-radius: 4px; /* Rounded corners */
     font-size: 14px; /* Font size for readability */
+    size: auto;
 }
 
 .search-container button {
@@ -45,13 +50,6 @@ select, input[type="date"] {
     margin-top: 10px; /* Space above the reset button */
 }
 
-.filterOptions{
-    display:flex;
-    flex-direction: column;
-    justify-content: space-between;
-    margin-bottom: 10px;
-    flex-wrap: wrap;
-}
 @media (max-width: 768px) {
     .filter {
         padding: 10px; /* Reduced padding on smaller screens */
@@ -65,3 +63,5 @@ select, input[type="date"] {
         padding: 6px; /* Smaller padding for button */
     }
 }
+
+

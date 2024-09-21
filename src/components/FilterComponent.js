@@ -1,10 +1,11 @@
 import Button from 'react-bootstrap/Button';
 import 'react-datepicker/dist/react-datepicker.css';
-import Card from 'react-bootstrap/Card';
-import Accordion from 'react-bootstrap/Accordion';
+
 import '../styles/filter.css';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import { useState } from 'react';
+import { FaDownload } from 'react-icons/fa';
+import downloadPDF from './Download';
 /**
  * FilterComponent - A React component for filtering transactions.
  *
@@ -52,7 +53,9 @@ const FilterComponent = ({
 	startDate,
 	endDate,
 	handleDateChange,
-	handleReset
+	handleReset,
+	handleApply,
+	transactions
 }) => {
 	const today = new Date()
 		.toISOString()
@@ -60,37 +63,56 @@ const FilterComponent = ({
 	const [show, setShow] = useState(false);
 
 	const handleClose = () => setShow(false);
+
+
 	const handleShow = () => setShow(true);
+	console.log("Transactions from filter component: ",transactions);
 
-	return (<div className="filter">
-		<div className="search-container">
+	return (
+		<>
+			<div className="filter">
+				<Button className = "w-auto" size="md" variant="primary" onClick={handleShow}>
+					Filter / Reset
+				</Button>
+				<div className="search-container ">
 
-			<input
-				type="search"
-				value={transactionId}
-				onChange={(event) => {
-					handleTransactionIdChange(event); // Update transaction ID
-					if (event.target.value === '') { // Check if input is cleared
-						handleReset(); // Call the function if cleared
+					<input
+						type="search"
+						value={transactionId}
+						onChange={(event) => {
+							handleTransactionIdChange(event); // Update transaction ID
+							if (event.target.value === '') { // Check if input is cleared
+								handleReset(); // Call the function if cleared
+							}
+						}}
+						placeholder="Search by Transaction ID"
+
+					/>
+
+					<Button size="md" onClick={handleTransactionIdSubmit}>Search</Button>
+					
+
+				</div>
+				<Button size="md"  onClick={() => {
+					if(transactions){
+       
+     
+					downloadPDF(transactions);
 					}
-				}}
-				placeholder="Search by Transaction ID"
-				onmousemove={handleReset}
-			/>
+					else{
+						window.alert("Error processing your request - Please try after sometime..!");
+					}
+				}}>
+					<FaDownload style={{ marginRight: '5px' }} /> Download Transactions
+				</Button>
+			</div>
 
-			<Button onClick={handleTransactionIdSubmit}>Search</Button>
+			<Offcanvas show={show} onHide={handleClose}>
+				<Offcanvas.Header closeButton>
+					<Offcanvas.Title>Filter Results</Offcanvas.Title>
+				</Offcanvas.Header>
+				<Offcanvas.Body>
 
-		</div>
-		<Button variant="primary" onClick={handleShow}>
-			Launch
-		</Button>
-
-		<Offcanvas show={show} onHide={handleClose}>
-			<Offcanvas.Header closeButton>
-				<Offcanvas.Title>Offcanvas</Offcanvas.Title>
-			</Offcanvas.Header>
-			<Offcanvas.Body>
-				<div className="filterLabel">
 					<label>
 						Filter by Type:
 						<select value={filterType} onChange={handleTypeChange}>
@@ -99,9 +121,7 @@ const FilterComponent = ({
 							<option value="Bank Transfer">Bank Transfer</option>
 						</select>
 					</label>
-				</div>
 
-				<div className="filterLabel">
 					<label>
 						Filter by Status:
 						<select value={filterStatus} onChange={handleStatusChange}>
@@ -111,36 +131,42 @@ const FilterComponent = ({
 							<option value="Failure">Failure</option>
 						</select>
 					</label>
-				</div>
-				<label>Filter by Date
-				<label>
-					Start Date:
-					<input
-						type="date"
-						value={startDate}
-						onChange={(e) => handleDateChange(e, 'startDate')}
-						max={today}
-					/>
-				</label>
 
-				{startDate && (<label>
-					End Date:
-					<input
-						type="date"
-						value={endDate}
-						onChange={(e) => handleDateChange(e, 'endDate')}
-						min={startDate}
-						max={today}
-					/>
-				</label>
-				)}
-				</label>
-				<Button className="reset-btn w-25 my-2" onClick={handleReset}>Apply</Button>
-				<Button className="reset-btn w-25 my-2 mx-4" onClick={handleReset}>Reset</Button>
-			</Offcanvas.Body>
-		</Offcanvas>
+					<label>Filter by Date
+						<label>
+							Start Date:
+							<input
+								type="date"
+								value={startDate}
+								onChange={(e) => handleDateChange(e, 'startDate')}
+								max={today}
+							/>
+						</label>
 
-		{/*Accordion for Filters
+						{startDate && (<label>
+							End Date:
+							<input
+								type="date"
+								value={endDate}
+								onChange={(e) => handleDateChange(e, 'endDate')}
+								min={startDate}
+								max={today}
+							/>
+						</label>
+						)}
+					</label>
+					<Button className="reset-btn w-25 my-2" onClick={() => {
+						handleApply();
+						handleClose();
+					}}>Apply</Button>
+					<Button className="reset-btn w-25 my-2 mx-4" onClick={() => {
+						handleReset();
+						handleClose();
+					}}>Reset</Button>
+				</Offcanvas.Body>
+			</Offcanvas>
+
+			{/*Accordion for Filters
 		<Accordion className="mt-3 collapsed filterOptions">
 			<Accordion.Item eventKey="0">
 				<Accordion.Header>Filters</Accordion.Header>
@@ -197,7 +223,7 @@ const FilterComponent = ({
 			</Accordion.Item>
 		</Accordion>*/}
 
-	</div>);
+		</>);
 }
 
 export default FilterComponent;

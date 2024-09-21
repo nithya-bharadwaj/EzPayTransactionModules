@@ -4,7 +4,8 @@
 body{
     background-color: grey;
 }
-.transaction-history-container {
+
+.container {
     max-width: 1200px; /* Max width for larger screens */
     margin: 0 auto; /* Center the container */
     padding: 20px; /* Padding around the container */
@@ -25,9 +26,10 @@ h1 {
     border: none; /* Remove default border */
     padding: 10px 15px; /* Padding for button */
     border-radius: 4px; /* Rounded corners */
-    margin-top: 10px; /* Space above the button */
+    /*margin-top: 10px; Space above the button*/
     display: block; /* Make button full width */
-    width: 100%; /* Full width for smaller screens */
+    margin:auto;
+    /*width: 100%; Full width for smaller screens*/
 }
 
 .download-btn:hover {
