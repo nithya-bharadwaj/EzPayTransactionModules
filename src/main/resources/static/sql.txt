@@ -25,6 +25,18 @@ CREATE TABLE bank_transfer_transaction (
     CONSTRAINT fk_bank_transfer_transaction FOREIGN KEY (transaction_id) REFERENCES transaction(transaction_id)
 );
 
+CREATE TABLE scheduled_payment (
+    is_auto_pay_enabled NUMBER(1),
+    transaction_id NUMBER(10) NOT NULL,
+    end_date TIMESTAMP(6),
+    next_payment_date TIMESTAMP(6),
+    start_date TIMESTAMP(6),
+    destination_account VARCHAR2(255 CHAR),
+    frequency VARCHAR2(255 CHAR),
+    source_account VARCHAR2(255 CHAR),
+    CONSTRAINT fk_transaction_id FOREIGN KEY (transaction_id) REFERENCES transaction(transaction_id)
+);
+
 
 CREATE SEQUENCE transaction_id_seq
 START WITH 1
@@ -70,18 +82,19 @@ You can change values of different fields to create new Transactions
 
 
 {
-     "transactionType": "Scheduled Payment",
-    "amount": 700,
-    "status": "Success",
-    "sender": "testing_api",
-    "receiver": "YouTube",
+    "transactionType": "Scheduled Payment",
+    "amount": 500,
+    "date": "2024-09-21",
+    "status": "Active",
+    "sender": "Suresh",
+    "receiver": "Jio",
     "nextPaymentDate": "2024-09-20T10:00:00",
     "startDate": "2024-09-01T10:00:00",
     "endDate": "2025-09-01T10:00:00",
     "frequency": "Quarterly",
-    "isAutoPayEnabled": false,
+    "isAutoPayEnabled": true,
     "sourceAccount": "123456789",
-    "destinationAccount": "Google987654321"
+    "destinationAccount": "jio987654321"
 }
 
 

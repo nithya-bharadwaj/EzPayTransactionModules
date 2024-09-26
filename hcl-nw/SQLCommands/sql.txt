@@ -1,0 +1,102 @@
+CREATE TABLE transaction (
+    transaction_id INT PRIMARY KEY,
+    type VARCHAR(50),
+    amount DECIMAL(15, 2),
+    transaction_date DATE,
+    status VARCHAR(20),
+    sender VARCHAR(100),
+    receiver VARCHAR(100)
+);
+
+
+CREATE TABLE upi_transaction (
+    transaction_id INT PRIMARY KEY,
+    upi_id VARCHAR(100) UNIQUE,
+    user_id VARCHAR(100),
+    CONSTRAINT fk_upi_transaction FOREIGN KEY (transaction_id) REFERENCES transaction(transaction_id)
+);
+
+
+CREATE TABLE bank_transfer_transaction (
+    transaction_id INT PRIMARY KEY,
+    transfer_id VARCHAR(100) UNIQUE,
+    sender_account VARCHAR(100),
+    receiver_account VARCHAR(100),
+    CONSTRAINT fk_bank_transfer_transaction FOREIGN KEY (transaction_id) REFERENCES transaction(transaction_id)
+);
+
+CREATE TABLE scheduled_payment (
+    is_auto_pay_enabled NUMBER(1),
+    transaction_id NUMBER(10) NOT NULL,
+    end_date TIMESTAMP(6),
+    next_payment_date TIMESTAMP(6),
+    start_date TIMESTAMP(6),
+    destination_account VARCHAR2(255 CHAR),
+    frequency VARCHAR2(255 CHAR),
+    source_account VARCHAR2(255 CHAR),
+    CONSTRAINT fk_transaction_id FOREIGN KEY (transaction_id) REFERENCES transaction(transaction_id)
+);
+
+
+CREATE SEQUENCE transaction_id_seq
+START WITH 1
+INCREMENT BY 1
+NOCACHE;
+
+
+CREATE OR REPLACE TRIGGER transaction_id_trigger
+BEFORE INSERT ON transaction
+FOR EACH ROW
+BEGIN
+  SELECT transaction_id_seq.NEXTVAL
+  INTO :new.transaction_id
+  FROM dual;
+END;
+/
+----------------------------------------------------------------------
+Some sample Transactions to use to add a transaction
+You can change values of different fields to create new Transactions
+----------------------------------------------------------------------
+{
+  "type": "Bank Transfer",
+  "amount": 100000.0,
+  "date": "2005-09-01", 
+  "status": "Success",
+  "sender":"user1",
+  "receiver":"user2",
+  "transferId": "Bank Transfer31",
+  "senderAccount": "user1",
+  "receiverAccount": "user2"
+}
+
+{
+  	"type":"UPI",
+	"amount":1000.0,
+	"date":"2023-08-31",
+  	"status":"Failure",
+ 	"sender":"user1",
+  	"receiver":"user10",
+  	"upiId":"upi90",
+  	"userId":"user1"	
+}
+
+
+{
+    "transactionType": "Scheduled Payment",
+    "amount": 500,
+    "date": "2024-09-21",
+    "status": "Active",
+    "sender": "Suresh",
+    "receiver": "Jio",
+    "nextPaymentDate": "2024-09-20T10:00:00",
+    "startDate": "2024-09-01T10:00:00",
+    "endDate": "2025-09-01T10:00:00",
+    "frequency": "Quarterly",
+    "isAutoPayEnabled": true,
+    "sourceAccount": "123456789",
+    "destinationAccount": "jio987654321"
+}
+
+
+
+
